@@ -96,7 +96,7 @@ sonic_heroes_option_groups = [
         SonicStory,
         DarkStory,
         RoseStory,
-        ChaotixStory,        
+        ChaotixStory,
     ])
 ]
 

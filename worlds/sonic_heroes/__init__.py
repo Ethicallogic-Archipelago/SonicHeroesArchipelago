@@ -158,11 +158,15 @@ class SonicHeroesWorld(World):
         #boss_gate_locked_items = []
 
         for i in range(self.options.number_level_gates.value):
-            boss_gate_item = SonicHeroesItem("Boss Gate Item " + str(i + 1), ItemClassification.progression, None, self.player)
+
+            boss_gate_item = SonicHeroesItem("Boss Gate Item " + str(i + 1), ItemClassification.progression, 0x93930009 + i + 1, self.player)
+
 
             #print("gate_boss_locs index is: " + str(self.gate_boss_locs[i][0]))
             for k in self.gate_boss_locs[i][0].keys():
                 self.get_location(k).place_locked_item(boss_gate_item)
+                print("Creating Boss Item here: " + str(boss_gate_item))
+                print("Placing it here: " + str(self.get_location(k)))
 
 
 
@@ -189,6 +193,10 @@ class SonicHeroesWorld(World):
 
         from Utils import visualize_regions
         visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
+
+
+
+
 
 
     def fill_slot_data(self) -> id:

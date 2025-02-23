@@ -105,24 +105,24 @@ def connect_entrances(world: "SonicHeroesWorld"):
 
     if (world.options.goal_unlock_condition.value == 1):
 
-        connect(world, names, "Gate 0", "Metal Madness", lambda state:
+        connect(world, names, "Menu", "Metal Madness", lambda state:
         state.has("Emblem", world.player, world.required_emblems))
 
     elif (world.options.goal_unlock_condition.value == 2):
 
-        connect(world, names, "Gate 0", "Metal Madness", lambda state:
-            state.has("Green Chaos Emerald") and
-            state.has("Blue Chaos Emerald") and
-            state.has("Yellow Chaos Emerald") and
-            state.has("White Chaos Emerald") and
-            state.has("Cyan Chaos Emerald") and
-            state.has("Purple Chaos Emerald") and
-            state.has("Red Chaos Emerald"))
+        connect(world, names, "Menu", "Metal Madness", lambda state:
+            state.has("Green Chaos Emerald", world.player) and
+            state.has("Blue Chaos Emerald", world.player) and
+            state.has("Yellow Chaos Emerald", world.player) and
+            state.has("White Chaos Emerald", world.player) and
+            state.has("Cyan Chaos Emerald", world.player) and
+            state.has("Purple Chaos Emerald", world.player) and
+            state.has("Red Chaos Emerald", world.player))
 
     elif (world.options.goal_unlock_condition.value == 0):
 
 
-        connect(world, names, "Gate " + str(world.options.number_level_gates.value), "Metal Madness", lambda state:
+        connect(world, names, "Menu", "Metal Madness", lambda state:
             state.has("Emblem", world.player, world.required_emblems) and
             state.has("Green Chaos Emerald", world.player) and
             state.has("Blue Chaos Emerald", world.player) and
@@ -198,16 +198,24 @@ def connect_entrances(world: "SonicHeroesWorld"):
                 #"Boss Gate Item " + str(i + 1)
 
                 connect(world, names, "Gate " + str(gate_i - 1), "Gate Boss between Gate " + str(gate_i - 1) +
-                " and Gate " + str(gate_i), lambda state: state.has("Emblem", world.player, world.gate_cost * gate_i))
+                " and Gate " + str(gate_i), lambda state, gate_i_= gate_i: state.has("Emblem", world.player, world.gate_cost * gate_i_))
+
+                #connect(world, names, "Gate " + str(gate_i - 1), "Gate Boss between Gate " + str(gate_i - 1) +
+                #" and Gate " + str(gate_i))
+
 
                 print("Connecting Region: " + "Gate " + str(gate_i - 1) + " to Region: " + "Gate Boss between Gate " + str(gate_i - 1) +
                 " and Gate " + str(gate_i) + " ::: And the rule is needed emblems: " + str(world.gate_cost * gate_i))
 
-                connect(world, names, "Gate Boss between Gate " + str(gate_i - 1) +
-                " and Gate " + str(gate_i), "Gate " + str(gate_i), lambda state: state.has("Boss Gate Item " + str(gate_i), world.player))
+                #connect(world, names, "Gate Boss between Gate " + str(gate_i - 1) +
+                #" and Gate " + str(gate_i), "Gate " + str(gate_i), lambda state: state.has("Boss Gate Item " + str(gate_i), world.player))
 
-                print("Connecting Region: " + "Gate Boss between Gate " + str(gate_i - 1) +
-                " and Gate " + str(gate_i) + " to Region: " + "Gate " + str(gate_i) + " ::: And the rule is Boss Gate Item " + str(gate_i))
+                #connect(world, names, "Menu", "Gate " + str(gate_i), lambda state: state.has("Boss Gate Item " + str(gate_i), world.player))
+
+                connect(world, names, "Menu", f"Gate {gate_i}", lambda state, gate_i_=gate_i: state.has(f"Boss Gate Item {gate_i_}", world.player))
+
+
+                print("Connecting Region: " + "Menu" + " to Region: " + "Gate " + str(gate_i) + " ::: And the rule is Boss Gate Item " + str(gate_i))
 
 
 
@@ -229,7 +237,7 @@ def connect(
         used_names[target] += 1
         name = target + (" " * used_names[target])
 
-    connection = Entrance(world.player, name, source_region, 0, EntranceType.TWO_WAY)
+    connection = Entrance(world.player, name, source_region)
 
     if rule:
         connection.access_rule = rule
