@@ -163,14 +163,14 @@ def connect_entrances(world: "SonicHeroesWorld"):
                 #gate 0
                 connect(world, names, "Gate " + str(gate_i), "Team " + str(world.story_list[math.floor((x - 1) / 18)]) + " Mission " + str(((x - 1) % 18) + 1))
 
-                print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Team " + str(world.story_list[math.floor((x - 1) / 18)]) + " Mission " + str(((x - 1) % 18) + 1))
+                #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Team " + str(world.story_list[math.floor((x - 1) / 18)]) + " Mission " + str(((x - 1) % 18) + 1))
 
                 placed_missions += 1
 
                 if (((x - 1) % 18) + 1 in world.emerald_mission_numbers):
                     connect(world, names, "Gate " + str(gate_i), "Emerald " + str(int((((x - 1) % 18) + 1) / 2)))
 
-                    print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Emerald " + str(int((((x - 1) % 18) + 1) / 2)))
+                    #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Emerald " + str(int((((x - 1) % 18) + 1) / 2)))
 
             if extra_missions > 0:
 
@@ -178,7 +178,7 @@ def connect_entrances(world: "SonicHeroesWorld"):
                 #gate 0
                 connect(world, names, "Gate " + str(gate_i), "Team " + str(world.story_list[math.floor((x - 1) / 18)]) + " Mission " + str(((x - 1) % 18) + 1))
 
-                print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Team " + str(world.story_list[math.floor((x - 1) / 18)]) + " Mission " + str(((x - 1) % 18) + 1))
+                #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Team " + str(world.story_list[math.floor((x - 1) / 18)]) + " Mission " + str(((x - 1) % 18) + 1))
 
                 placed_missions += 1
 
@@ -186,7 +186,7 @@ def connect_entrances(world: "SonicHeroesWorld"):
 
                 if (((x - 1) % 18) + 1 in world.emerald_mission_numbers):
                     connect(world, names, "Gate " + str(gate_i), "Emerald " + str(int((((x - 1) % 18) + 1) / 2)))
-                    print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Emerald " + str(int((((x - 1) % 18) + 1) / 2)))
+                    #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Emerald " + str(int((((x - 1) % 18) + 1) / 2)))
 
             if gate_i == 0:
                 connect(world, names, "Menu", "Gate " + str(gate_i))
@@ -197,6 +197,7 @@ def connect_entrances(world: "SonicHeroesWorld"):
                 #"Gate Boss between Gate " + str(i) + " and Gate " + str(i + 1)
                 #"Boss Gate Item " + str(i + 1)
 
+                #have to lambda capture here
                 connect(world, names, "Gate " + str(gate_i - 1), "Gate Boss between Gate " + str(gate_i - 1) +
                 " and Gate " + str(gate_i), lambda state, gate_i_= gate_i: state.has("Emblem", world.player, world.gate_cost * gate_i_))
 
@@ -204,8 +205,8 @@ def connect_entrances(world: "SonicHeroesWorld"):
                 #" and Gate " + str(gate_i))
 
 
-                print("Connecting Region: " + "Gate " + str(gate_i - 1) + " to Region: " + "Gate Boss between Gate " + str(gate_i - 1) +
-                " and Gate " + str(gate_i) + " ::: And the rule is needed emblems: " + str(world.gate_cost * gate_i))
+                #print("Connecting Region: " + "Gate " + str(gate_i - 1) + " to Region: " + "Gate Boss between Gate " + str(gate_i - 1) +
+                #" and Gate " + str(gate_i) + " ::: And the rule is needed emblems: " + str(world.gate_cost * gate_i))
 
                 #connect(world, names, "Gate Boss between Gate " + str(gate_i - 1) +
                 #" and Gate " + str(gate_i), "Gate " + str(gate_i), lambda state: state.has("Boss Gate Item " + str(gate_i), world.player))
@@ -215,7 +216,7 @@ def connect_entrances(world: "SonicHeroesWorld"):
                 connect(world, names, "Menu", f"Gate {gate_i}", lambda state, gate_i_=gate_i: state.has(f"Boss Gate Item {gate_i_}", world.player))
 
 
-                print("Connecting Region: " + "Menu" + " to Region: " + "Gate " + str(gate_i) + " ::: And the rule is Boss Gate Item " + str(gate_i))
+                #print("Connecting Region: " + "Menu" + " to Region: " + "Gate " + str(gate_i) + " ::: And the rule is Boss Gate Item " + str(gate_i))
 
 
 

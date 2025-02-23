@@ -165,8 +165,8 @@ class SonicHeroesWorld(World):
             #print("gate_boss_locs index is: " + str(self.gate_boss_locs[i][0]))
             for k in self.gate_boss_locs[i][0].keys():
                 self.get_location(k).place_locked_item(boss_gate_item)
-                print("Creating Boss Item here: " + str(boss_gate_item))
-                print("Placing it here: " + str(self.get_location(k)))
+                #print("Creating Boss Item here: " + str(boss_gate_item))
+                #print("Placing it here: " + str(self.get_location(k)))
 
 
 
@@ -191,8 +191,8 @@ class SonicHeroesWorld(World):
 
         connect_entrances(self)
 
-        from Utils import visualize_regions
-        visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
+        #from Utils import visualize_regions
+        #visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
 
 
 
@@ -203,11 +203,12 @@ class SonicHeroesWorld(World):
         return {
             "ModVersion": 100,
             "Goal": self.options.goal.value,
-            "Goal Unlock Condition": self.options.goal_unlock_condition,
-            "Required Emblems Percent": self.options.required_emblems_percent,
-            "Number of Level Gates": self.options.number_level_gates,
-            "Sonic Story": self.options.sonic_story,
-            "Dark Story": self.options.dark_story,
-            "Rose Story": self.options.rose_story,
-            "Chaotix Story": self.options.chaotix_story,
+            "Goal Unlock Condition": self.options.goal_unlock_condition.value,
+            "Required Emblems Percent": self.options.required_emblems_percent.value,
+            "Number of Level Gates": self.options.number_level_gates.value,
+            "Sonic Story": self.options.sonic_story.value,
+            "Dark Story": self.options.dark_story.value,
+            "Rose Story": self.options.rose_story.value,
+            "Chaotix Story": self.options.chaotix_story.value,
+            "Shuffleable Levels": self.shuffleable_level_list
         }
