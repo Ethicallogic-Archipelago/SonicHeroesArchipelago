@@ -7,10 +7,12 @@ from Options import OptionError
 from worlds.AutoWorld import WebWorld, World
 from worlds.generic.Rules import add_rule, set_rule, forbid_item, add_item_rule
 
-from .options import SonicHeroesOptions, sonic_heroes_option_groups
-from .items import SonicHeroesItem, item_name_to_id, create_items, junk_weights
+from .options import *
+from .items import *
+#SonicHeroesItem, item_name_to_id, create_items, junk_weights
 from .locations import *
-#SonicHeroesLocation, location_name_to_id, sonic_mission_locs, sonic_boss_locs, dark_mission_locs, dark_boss_locs, rose_mission_locs, rose_boss_locs, chaotix_mission_locs, chaotix_boss_locs, emerald_locs
+#SonicHeroesLocation, location_name_to_id, sonic_mission_locs, sonic_boss_locs, dark_mission_locs,
+#dark_boss_locs, rose_mission_locs, rose_boss_locs, chaotix_mission_locs, chaotix_boss_locs, emerald_locs
 from .regions import *
 
 
@@ -53,16 +55,18 @@ class SonicHeroesWorld(World):
         self.shuffleable_boss_list: List[int] = []
 
         self.story_list: List[str] = []
-        self.emblem_cost_victory: int = 0
 
+        #self.emblem_cost_victory: int = 0
         self.required_emblems: int = 0
 
         self.gate_cost: int = 0
 
         #locations for regions here
         self.goal = []
+        self.gate_locs = []
         self.gate_boss_locs = []
         self.emerald_locs = emerald_locs
+
         self.team_locs = []
         self.boss_locs = []
 
@@ -108,7 +112,8 @@ class SonicHeroesWorld(World):
             raise OptionError("[ERROR] Number of stories enabled is invalid.")
 
         #self.total_emblems = self.default_emblem_pool_size * len(self.story_list)
-        self.required_emblems = math.floor(self.default_emblem_pool_size * len(self.story_list) * self.options.required_emblems_percent.value / 100)
+        self.required_emblems = math.floor(self.default_emblem_pool_size * len(self.story_list) *
+        self.options.required_emblems_percent.value / 100)
 
 
         if self.options.number_level_gates.value > 3 and len(self.story_list) == 1:
@@ -141,7 +146,8 @@ class SonicHeroesWorld(World):
 
         for i in range(self.options.number_level_gates.value):
 
-            self.gate_boss_locs.append(self.boss_locs[math.floor((self.shuffleable_boss_list[i] - 1) / 3)][((self.shuffleable_boss_list[i] - 1) % 3)])
+            self.gate_boss_locs.append(self.boss_locs[math.floor((self.shuffleable_boss_list[i] - 1) / 3)]
+            [((self.shuffleable_boss_list[i] - 1) % 3)])
             #format is 1 2 3 for first story bosses, 4 5 6 etc
         #print("self.gate_boss_locs here: " + str(self.gate_boss_locs))
 
@@ -159,7 +165,8 @@ class SonicHeroesWorld(World):
 
         for i in range(self.options.number_level_gates.value):
 
-            boss_gate_item = SonicHeroesItem("Boss Gate Item " + str(i + 1), ItemClassification.progression, 0x93930009 + i + 1, self.player)
+            boss_gate_item = SonicHeroesItem(f"Boss Gate Item {i + 1}", ItemClassification.progression,
+            0x93930009 + i + 1, self.player)
 
 
             #print("gate_boss_locs index is: " + str(self.gate_boss_locs[i][0]))
@@ -167,6 +174,8 @@ class SonicHeroesWorld(World):
                 self.get_location(k).place_locked_item(boss_gate_item)
                 #print("Creating Boss Item here: " + str(boss_gate_item))
                 #print("Placing it here: " + str(self.get_location(k)))
+
+        connect_entrances(self)
 
 
 
@@ -185,11 +194,13 @@ class SonicHeroesWorld(World):
 
 
     def set_rules(self):
-        pass
+        self.multiworld.completion_condition[self.player] = lambda state: state.has("Victory", self.player)
 
-    def connect_entrances(self):
 
-        connect_entrances(self)
+    #only 0.6.0 here
+    #def connect_entrances(self):
+
+        #connect_entrances(self)
 
         #from Utils import visualize_regions
         #visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
@@ -204,11 +215,15 @@ class SonicHeroesWorld(World):
             "ModVersion": 100,
             "Goal": self.options.goal.value,
             "Goal Unlock Condition": self.options.goal_unlock_condition.value,
+            "Emblem Pool Size": self.default_emblem_pool_size,
             "Required Emblems Percent": self.options.required_emblems_percent.value,
             "Number of Level Gates": self.options.number_level_gates.value,
             "Sonic Story": self.options.sonic_story.value,
             "Dark Story": self.options.dark_story.value,
             "Rose Story": self.options.rose_story.value,
             "Chaotix Story": self.options.chaotix_story.value,
-            "Shuffleable Levels": self.shuffleable_level_list
+            "Story List": self.story_list,
+            "Shuffleable Levels": self.shuffleable_level_list,
+            "Gate Locs": self.gate_locs,
+            "Gate Boss Locs":self.gate_boss_locs,
         }

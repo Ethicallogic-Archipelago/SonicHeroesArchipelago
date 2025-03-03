@@ -18,7 +18,8 @@ class ItemData(NamedTuple):
     address: Tuple[int, int] = None
 
 
-#def create_multiple(name: str, amount: int, world: MultiWorld, player: int, item_class: ItemClassification, itempool: List[SonicHeroesItem]):
+#def create_multiple(name: str, amount: int, world: MultiWorld, player: int,
+# item_class: ItemClassification, itempool: List[SonicHeroesItem]):
 def create_item(world: "SonicHeroesWorld", name: str, classification: ItemClassification, amount: Optional[int] = 1):
 
     for i in range(amount):

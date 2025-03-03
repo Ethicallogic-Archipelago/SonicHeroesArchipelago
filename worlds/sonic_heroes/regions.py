@@ -1,7 +1,7 @@
 from typing import List, Dict, Optional, Callable
 import math
 
-from BaseClasses import Region, Entrance, EntranceType
+from BaseClasses import Region, Entrance
 
 
 from .locations import SonicHeroesLocation
@@ -47,7 +47,7 @@ def create_regions(world: "SonicHeroesWorld"):
     for i in range(7):
 
         #print("world.emerald_locs index : " + str(world.emerald_locs[i]))
-        create_region(world, "Emerald " + str(i + 1), world.emerald_locs[i], "Region for Emerald " + str(i + 1))
+        create_region(world, f"Emerald {i + 1}", world.emerald_locs[i], f"Region for Emerald {i + 1}")
 
     #story missions (not bosses)
     for team_index in range(len(world.story_list)):
@@ -56,28 +56,28 @@ def create_regions(world: "SonicHeroesWorld"):
             #print("Creating region: Team " + str(world.story_list[team_index]) + " Mission " + str(location_number + 1))
             #print("This region has locations: " + str(world.team_locs[team_index][location_number]))
 
-            create_region(world, "Team " + str(world.story_list[team_index]) + " Mission " + str(location_number + 1),
+            create_region(world, f"Team {world.story_list[team_index]} Mission {location_number + 1}",
             #check team_locs here
-             world.team_locs[team_index][location_number], "Region for team " + str(world.story_list[team_index] + " Mission "
-              + str(location_number + 1)))
+             world.team_locs[team_index][location_number],
+             f"Region for team {world.story_list[team_index]} Mission {location_number + 1}")
 
     #for region in world.multiworld.get_regions():
         #for location in region.get_locations():
 
-            #print("This region has these locations: " + str(location))
+            #print(f"This region has these locations: {location}")
 
 
     #level gates here
     for i in range(world.options.number_level_gates.value + 1):
-        create_region(world, "Gate " + str(i), [], "Gate " + str(i) + "Region") #gate_locs is a List of List of locations
+        create_region(world, f"Gate {i}", [], f"Gate {i} Region") #gate_locs is a List of List of locations
 
     #gate bosses here
     for i in range(world.options.number_level_gates.value):
-        create_region(world, "Gate Boss between Gate " + str(i) + " and Gate " +
-        str(i + 1), world.gate_boss_locs[i], "Region for Gate Boss " + str(i)) #also a list of list of locations
+        create_region(world, f"Gate Boss between Gate {i} and Gate {i + 1}",
+        world.gate_boss_locs[i], f"Region for Gate Boss {i}") #also a list of list of locations
 
-        print("Region Created: " + "Gate Boss between Gate " + str(i) + " and Gate " +
-        str(i + 1) + " and locations in here is: " + str(world.gate_boss_locs[i]))
+        #print("Region Created: " + "Gate Boss between Gate " + str(i) + " and Gate " +
+        #str(i + 1) + " and locations in here is: " + str(world.gate_boss_locs[i]))
 
 
 
@@ -85,12 +85,6 @@ def create_regions(world: "SonicHeroesWorld"):
     #final boss
     #print("world.goal is: " + str(world.goal))
     create_region(world, "Metal Madness", world.goal[0], "This is Metal Madness Region")
-
-
-
-    for region in world.multiworld.regions:
-        #print("region in list is: " + str(region))
-        pass
 
 
 def connect_entrances(world: "SonicHeroesWorld"):
@@ -102,6 +96,9 @@ def connect_entrances(world: "SonicHeroesWorld"):
     #0 is emblems and emeralds
     #1 is emblems
     #2 is emeralds
+
+    for i in range(world.options.number_level_gates.value + 1):
+            world.gate_locs.append([])
 
     if (world.options.goal_unlock_condition.value == 1):
 
@@ -138,10 +135,12 @@ def connect_entrances(world: "SonicHeroesWorld"):
 
         for team in world.story_list:
             for location_number in range(18):
-                connect(world, names, "Gate 0", "Team " + str(team) + " Mission " + str(location_number + 1))
+                connect(world, names, "Gate 0", f"Team {team} Mission {location_number + 1}")
+                #world.gate_locs[0].append(f"Team {team} Mission {location_number + 1}")
 
                 if (location_number + 1 in world.emerald_mission_numbers):
-                    connect(world, names, "Gate 0", "Emerald " + str(location_number + 1))
+                    connect(world, names, "Gate 0", f"Emerald {location_number + 1}")
+                    #world.gate_locs[0].append(f"Emerald {location_number + 1}")
 
     else:
 
@@ -161,14 +160,15 @@ def connect_entrances(world: "SonicHeroesWorld"):
                 x = world.shuffleable_level_list[placed_missions]
 
                 #gate 0
-                connect(world, names, "Gate " + str(gate_i), "Team " + str(world.story_list[math.floor((x - 1) / 18)]) + " Mission " + str(((x - 1) % 18) + 1))
+                connect(world, names, f"Gate {gate_i}",
+                f"Team {world.story_list[math.floor((x - 1) / 18)]} Mission {((x - 1) % 18) + 1}")
 
                 #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Team " + str(world.story_list[math.floor((x - 1) / 18)]) + " Mission " + str(((x - 1) % 18) + 1))
 
                 placed_missions += 1
 
                 if (((x - 1) % 18) + 1 in world.emerald_mission_numbers):
-                    connect(world, names, "Gate " + str(gate_i), "Emerald " + str(int((((x - 1) % 18) + 1) / 2)))
+                    connect(world, names, f"Gate {gate_i}", f"Emerald {int((((x - 1) % 18) + 1) / 2)}")
 
                     #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Emerald " + str(int((((x - 1) % 18) + 1) / 2)))
 
@@ -176,7 +176,7 @@ def connect_entrances(world: "SonicHeroesWorld"):
 
                 x = world.shuffleable_level_list[placed_missions]
                 #gate 0
-                connect(world, names, "Gate " + str(gate_i), "Team " + str(world.story_list[math.floor((x - 1) / 18)]) + " Mission " + str(((x - 1) % 18) + 1))
+                connect(world, names, f"Gate {gate_i}", f"Team {world.story_list[math.floor((x - 1) / 18)]} Mission {((x - 1) % 18) + 1}")
 
                 #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Team " + str(world.story_list[math.floor((x - 1) / 18)]) + " Mission " + str(((x - 1) % 18) + 1))
 
@@ -185,11 +185,12 @@ def connect_entrances(world: "SonicHeroesWorld"):
                 extra_missions -= 1
 
                 if (((x - 1) % 18) + 1 in world.emerald_mission_numbers):
-                    connect(world, names, "Gate " + str(gate_i), "Emerald " + str(int((((x - 1) % 18) + 1) / 2)))
+                    connect(world, names, f"Gate {gate_i}", f"Emerald {int((((x - 1) % 18) + 1) / 2)}")
+
                     #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Emerald " + str(int((((x - 1) % 18) + 1) / 2)))
 
             if gate_i == 0:
-                connect(world, names, "Menu", "Gate " + str(gate_i))
+                connect(world, names, "Menu", f"Gate {gate_i}")
 
             else:
 
@@ -198,25 +199,27 @@ def connect_entrances(world: "SonicHeroesWorld"):
                 #"Boss Gate Item " + str(i + 1)
 
                 #have to lambda capture here
-                connect(world, names, "Gate " + str(gate_i - 1), "Gate Boss between Gate " + str(gate_i - 1) +
-                " and Gate " + str(gate_i), lambda state, gate_i_= gate_i: state.has("Emblem", world.player, world.gate_cost * gate_i_))
+                connect(world, names, f"Gate {gate_i - 1}", f"Gate Boss between Gate {gate_i - 1} and Gate {gate_i}",
+                lambda state, gate_i_= gate_i: state.has("Emblem", world.player, world.gate_cost * gate_i_))
 
                 #connect(world, names, "Gate " + str(gate_i - 1), "Gate Boss between Gate " + str(gate_i - 1) +
                 #" and Gate " + str(gate_i))
 
 
-                #print("Connecting Region: " + "Gate " + str(gate_i - 1) + " to Region: " + "Gate Boss between Gate " + str(gate_i - 1) +
-                #" and Gate " + str(gate_i) + " ::: And the rule is needed emblems: " + str(world.gate_cost * gate_i))
+                #print(f"Connecting Region: Gate {gate_i - 1} to Region: Gate Boss between Gate {gate_i - 1} and Gate {gate_i} ::: And the rule is needed emblems: {world.gate_cost * gate_i}")
 
                 #connect(world, names, "Gate Boss between Gate " + str(gate_i - 1) +
                 #" and Gate " + str(gate_i), "Gate " + str(gate_i), lambda state: state.has("Boss Gate Item " + str(gate_i), world.player))
 
                 #connect(world, names, "Menu", "Gate " + str(gate_i), lambda state: state.has("Boss Gate Item " + str(gate_i), world.player))
 
-                connect(world, names, "Menu", f"Gate {gate_i}", lambda state, gate_i_=gate_i: state.has(f"Boss Gate Item {gate_i_}", world.player))
+                connect(world, names, "Menu", f"Gate {gate_i}",
+                lambda state, gate_i_=gate_i: state.has(f"Boss Gate Item {gate_i_}", world.player))
 
 
-                #print("Connecting Region: " + "Menu" + " to Region: " + "Gate " + str(gate_i) + " ::: And the rule is Boss Gate Item " + str(gate_i))
+                #print(f"Connecting Region: Menu to Region: Gate {gate_i} ::: And the rule is Boss Gate Item {gate_i}")
+
+                #print(f"This is gate_locs: {str(world.gate_locs)}")
 
 
 
@@ -245,5 +248,12 @@ def connect(
 
     source_region.exits.append(connection)
     connection.connect(target_region)
+
+    #print(f"Connection Region {source} to Region {target}")
+
+    if "Gate " in source:
+        world.gate_locs[int(source[-1:])].append(target)
+
+
     return connection if reach else None
 
