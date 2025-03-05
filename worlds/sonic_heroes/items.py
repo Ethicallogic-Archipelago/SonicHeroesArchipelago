@@ -1,7 +1,7 @@
 from typing import Dict, Optional, List, Tuple, NamedTuple
 import math
 
-from BaseClasses import Item, ItemClassification, MultiWorld
+from BaseClasses import Item, ItemClassification
 
 
 class SonicHeroesItem(Item):
@@ -12,14 +12,7 @@ class ItemData(NamedTuple):
     code: int
     itemName: str
     classification: ItemClassification
-    itemID: int
 
-    #currently not used but will store the address if needed
-    address: Tuple[int, int] = None
-
-
-#def create_multiple(name: str, amount: int, world: MultiWorld, player: int,
-# item_class: ItemClassification, itempool: List[SonicHeroesItem]):
 def create_item(world: "SonicHeroesWorld", name: str, classification: ItemClassification, amount: Optional[int] = 1):
 
     for i in range(amount):
@@ -28,7 +21,8 @@ def create_item(world: "SonicHeroesWorld", name: str, classification: ItemClassi
 
 def create_items(world: "SonicHeroesWorld"):
 
-    total_location_count = len(world.story_list) * 32 + 7
+    total_location_count = len(world.story_list) * (28 + world.options.number_level_gates) + 7
+
 
     useful_emblems = world.default_emblem_pool_size * len(world.story_list) - world.required_emblems
 
@@ -81,16 +75,16 @@ junk_weights = {
 }
 
 itemList: List[ItemData] = [
-    ItemData(0x93930000, "Emblem", ItemClassification.progression, 0x01,),#(0x2b32, 0x04)),
-    ItemData(0x93930001, "Green Chaos Emerald", ItemClassification.progression, 0x01,),
-    ItemData(0x93930002, "Blue Chaos Emerald", ItemClassification.progression, 0x01,),
-    ItemData(0x93930003, "Yellow Chaos Emerald", ItemClassification.progression, 0x01,),
-    ItemData(0x93930004, "White Chaos Emerald", ItemClassification.progression, 0x01,),
-    ItemData(0x93930005, "Cyan Chaos Emerald", ItemClassification.progression, 0x01,),
-    ItemData(0x93930006, "Purple Chaos Emerald", ItemClassification.progression, 0x01,),
-    ItemData(0x93930007, "Red Chaos Emerald", ItemClassification.progression, 0x01,),
-    ItemData(0x93930008, "Extra Life", ItemClassification.filler, 0x01,),
-    ItemData(0x93930009, "50 Rings", ItemClassification.filler, 0x01,),
+    ItemData(0x93930000, "Emblem", ItemClassification.progression),
+    ItemData(0x93930001, "Green Chaos Emerald", ItemClassification.progression),
+    ItemData(0x93930002, "Blue Chaos Emerald", ItemClassification.progression),
+    ItemData(0x93930003, "Yellow Chaos Emerald", ItemClassification.progression),
+    ItemData(0x93930004, "White Chaos Emerald", ItemClassification.progression),
+    ItemData(0x93930005, "Cyan Chaos Emerald", ItemClassification.progression),
+    ItemData(0x93930006, "Purple Chaos Emerald", ItemClassification.progression),
+    ItemData(0x93930007, "Red Chaos Emerald", ItemClassification.progression),
+    ItemData(0x93930008, "Extra Life", ItemClassification.filler),
+    ItemData(0x93930009, "50 Rings", ItemClassification.filler),
 ]
 
 

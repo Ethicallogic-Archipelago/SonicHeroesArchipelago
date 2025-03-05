@@ -1,3 +1,4 @@
+from collections import namedtuple
 from BaseClasses import Location
 
 
@@ -5,38 +6,9 @@ from BaseClasses import Location
 class SonicHeroesLocation(Location):
     game: str = "Sonic Heroes"
 
-"""
 
-def create_location(player: int, reg: Region, name: str, code: int):
-    location = SonicHeroesLocation(player, name, code, reg)
-    reg.locations.append(location)
-
-
-def create_locations_from_dict(loc_dict, reg, player):
-    for (key, data) in loc_dict.items():
-        if data.region != reg.name:
-            continue
-        create_location(player, reg, key, data.code)
-
-
-
-def create_locations(player: int, options: SonicHeroesOptions, region: Region):
-
-    if options.sonic_story:
-        create_locations_from_dict(stage_list_sonic, region, player)
-
-    if options.dark_story:
-        create_locations_from_dict(stage_list_dark, region, player)
-
-    if options.rose_story:
-        create_locations_from_dict(stage_list_rose, region, player)
-
-    if options.chaotix_story:
-        create_locations_from_dict(stage_list_chaotix, region, player)
-
-    create_locations_from_dict(emerald_stage_list, region, player)
-
-"""
+#use this in regions for Extras/TeamFights
+ExtraTuple = namedtuple('ExtraTuple', ['name', 'loc_dict'])
 
 
 sonic_mission_locs = [
@@ -97,19 +69,18 @@ sonic_mission_locs = [
         {"Final Fortress Sonic 1": 0x939300BE},
         {"Final Fortress Sonic 2": 0x939300BF},
     ],
-    [
-        {"Team Rose Fight Sonic": 0x939300A8},
-    ],
-    [
-        {"Robot Carnival Sonic": 0x939300AD},
-    ],
-    [
-        {"Team Dark Fight Sonic": 0x939300B6},
-    ],
-    [
-        {"Robot Storm Sonic": 0x939300BB},
-    ],
-
+    #[
+    #    {"Team Rose Fight Sonic": 0x939300A8},
+    #],
+    #[
+    #    {"Robot Carnival Sonic": 0x939300AD},
+    #],
+    #[
+    #    {"Team Dark Fight Sonic": 0x939300B6},
+    #],
+    #[
+    #    {"Robot Storm Sonic": 0x939300BB},
+    #],
 ]
 
 
@@ -171,19 +142,18 @@ dark_mission_locs = [
         {"Final Fortress Dark 1": 0x939300DE},
         {"Final Fortress Dark 2": 0x939300DF},
     ],
-    [
-        {"Team Chaotix Fight Dark": 0x939300C8},
-    ],
-    [
-        {"Robot Carnival Dark": 0x939300CD},
-    ],
-    [
-        {"Team Sonic Fight Dark": 0x939300D6},
-    ],
-    [
-        {"Robot Storm Dark": 0x939300DB},
-    ],
-
+    #[
+    #    {"Team Chaotix Fight Dark": 0x939300C8},
+    #],
+    #[
+    #    {"Robot Carnival Dark": 0x939300CD},
+    #],
+    #[
+    #    {"Team Sonic Fight Dark": 0x939300D6},
+    #],
+    #[
+    #    {"Robot Storm Dark": 0x939300DB},
+    #],
 ]
 
 
@@ -245,19 +215,18 @@ rose_mission_locs = [
         {"Final Fortress Rose 1": 0x939300FE},
         {"Final Fortress Rose 2": 0x939300FF},
     ],
-    [
-        {"Team Sonic Fight Rose": 0x939300E8},
-    ],
-    [
-        {"Robot Carnival Rose": 0x939300ED},
-    ],
-    [
-        {"Team Chaotix Fight Rose": 0x939300F6},
-    ],
-    [
-        {"Robot Storm Rose": 0x939300FB},
-    ],
-
+    #[
+    #    {"Team Sonic Fight Rose": 0x939300E8},
+    #],
+    #[
+    #    {"Robot Carnival Rose": 0x939300ED},
+    #],
+    #[
+    #    {"Team Chaotix Fight Rose": 0x939300F6},
+    #],
+    #[
+    #    {"Robot Storm Rose": 0x939300FB},
+    #],
 ]
 
 
@@ -319,18 +288,18 @@ chaotix_mission_locs = [
         {"Final Fortress Chaotix 1": 0x9393011E},
         {"Final Fortress Chaotix 2": 0x9393011F},
     ],
-    [
-        {"Team Dark Fight Chaotix": 0x93930108},
-    ],
-    [
-        {"Robot Carnival Chaotix": 0x9393010D},
-    ],
-    [
-        {"Team Rose Fight Chaotix": 0x93930116},
-    ],
-    [
-        {"Robot Storm Chaotix": 0x9393011B},
-    ],
+    #[
+    #    {"Team Dark Fight Chaotix": 0x93930108},
+    #],
+    #[
+    #    {"Robot Carnival Chaotix": 0x9393010D},
+    #],
+    #[
+    #    {"Team Rose Fight Chaotix": 0x93930116},
+    #],
+    #[
+    #    {"Robot Storm Chaotix": 0x9393011B},
+    #],
 
 ]
 
@@ -359,56 +328,189 @@ emerald_locs = [
     ],
 ]
 
-sonic_boss_locs = [
+#sonic_boss_locs = [
+#    [
+#        {"Egg Hawk Sonic": 0x9393012C},
+#    ],
+#    [
+#        {"Egg Albatross Sonic": 0x9393012D},
+#    ],
+#    [
+#        {"Egg Emperor Sonic": 0x9393012E},
+#    ],
+#]
+#
+#
+#dark_boss_locs = [
+#    [
+#        {"Egg Hawk Dark": 0x9393012F},
+#    ],
+#    [
+#        {"Egg Albatross Dark": 0x93930130},
+#    ],
+#    [
+#        {"Egg Emperor Dark": 0x93930131},
+#    ],
+#]
+#
+#
+#rose_boss_locs = [
+#    [
+#        {"Egg Hawk Rose": 0x93930132},
+#    ],
+#    [
+#        {"Egg Albatross Rose": 0x93930133},
+#    ],
+#    [
+#        {"Egg Emperor Rose": 0x93930134},
+#    ],
+#]
+#
+#
+#chaotix_boss_locs = [
+#    [
+#        {"Egg Hawk Chaotix": 0x93930135}, #0x93930135
+#    ],
+#    [
+#        {"Egg Albatross Chaotix": 0x93930136}, #0x93930136
+#    ],
+#    [
+#        {"Egg Emperor Chaotix": 0x93930137}, #0x93930137
+#    ],
+#]
+
+
+
+boss_gate_locs = [
     [
-        {"Egg Hawk Sonic": 0x9393012C},
+        {"Boss Gate 1": 0x93930138},
     ],
     [
-        {"Egg Albatross Sonic": 0x9393012D},
+        {"Boss Gate 2": 0x93930139},
     ],
     [
-        {"Egg Emperor Sonic": 0x9393012E},
+        {"Boss Gate 3": 0x9393013A},
+    ],
+    [
+        {"Boss Gate 4": 0x9393013B},
+    ],
+    [
+        {"Boss Gate 5": 0x9393013C},
     ],
 ]
 
 
-dark_boss_locs = [
+
+egg_hawk_locs = [
+    [
+        {"Egg Hawk Sonic": 0x9393012C},
+    ],
     [
         {"Egg Hawk Dark": 0x9393012F},
+    ],
+    [
+        {"Egg Hawk Rose": 0x93930132},
+    ],
+    [
+        {"Egg Hawk Chaotix": 0x93930135}, #0x93930135
+    ],
+]
+
+
+
+team_fight_1_locs = [
+    [
+        {"Team Rose Fight Sonic": 0x939300A8},
+    ],
+    [
+        {"Team Chaotix Fight Dark": 0x939300C8},
+    ],
+    [
+        {"Team Sonic Fight Rose": 0x939300E8},
+    ],
+    [
+        {"Team Dark Fight Chaotix": 0x93930108},
+    ],
+]
+
+robot_carnival_locs = [
+    [
+        {"Robot Carnival Sonic": 0x939300AD},
+    ],
+    [
+        {"Robot Carnival Dark": 0x939300CD},
+    ],
+    [
+        {"Robot Carnival Rose": 0x939300ED},
+    ],
+    [
+        {"Robot Carnival Chaotix": 0x9393010D},
+    ],
+]
+
+egg_albatross_locs = [
+    [
+        {"Egg Albatross Sonic": 0x9393012D},
     ],
     [
         {"Egg Albatross Dark": 0x93930130},
     ],
     [
-        {"Egg Emperor Dark": 0x93930131},
-    ],
-]
-
-
-rose_boss_locs = [
-    [
-        {"Egg Hawk Rose": 0x93930132},
-    ],
-    [
         {"Egg Albatross Rose": 0x93930133},
     ],
     [
-        {"Egg Emperor Rose": 0x93930134},
+        {"Egg Albatross Chaotix": 0x93930136},
     ],
 ]
 
 
-chaotix_boss_locs = [
+team_fight_2_locs = [
     [
-        {"Egg Hawk Chaotix": 0x93930135}, #0x93930135
+        {"Team Dark Fight Sonic": 0x939300B6},
     ],
     [
-        {"Egg Albatross Chaotix": 0x93930136}, #0x93930136
+        {"Team Sonic Fight Dark": 0x939300D6},
+    ],
+    [
+        {"Team Chaotix Fight Rose": 0x939300F6},
+    ],
+    [
+        {"Team Rose Fight Chaotix": 0x93930116},
+    ],
+]
+
+
+robot_storm_locs = [
+    [
+        {"Robot Storm Sonic": 0x939300BB},
+    ],
+    [
+        {"Robot Storm Dark": 0x939300DB},
+    ],
+    [
+        {"Robot Storm Rose": 0x939300FB},
+    ],
+    [
+        {"Robot Storm Chaotix": 0x9393011B},
+    ],
+]
+
+
+egg_emperor_locs = [
+    [
+        {"Egg Emperor Sonic": 0x9393012E},
+    ],
+    [
+        {"Egg Emperor Dark": 0x93930131},
+    ],
+    [
+        {"Egg Emperor Rose": 0x93930134},
     ],
     [
         {"Egg Emperor Chaotix": 0x93930137}, #0x93930137
     ],
 ]
+
 
 goal_loc = [
     [
@@ -438,27 +540,56 @@ for mission in chaotix_mission_locs:
     for mission_loc in mission:
         tempdict |= mission_loc
 
-"""
-for mission in *sonic_boss_locs:
-    tempdict += *mission
+#for boss in sonic_boss_locs:
+#    for boss_loc in boss:
+#        tempdict |= boss_loc
+#
+#for boss in dark_boss_locs:
+#    for boss_loc in boss:
+#        tempdict |= boss_loc
+#
+#for boss in rose_boss_locs:
+#    for boss_loc in boss:
+#        tempdict |= boss_loc
+#
+#for boss in chaotix_boss_locs:
+#    for boss_loc in boss:
+#        tempdict |= boss_loc
 
-for mission in *dark_boss_locs:
-    tempdict += *mission
 
-for mission in *rose_boss_locs:
-    tempdict += *mission
+for boss in egg_hawk_locs:
+    for boss_loc in boss:
+        tempdict |= boss_loc
 
-for mission in *chaotix_boss_locs:
-    tempdict += *mission
-"""
+for boss in team_fight_1_locs:
+    for boss_loc in boss:
+        tempdict |= boss_loc
+
+for boss in robot_carnival_locs:
+    for boss_loc in boss:
+        tempdict |= boss_loc
+
+for boss in egg_albatross_locs:
+    for boss_loc in boss:
+        tempdict |= boss_loc
+
+for boss in team_fight_2_locs:
+    for boss_loc in boss:
+        tempdict |= boss_loc
+
+for boss in robot_storm_locs:
+    for boss_loc in boss:
+        tempdict |= boss_loc
+
+for boss in egg_emperor_locs:
+    for boss_loc in boss:
+        tempdict |= boss_loc
+
 
 for mission in emerald_locs:
     for mission_loc in mission:
         tempdict |= mission_loc
 
-#print("location_name_to_id in locations is: " + str(tempdict))
-
 
 location_name_to_id = tempdict
-
 

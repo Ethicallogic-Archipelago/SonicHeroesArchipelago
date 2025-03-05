@@ -2,96 +2,123 @@ from typing import List, Dict, Optional, Callable
 import math
 
 from BaseClasses import Region, Entrance
-
-
-from .locations import SonicHeroesLocation
+from .locations import *
 
 
 
 def create_region(world: "SonicHeroesWorld", name: str, locations: List[Dict[str, int]], hint: Optional[str] = None):
+    temp_string = ""
     ret = Region(name, world.player, world.multiworld, hint)
     for location in locations:
-        #print("location in region is: " + str(location))
         for k, v in location.items():
             if k in world.disabled_locations: #currently not used
                 continue
+            temp_string += f"{k} "
 
             loc = SonicHeroesLocation(world.player, k, v, ret)
             ret.locations.append(loc)
 
     world.multiworld.regions.append(ret)
 
+    world.spoiler_string += f"\nCreating Region with name: {name} and locations: {temp_string}\n"
+
+
+
+def get_extra_or_boss_locs(world: "SonicHeroesWorld", id: int) -> ExtraTuple[str, Dict[str, int]]:
+    temp_string = ""
+    temp_dict = {}
+
+    if id == 0:
+        temp_list = egg_hawk_locs
+        temp_string = "Egg Hawk"
+
+    elif id == 1:
+        temp_list = team_fight_1_locs
+        temp_string = "Team Fight 1"
+
+    elif id == 2:
+        temp_list = robot_carnival_locs
+        temp_string = "Robot Carnival"
+
+    elif id == 3:
+        temp_list = egg_albatross_locs
+        temp_string = "Egg Albatross"
+
+    elif id == 4:
+        temp_list = team_fight_2_locs
+        temp_string = "Team Fight 2"
+
+    elif id == 5:
+        temp_list = robot_storm_locs
+        temp_string = "Robot Storm"
+
+    elif id == 6:
+        temp_list = egg_emperor_locs
+        temp_string = "Egg Emperor"
+
+    else:
+        temp_list = []
+
+    for story in world.story_list:
+        if story == "Sonic":
+            temp_dict |= temp_list[0][0]
+
+        if story == "Dark":
+            temp_dict |= temp_list[1][0]
+
+        if story == "Rose":
+            temp_dict |= temp_list[2][0]
+
+        if story == "Chaotix":
+            temp_dict |= temp_list[3][0]
+
+
+    return ExtraTuple(temp_string, temp_dict)
+
+
+
+
 
 def create_regions(world: "SonicHeroesWorld"):
 
-    #menu
-    #menu_region = Region("Menu", world.player, world.multiworld, "This is Menu Region")
-    #world.multiworld.regions.append(menu_region)
     create_region(world, "Menu", [], "This is Menu Region")
-
-    """
-    final_region = Region("Metal Madness", world.player, world.multiworld, "This is Metal Madness Region")
-
-    for location in world.goal[0]:
-        for k, v in location.items():
-            loc = SonicHeroesLocation(world.player, k, v, final_region)
-
-    final_region.locations.append(loc)
-
-    world.multiworld.regions.append(final_region)
-    """
 
 
     #emerald stages
-    #print("world.emerald_locs is: " + str(world.emerald_locs))
     for i in range(7):
-
-        #print("world.emerald_locs index : " + str(world.emerald_locs[i]))
         create_region(world, f"Emerald {i + 1}", world.emerald_locs[i], f"Region for Emerald {i + 1}")
 
-    #story missions (not bosses)
-    for team_index in range(len(world.story_list)):
-        for location_number in range(18):
 
-            #print("Creating region: Team " + str(world.story_list[team_index]) + " Level " + str(location_number + 1))
-            #print("This region has locations: " + str(world.team_locs[team_index][location_number]))
+
+    #story missions (not bosses or extras)
+    for team_index in range(len(world.story_list)):
+        for location_number in range(14):
 
             create_region(world, f"Team {world.story_list[team_index]} Level {location_number + 1}",
-            #check team_locs here
              world.team_locs[team_index][location_number],
              f"Region for team {world.story_list[team_index]} Level {location_number + 1}")
 
-    #for region in world.multiworld.get_regions():
-        #for location in region.get_locations():
-
-            #print(f"This region has these locations: {location}")
-
-
-    #level gates here
+    #gates (including 0) here
     for i in range(world.options.number_level_gates.value + 1):
-        create_region(world, f"Gate {i}", [], f"Gate {i} Region") #gate_locs is a List of List of locations
+        create_region(world, f"Gate {i}", [], f"Gate {i} Region")
 
     #gate bosses here
     for i in range(world.options.number_level_gates.value):
         create_region(world, f"Gate Boss between Gate {i} and Gate {i + 1}",
-        world.gate_boss_locs[i], f"Region for Gate Boss {i}") #also a list of list of locations
+        boss_gate_locs[i], f"Region for Gate Boss {i}")
 
-        #print("Region Created: " + "Gate Boss between Gate " + str(i) + " and Gate " +
-        #str(i + 1) + " and locations in here is: " + str(world.gate_boss_locs[i]))
+        #extras/arena fights here
+        extra_tuple = get_extra_or_boss_locs(world, world.shuffleable_boss_list[i])
 
-
-
+        create_region(world, f"{extra_tuple.name}", [extra_tuple.loc_dict,], f"Region for {extra_tuple.name}")
 
     #final boss
-    #print("world.goal is: " + str(world.goal))
     create_region(world, "Metal Madness", world.goal[0], "This is Metal Madness Region")
 
 
 def connect_entrances(world: "SonicHeroesWorld"):
 
     names: Dict[str, int] = {}
-
-    connect(world, names, "Menu", "Gate 0")
 
     #0 is emblems and emeralds
     #1 is emblems
@@ -134,20 +161,18 @@ def connect_entrances(world: "SonicHeroesWorld"):
     if world.options.number_level_gates.value == 0:
 
         for team in world.story_list:
-            for location_number in range(18):
+            for location_number in range(14):
                 connect(world, names, "Gate 0", f"Team {team} Level {location_number + 1}")
-                #world.gate_locs[0].append(f"Team {team} Level {location_number + 1}")
 
                 if (location_number + 1 in world.emerald_mission_numbers):
                     connect(world, names, "Gate 0", f"Emerald {location_number + 1}")
-                    #world.gate_locs[0].append(f"Emerald {location_number + 1}")
 
     else:
 
-        number_of_missions_per_gate = math.floor((len(world.story_list) * 18) /
+        number_of_missions_per_gate = math.floor((len(world.story_list) * 14) /
         (world.options.number_level_gates.value + 1))
 
-        total_missions = 18 * len(world.story_list)
+        total_missions = 14 * len(world.story_list)
 
         extra_missions = total_missions % number_of_missions_per_gate
 
@@ -160,9 +185,6 @@ def connect_entrances(world: "SonicHeroesWorld"):
                 world.number_of_levels_in_gate[i] += 1
 
 
-
-
-
         placed_missions = 0
 
         for gate_i in range(world.options.number_level_gates.value + 1):
@@ -173,65 +195,44 @@ def connect_entrances(world: "SonicHeroesWorld"):
 
                 #gate 0
                 connect(world, names, f"Gate {gate_i}",
-                f"Team {world.story_list[math.floor(x / 18)]} Level {(x % 18) + 1}")
-
-                #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Team " + str(world.story_list[math.floor(x / 18)]) + " Level " + str((x % 18) + 1))
+                f"Team {world.story_list[math.floor(x / 14)]} Level {(x % 14) + 1}")
 
                 placed_missions += 1
 
-                if ((x % 18) + 1 in world.emerald_mission_numbers):
-                    connect(world, names, f"Gate {gate_i}", f"Emerald {int(((x % 18) + 1) / 2)}")
-
-                    #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Emerald " + str(int(((x % 18) + 1) / 2)))
+                if ((x % 14) + 1 in world.emerald_mission_numbers):
+                    connect(world, names, f"Gate {gate_i}", f"Emerald {int(((x % 14) + 1) / 2)}")
 
             if extra_missions > 0:
 
                 x = world.shuffleable_level_list[placed_missions]
-                #gate 0
-                connect(world, names, f"Gate {gate_i}", f"Team {world.story_list[math.floor(x / 18)]} Level {(x % 18) + 1}")
 
-                #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Team " + str(world.story_list[math.floor(x / 18)]) + " Level " + str((x % 18) + 1))
+                connect(world, names, f"Gate {gate_i}", f"Team {world.story_list[math.floor(x / 14)]} Level {(x % 14) + 1}")
 
                 placed_missions += 1
 
                 extra_missions -= 1
 
-                if ((x % 18) + 1 in world.emerald_mission_numbers):
-                    connect(world, names, f"Gate {gate_i}", f"Emerald {int(((x % 18) + 1) / 2)}")
-
-                    #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Emerald " + str(int(((x % 18) + 1) / 2)))
+                if ((x % 14) + 1 in world.emerald_mission_numbers):
+                    connect(world, names, f"Gate {gate_i}", f"Emerald {int(((x % 14) + 1) / 2)}")
 
             if gate_i == 0:
                 connect(world, names, "Menu", f"Gate {gate_i}")
 
             else:
 
-                #gate boss
-                #"Gate Boss between Gate " + str(i) + " and Gate " + str(i + 1)
-                #"Boss Gate Item " + str(i + 1)
-
                 #have to lambda capture here
                 connect(world, names, f"Gate {gate_i - 1}", f"Gate Boss between Gate {gate_i - 1} and Gate {gate_i}",
                 lambda state, gate_i_= gate_i: state.has("Emblem", world.player, world.gate_cost * gate_i_))
 
-                #connect(world, names, "Gate " + str(gate_i - 1), "Gate Boss between Gate " + str(gate_i - 1) +
-                #" and Gate " + str(gate_i))
 
+                extra_tuple = get_extra_or_boss_locs(world, world.shuffleable_boss_list[gate_i - 1])
 
-                #print(f"Connecting Region: Gate {gate_i - 1} to Region: Gate Boss between Gate {gate_i - 1} and Gate {gate_i} ::: And the rule is needed emblems: {world.gate_cost * gate_i}")
+                connect(world, names, f"Gate Boss between Gate {gate_i - 1} and Gate {gate_i}", f"{extra_tuple.name}")
 
-                #connect(world, names, "Gate Boss between Gate " + str(gate_i - 1) +
-                #" and Gate " + str(gate_i), "Gate " + str(gate_i), lambda state: state.has("Boss Gate Item " + str(gate_i), world.player))
-
-                #connect(world, names, "Menu", "Gate " + str(gate_i), lambda state: state.has("Boss Gate Item " + str(gate_i), world.player))
 
                 connect(world, names, "Menu", f"Gate {gate_i}",
                 lambda state, gate_i_=gate_i: state.has(f"Boss Gate Item {gate_i_}", world.player))
 
-
-                #print(f"Connecting Region: Menu to Region: Gate {gate_i} ::: And the rule is Boss Gate Item {gate_i}")
-
-                #print(f"This is gate_locs: {str(world.gate_locs)}")
 
 
 
@@ -261,10 +262,7 @@ def connect(
     source_region.exits.append(connection)
     connection.connect(target_region)
 
-    #print(f"Connection Region {source} to Region {target}")
-
-    if "Gate " in source:
-        world.gate_locs[int(source[-1:])].append(target)
+    world.spoiler_string += f"\nConnection Region {source} to Region {target}\n"
 
 
     return connection if reach else None

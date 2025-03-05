@@ -45,6 +45,27 @@ class RequiredEmblemsPercent(Range):
     default = 80
 
 
+class RequiredRank(Choice):
+    """
+    Determines what minimum Rank is required to send a check for a mission
+    """
+    display_name = "Required Rank"
+    option_e = 0
+    option_d = 1
+    option_c = 2
+    option_b = 3
+    option_a = 4
+    default = 0
+
+
+class AlwaysHaveBonusKey(Toggle):
+    """
+    The number emblem-locked gates which lock sets of levels. This is capped to 3 for only 1 story.
+    """
+    display_name = "Always Have Bonus Key for Emerald Stages"
+
+
+
 class NumberOfLevelGates(Range):
     """
     The number emblem-locked gates which lock sets of levels. This is capped to 3 for only 1 story.
@@ -97,11 +118,14 @@ class ModernRingLoss(Toggle):
     display_name = "Modern Ring Loss Enabled"
 
 
+
 sonic_heroes_option_groups = [
     OptionGroup("Goal Options", [
         Goal,
         GoalUnlockCondition,
         RequiredEmblemsPercent,
+        RequiredRank,
+        AlwaysHaveBonusKey
     ]),
     OptionGroup("Level Gates", [
         NumberOfLevelGates,
@@ -126,6 +150,8 @@ sonic_heroes_option_names_list = [
     "goal",
     "goal_unlock_condition",
     "required_emblems_percent",
+    "required_rank",
+    "always_have_bonus_key",
     "number_level_gates",
     "sonic_story",
     "dark_story",
@@ -138,20 +164,13 @@ sonic_heroes_option_names_list = [
 
 
 
-
-
-
-
-
-
-
-
-
 @dataclass
 class SonicHeroesOptions(PerGameCommonOptions):
     goal: Goal
     goal_unlock_condition: GoalUnlockCondition
     required_emblems_percent: RequiredEmblemsPercent
+    required_rank: RequiredRank
+    always_have_bonus_key: AlwaysHaveBonusKey
 
     number_level_gates: NumberOfLevelGates
 
