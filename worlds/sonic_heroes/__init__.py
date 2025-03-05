@@ -201,13 +201,7 @@ class SonicHeroesWorld(World):
 
 
 
-    def write_spoiler_header(self, spoiler_handle: TextIO):
-
-        for i in range(len(self.number_of_levels_in_gate)):
-           self.spoiler_string += f"\nThis is the numbers of levels in Gate {i}: {self.number_of_levels_in_gate[i]}\n"
-
-
-        self.spoiler_string += f"\nThis is the number of required emblems for the final boss: {self.required_emblems}\n"
+    #def write_spoiler_header(self, spoiler_handle: TextIO):
 
         #spoiler_handle.write(self.spoiler_string)
 
