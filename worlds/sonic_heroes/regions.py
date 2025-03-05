@@ -53,13 +53,13 @@ def create_regions(world: "SonicHeroesWorld"):
     for team_index in range(len(world.story_list)):
         for location_number in range(18):
 
-            #print("Creating region: Team " + str(world.story_list[team_index]) + " Mission " + str(location_number + 1))
+            #print("Creating region: Team " + str(world.story_list[team_index]) + " Level " + str(location_number + 1))
             #print("This region has locations: " + str(world.team_locs[team_index][location_number]))
 
-            create_region(world, f"Team {world.story_list[team_index]} Mission {location_number + 1}",
+            create_region(world, f"Team {world.story_list[team_index]} Level {location_number + 1}",
             #check team_locs here
              world.team_locs[team_index][location_number],
-             f"Region for team {world.story_list[team_index]} Mission {location_number + 1}")
+             f"Region for team {world.story_list[team_index]} Level {location_number + 1}")
 
     #for region in world.multiworld.get_regions():
         #for location in region.get_locations():
@@ -135,8 +135,8 @@ def connect_entrances(world: "SonicHeroesWorld"):
 
         for team in world.story_list:
             for location_number in range(18):
-                connect(world, names, "Gate 0", f"Team {team} Mission {location_number + 1}")
-                #world.gate_locs[0].append(f"Team {team} Mission {location_number + 1}")
+                connect(world, names, "Gate 0", f"Team {team} Level {location_number + 1}")
+                #world.gate_locs[0].append(f"Team {team} Level {location_number + 1}")
 
                 if (location_number + 1 in world.emerald_mission_numbers):
                     connect(world, names, "Gate 0", f"Emerald {location_number + 1}")
@@ -151,6 +151,18 @@ def connect_entrances(world: "SonicHeroesWorld"):
 
         extra_missions = total_missions % number_of_missions_per_gate
 
+
+        for i in range(world.options.number_level_gates + 1):
+
+            world.number_of_levels_in_gate.append(number_of_missions_per_gate)
+
+            if (extra_missions > i):
+                world.number_of_levels_in_gate[i] += 1
+
+
+
+
+
         placed_missions = 0
 
         for gate_i in range(world.options.number_level_gates.value + 1):
@@ -161,33 +173,33 @@ def connect_entrances(world: "SonicHeroesWorld"):
 
                 #gate 0
                 connect(world, names, f"Gate {gate_i}",
-                f"Team {world.story_list[math.floor((x - 1) / 18)]} Mission {((x - 1) % 18) + 1}")
+                f"Team {world.story_list[math.floor(x / 18)]} Level {(x % 18) + 1}")
 
-                #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Team " + str(world.story_list[math.floor((x - 1) / 18)]) + " Mission " + str(((x - 1) % 18) + 1))
+                #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Team " + str(world.story_list[math.floor(x / 18)]) + " Level " + str((x % 18) + 1))
 
                 placed_missions += 1
 
-                if (((x - 1) % 18) + 1 in world.emerald_mission_numbers):
-                    connect(world, names, f"Gate {gate_i}", f"Emerald {int((((x - 1) % 18) + 1) / 2)}")
+                if ((x % 18) + 1 in world.emerald_mission_numbers):
+                    connect(world, names, f"Gate {gate_i}", f"Emerald {int(((x % 18) + 1) / 2)}")
 
-                    #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Emerald " + str(int((((x - 1) % 18) + 1) / 2)))
+                    #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Emerald " + str(int(((x % 18) + 1) / 2)))
 
             if extra_missions > 0:
 
                 x = world.shuffleable_level_list[placed_missions]
                 #gate 0
-                connect(world, names, f"Gate {gate_i}", f"Team {world.story_list[math.floor((x - 1) / 18)]} Mission {((x - 1) % 18) + 1}")
+                connect(world, names, f"Gate {gate_i}", f"Team {world.story_list[math.floor(x / 18)]} Level {(x % 18) + 1}")
 
-                #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Team " + str(world.story_list[math.floor((x - 1) / 18)]) + " Mission " + str(((x - 1) % 18) + 1))
+                #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Team " + str(world.story_list[math.floor(x / 18)]) + " Level " + str((x % 18) + 1))
 
                 placed_missions += 1
 
                 extra_missions -= 1
 
-                if (((x - 1) % 18) + 1 in world.emerald_mission_numbers):
-                    connect(world, names, f"Gate {gate_i}", f"Emerald {int((((x - 1) % 18) + 1) / 2)}")
+                if ((x % 18) + 1 in world.emerald_mission_numbers):
+                    connect(world, names, f"Gate {gate_i}", f"Emerald {int(((x % 18) + 1) / 2)}")
 
-                    #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Emerald " + str(int((((x - 1) % 18) + 1) / 2)))
+                    #print("Connecting Region: " + "Gate " + str(gate_i) + " to Region: " + "Emerald " + str(int(((x % 18) + 1) / 2)))
 
             if gate_i == 0:
                 connect(world, names, "Menu", f"Gate {gate_i}")

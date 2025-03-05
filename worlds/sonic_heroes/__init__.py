@@ -1,6 +1,7 @@
 import typing
-from typing import ClassVar, Dict, List, Set
+from typing import ClassVar, Dict, List, Set, TextIO
 import math
+import dataclasses
 
 from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, Region
 from Options import OptionError
@@ -51,6 +52,8 @@ class SonicHeroesWorld(World):
 
         self.default_emblem_pool_size: int = 25 #for only one story
 
+        self.gate_emblem_costs = []
+
         self.shuffleable_level_list: List[int] = []
         self.shuffleable_boss_list: List[int] = []
 
@@ -69,6 +72,9 @@ class SonicHeroesWorld(World):
 
         self.team_locs = []
         self.boss_locs = []
+
+
+        self.number_of_levels_in_gate = []
 
         self.emerald_mission_numbers = [2, 4, 6, 8, 10, 12, 14]
 
@@ -129,12 +135,18 @@ class SonicHeroesWorld(World):
                 self.gate_cost = 1
 
 
+        for i in range(self.options.number_level_gates.value):
+            self.gate_emblem_costs.append((i + 1) * self.gate_cost)
+
+        self.gate_emblem_costs.append(self.required_emblems)
+
+
         for i in range(len(self.story_list)):
             for ii in range(18):
-                self.shuffleable_level_list.append(18 * i + ii + 1)
+                self.shuffleable_level_list.append(18 * i + ii)
 
             for ii in range(3):
-                self.shuffleable_boss_list.append(3 * i + ii + 1)
+                self.shuffleable_boss_list.append(3 * i + ii)
 
         #print("Shuffleable Level List here: " + str(self.shuffleable_level_list))
 
@@ -146,8 +158,8 @@ class SonicHeroesWorld(World):
 
         for i in range(self.options.number_level_gates.value):
 
-            self.gate_boss_locs.append(self.boss_locs[math.floor((self.shuffleable_boss_list[i] - 1) / 3)]
-            [((self.shuffleable_boss_list[i] - 1) % 3)])
+            self.gate_boss_locs.append(self.boss_locs[math.floor((self.shuffleable_boss_list[i]) / 3)]
+            [((self.shuffleable_boss_list[i]) % 3)])
             #format is 1 2 3 for first story bosses, 4 5 6 etc
         #print("self.gate_boss_locs here: " + str(self.gate_boss_locs))
 
@@ -207,23 +219,51 @@ class SonicHeroesWorld(World):
 
 
 
+    def write_spoiler_header(self, spoiler_handle: TextIO):
+
+
+        for i in range(len(self.gate_locs)):
+            spoiler_handle.write(f"\nHere is gate_locs index {i} \n")
+            for loc in self.gate_locs[i]:
+                spoiler_handle.write(f"{loc}\n")
+
+
+
+        for i in range(len(self.number_of_levels_in_gate)):
+            spoiler_handle.write(f"\nThis is the numbers of levels in Gate {i}: {self.number_of_levels_in_gate[i]}\n")
+
+
+
+        spoiler_handle.write(f"\nThis is the number of required emblems for the final boss: {self.required_emblems}\n")
+
+
+
 
 
 
     def fill_slot_data(self) -> id:
         return {
             "ModVersion": 100,
-            "Goal": self.options.goal.value,
-            "Goal Unlock Condition": self.options.goal_unlock_condition.value,
-            "Emblem Pool Size": self.default_emblem_pool_size,
-            "Required Emblems Percent": self.options.required_emblems_percent.value,
-            "Number of Level Gates": self.options.number_level_gates.value,
-            "Sonic Story": self.options.sonic_story.value,
-            "Dark Story": self.options.dark_story.value,
-            "Rose Story": self.options.rose_story.value,
-            "Chaotix Story": self.options.chaotix_story.value,
-            "Story List": self.story_list,
+
+            "OptionsDict": self.options.as_dict(*sonic_heroes_option_names_list),
+            #"Options": (attr.name for attr in dataclasses.fields(SonicHeroesOptions)
+            #            if attr not in dataclasses.fields(PerGameCommonOptions)),
+
+            #"Goal": self.options.goal.value,
+            #"Goal Unlock Condition": self.options.goal_unlock_condition.value,
+            #"Required Emblems Percent": self.options.required_emblems_percent.value,
+            #"Number of Level Gates": self.options.number_level_gates.value,
+            #"Sonic Story": self.options.sonic_story.value,
+            #"Dark Story": self.options.dark_story.value,
+            #"Rose Story": self.options.rose_story.value,
+            #"Chaotix Story": self.options.chaotix_story.value,
+            #"Emblem Pool Size": self.default_emblem_pool_size,
+            "Gate Emblem Costs": self.gate_emblem_costs,
+            "Required Emblems for Goal": self.required_emblems,
+            #"Story List": self.story_list,
             "Shuffleable Levels": self.shuffleable_level_list,
-            "Gate Locs": self.gate_locs,
-            "Gate Boss Locs":self.gate_boss_locs,
+            "Shuffleable Bosses": self.shuffleable_boss_list,
+            "Number of Levels per Gate": self.number_of_levels_in_gate,
+            #"Gate Locs": self.gate_locs,
+            #"Gate Boss Locs":self.gate_boss_locs,
         }

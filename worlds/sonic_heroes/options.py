@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Choice, Range, Toggle, DefaultOnToggle, OptionGroup, PerGameCommonOptions
+from Options import Choice, Range, Toggle, DefaultOnToggle, OptionGroup, PerGameCommonOptions, DeathLink
 
 
 class Goal(Choice):
@@ -83,6 +83,20 @@ class ChaotixStory(Toggle):
     display_name = "Chaotix Story Enabled"
 
 
+class RingLink(Toggle):
+    """
+    Ring Link
+    """
+    display_name = "Ring Link Enabled"
+
+
+class ModernRingLoss(Toggle):
+    """
+    Only lose up to 20 Rings when hit instead of all
+    """
+    display_name = "Modern Ring Loss Enabled"
+
+
 sonic_heroes_option_groups = [
     OptionGroup("Goal Options", [
         Goal,
@@ -97,8 +111,36 @@ sonic_heroes_option_groups = [
         DarkStory,
         RoseStory,
         ChaotixStory,
-    ])
+    ]),
+    OptionGroup("Ring Options", [
+        RingLink,
+        ModernRingLoss,
+    ]),
+    OptionGroup("DeathLink", [
+        DeathLink
+    ]),
 ]
+
+
+sonic_heroes_option_names_list = [
+    "goal",
+    "goal_unlock_condition",
+    "required_emblems_percent",
+    "number_level_gates",
+    "sonic_story",
+    "dark_story",
+    "rose_story",
+    "chaotix_story",
+    "ring_link",
+    "modern_ring_loss",
+    "death_link"
+]
+
+
+
+
+
+
 
 
 
@@ -117,3 +159,8 @@ class SonicHeroesOptions(PerGameCommonOptions):
     dark_story: DarkStory
     rose_story: RoseStory
     chaotix_story: ChaotixStory
+
+    ring_link: RingLink
+    modern_ring_loss: ModernRingLoss
+
+    death_link: DeathLink
