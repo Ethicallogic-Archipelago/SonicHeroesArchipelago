@@ -5,8 +5,7 @@ from BaseClasses import Region, Entrance
 from .locations import *
 
 
-
-def create_region(world: "SonicHeroesWorld", name: str, locations: List[Dict[str, int]], hint: Optional[str] = None):
+def create_region(world, name: str, locations: List[Dict[str, int]], hint: Optional[str] = None):
     temp_string = ""
     ret = Region(name, world.player, world.multiworld, hint)
     for location in locations:
@@ -24,7 +23,7 @@ def create_region(world: "SonicHeroesWorld", name: str, locations: List[Dict[str
 
 
 
-def get_extra_or_boss_locs(world: "SonicHeroesWorld", id: int) -> ExtraTuple[str, Dict[str, int]]:
+def get_extra_or_boss_locs(world, id: int) -> ExtraTuple[str, Dict[str, int]]:
     temp_string = ""
     temp_dict = {}
 
@@ -79,10 +78,9 @@ def get_extra_or_boss_locs(world: "SonicHeroesWorld", id: int) -> ExtraTuple[str
 
 
 
-def create_regions(world: "SonicHeroesWorld"):
+def create_regions(world):
 
     create_region(world, "Menu", [], "This is Menu Region")
-
 
     #emerald stages
     for i in range(7):
@@ -116,7 +114,7 @@ def create_regions(world: "SonicHeroesWorld"):
     create_region(world, "Metal Overlord", world.goal[0], "This is Metal Overlord Region")
 
 
-def connect_entrances(world: "SonicHeroesWorld"):
+def connect_entrances(world):
 
     names: Dict[str, int] = {}
 
@@ -128,14 +126,12 @@ def connect_entrances(world: "SonicHeroesWorld"):
             world.gate_locs.append([])
 
     if (world.options.goal_unlock_condition.value == 1):
-
-        connect(world, names, "Menu", "Metal Overlord", lambda state:
+        connect(world, "Menu", "Metal Overlord", lambda state:
         state.has("Emblem", world.player, world.required_emblems),
         rule_to_str=f"Emblems Required: {world.required_emblems}")
 
     elif (world.options.goal_unlock_condition.value == 2):
-
-        connect(world, names, "Menu", "Metal Overlord", lambda state:
+        connect(world, "Menu", "Metal Overlord", lambda state:
             state.has("Green Chaos Emerald", world.player) and
             state.has("Blue Chaos Emerald", world.player) and
             state.has("Yellow Chaos Emerald", world.player) and
@@ -146,9 +142,7 @@ def connect_entrances(world: "SonicHeroesWorld"):
             rule_to_str=f"All 7 Chaos Emeralds Required")
 
     elif (world.options.goal_unlock_condition.value == 0):
-
-
-        connect(world, names, "Menu", "Metal Overlord", lambda state:
+        connect(world, "Menu", "Metal Overlord", lambda state:
             state.has("Emblem", world.player, world.required_emblems) and
             state.has("Green Chaos Emerald", world.player) and
             state.has("Blue Chaos Emerald", world.player) and
@@ -159,91 +153,56 @@ def connect_entrances(world: "SonicHeroesWorld"):
             state.has("Red Chaos Emerald", world.player),
             rule_to_str=f"Emblems Required: {world.required_emblems} AND all 7 Chaos Emeralds")
 
-
     #here is levels
     if world.options.number_level_gates.value == 0:
-
         for team in world.story_list:
             for location_number in range(14):
-                connect(world, names, "Gate 0", f"Team {team} Level {location_number + 1}")
-
+                connect(world, "Gate 0", f"Team {team} Level {location_number + 1}")
                 if (location_number + 1 in world.emerald_mission_numbers):
-                    connect(world, names, "Gate 0", f"Emerald {location_number + 1}")
-
+                    connect(world, "Gate 0", f"Emerald {location_number + 1}")
     else:
+        level_groups = world.options.number_level_gates + 1
+        levels_per_gate = math.floor((len(world.story_list) * 14) / level_groups)
+        total_levels = 14 * len(world.story_list)
+        extra_levels = total_levels % level_groups
 
-        number_of_missions_per_gate = math.floor((len(world.story_list) * 14) /
-        (world.options.number_level_gates.value + 1))
+        #print(f'levels per gate: {levels_per_gate}')
+        #print(f'total_levels: {total_levels}')
+        #print(f'extra_levels: {extra_levels}')
 
-        total_missions = 14 * len(world.story_list)
-
-        extra_missions = total_missions % number_of_missions_per_gate
-
-
-        for i in range(world.options.number_level_gates + 1):
-
-            world.number_of_levels_in_gate.append(number_of_missions_per_gate)
-
-            if (extra_missions > i):
+        for i in range(level_groups):
+            world.number_of_levels_in_gate.append(levels_per_gate)
+            if (extra_levels > i):
                 world.number_of_levels_in_gate[i] += 1
 
+        level_iterator = 0
 
-        placed_missions = 0
-
-        for gate_i in range(world.options.number_level_gates.value + 1):
-
-            for mission_ii in range(number_of_missions_per_gate):
-
-                x = world.shuffleable_level_list[placed_missions]
-
-                #gate 0
-                connect(world, names, f"Gate {gate_i}",
-                f"Team {world.story_list[math.floor(x / 14)]} Level {(x % 14) + 1}")
-
-                placed_missions += 1
-
-                if ((x % 14) + 1 in world.emerald_mission_numbers):
-                    connect(world, names, f"Gate {gate_i}", f"Emerald {int(((x % 14) + 1) / 2)}")
-
-            if extra_missions > 0:
-
-                x = world.shuffleable_level_list[placed_missions]
-
-                connect(world, names, f"Gate {gate_i}", f"Team {world.story_list[math.floor(x / 14)]} Level {(x % 14) + 1}")
-
-                placed_missions += 1
-
-                extra_missions -= 1
-
-                if ((x % 14) + 1 in world.emerald_mission_numbers):
-                    connect(world, names, f"Gate {gate_i}", f"Emerald {int(((x % 14) + 1) / 2)}")
-
-            if gate_i == 0:
-                connect(world, names, "Menu", f"Gate {gate_i}")
-
+        for gate in range(level_groups):
+            for level in range(world.number_of_levels_in_gate[gate]):
+                level_id = world.shuffleable_level_list[level_iterator]
+                team = world.story_list[math.floor(level_id / 14)]
+                story_level_id = (level_id % 14) + 1
+                connect(world, f"Gate {gate}", f"Team {team} Level {story_level_id}")
+                if (story_level_id in world.emerald_mission_numbers):
+                    connect(world, f"Gate {gate}", f"Emerald {int(story_level_id / 2)}")
+                level_iterator += 1
+            if gate == 0:
+                connect(world, "Menu", f"Gate {gate}")
             else:
-
-                #have to lambda capture here
-                connect(world, names, f"Gate {gate_i - 1}", f"Gate Boss between Gate {gate_i - 1} and Gate {gate_i}",
-                lambda state, gate_i_= gate_i: state.has("Emblem", world.player, world.gate_cost * gate_i_),
-                rule_to_str=f"Emblems Required: {world.gate_cost * gate_i}")
-
-
-                extra_tuple = get_extra_or_boss_locs(world, world.shuffleable_boss_list[gate_i - 1])
-
-                connect(world, names, f"Gate Boss between Gate {gate_i - 1} and Gate {gate_i}", f"{extra_tuple.name}")
-
-
-                connect(world, names, f"Gate {gate_i - 1}", f"Gate {gate_i}",
-                lambda state, gate_i_=gate_i: state.has(f"Boss Gate Item {gate_i_}", world.player),
-                rule_to_str=f"Boss Gate Item {gate_i} Required")
+                connect(world, f"Gate {gate - 1}", f"Gate Boss between Gate {gate - 1} and Gate {gate}",
+                lambda state, gate_i_= gate: state.has("Emblem", world.player, world.gate_cost * gate_i_),
+                rule_to_str=f"Emblems Required: {world.gate_cost * gate}")
+                extra_tuple = get_extra_or_boss_locs(world, world.shuffleable_boss_list[gate - 1])
+                connect(world, f"Gate Boss between Gate {gate - 1} and Gate {gate}", f"{extra_tuple.name}")
+                connect(world, f"Gate {gate - 1}", f"Gate {gate}",
+                lambda state, gate_i_=gate: state.has(f"Boss Gate Item {gate_i_}", world.player),
+                rule_to_str=f"Boss Gate Item {gate} Required")
 
 
 
 
 def connect(
-    world: "SonicHeroesWorld",
-    used_names: Dict[str, int],
+    world,
     source: str,
     target: str,
     rule: Optional[Callable] = None,
@@ -253,14 +212,7 @@ def connect(
     source_region = world.multiworld.get_region(source, world.player)
     target_region = world.multiworld.get_region(target, world.player)
 
-    if target not in used_names:
-        used_names[target] = 1
-        name = target
-    else:
-        used_names[target] += 1
-        name = target + (" " * used_names[target])
-
-    connection = Entrance(world.player, name, source_region)
+    connection = Entrance(world.player, target, source_region)
 
     if rule:
         connection.access_rule = rule
