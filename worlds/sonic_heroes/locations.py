@@ -414,7 +414,7 @@ egg_emperor_locs = [
 
 goal_loc = [
     [
-        {"Metal Madness": None},
+        {"Metal Overlord": None},
     ],
 ]
 

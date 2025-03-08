@@ -7,10 +7,10 @@ class Goal(Choice):
     """
     Determines the goal of the seed
 
-    Metal Madness: Beat Metal Madness
+    Metal Overlord: Beat Metal Overlord
     """
     display_name = "Goal"
-    option_metal_madness = 0
+    option_metal_overlord = 0
     default = 0
 
 
@@ -29,6 +29,16 @@ class GoalUnlockCondition(Choice):
     option_emblems_only = 1
     option_emeralds_only = 2
     default = 0
+
+
+
+
+class SkipMetalMadness(DefaultOnToggle):
+    """
+    Skips Metal Madness when selecting it from level select and goes directly to Metal Overlord (final boss)
+    """
+    display_name = "Skip Metal Madness"
+
 
 
 class RequiredEmblemsPercent(Range):
@@ -123,6 +133,7 @@ sonic_heroes_option_groups = [
     OptionGroup("Goal Options", [
         Goal,
         GoalUnlockCondition,
+        SkipMetalMadness,
         RequiredEmblemsPercent,
         RequiredRank,
         AlwaysHaveBonusKey
@@ -149,6 +160,7 @@ sonic_heroes_option_groups = [
 sonic_heroes_option_names_list = [
     "goal",
     "goal_unlock_condition",
+    "skip_metal_madness",
     "required_emblems_percent",
     "required_rank",
     "always_have_bonus_key",
@@ -168,6 +180,7 @@ sonic_heroes_option_names_list = [
 class SonicHeroesOptions(PerGameCommonOptions):
     goal: Goal
     goal_unlock_condition: GoalUnlockCondition
+    skip_metal_madness: SkipMetalMadness
     required_emblems_percent: RequiredEmblemsPercent
     required_rank: RequiredRank
     always_have_bonus_key: AlwaysHaveBonusKey

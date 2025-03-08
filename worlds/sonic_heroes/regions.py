@@ -20,7 +20,7 @@ def create_region(world: "SonicHeroesWorld", name: str, locations: List[Dict[str
 
     world.multiworld.regions.append(ret)
 
-    world.spoiler_string += f"\nCreating Region with name: {name} and locations: {temp_string}\n"
+    #world.spoiler_string += f"\nCreating Region with name: {name} and locations: {temp_string}\n"
 
 
 
@@ -113,7 +113,7 @@ def create_regions(world: "SonicHeroesWorld"):
         create_region(world, f"{extra_tuple.name}", [extra_tuple.loc_dict,], f"Region for {extra_tuple.name}")
 
     #final boss
-    create_region(world, "Metal Madness", world.goal[0], "This is Metal Madness Region")
+    create_region(world, "Metal Overlord", world.goal[0], "This is Metal Overlord Region")
 
 
 def connect_entrances(world: "SonicHeroesWorld"):
@@ -129,24 +129,26 @@ def connect_entrances(world: "SonicHeroesWorld"):
 
     if (world.options.goal_unlock_condition.value == 1):
 
-        connect(world, names, "Menu", "Metal Madness", lambda state:
-        state.has("Emblem", world.player, world.required_emblems))
+        connect(world, names, "Menu", "Metal Overlord", lambda state:
+        state.has("Emblem", world.player, world.required_emblems),
+        rule_to_str=f"Emblems Required: {world.required_emblems}")
 
     elif (world.options.goal_unlock_condition.value == 2):
 
-        connect(world, names, "Menu", "Metal Madness", lambda state:
+        connect(world, names, "Menu", "Metal Overlord", lambda state:
             state.has("Green Chaos Emerald", world.player) and
             state.has("Blue Chaos Emerald", world.player) and
             state.has("Yellow Chaos Emerald", world.player) and
             state.has("White Chaos Emerald", world.player) and
             state.has("Cyan Chaos Emerald", world.player) and
             state.has("Purple Chaos Emerald", world.player) and
-            state.has("Red Chaos Emerald", world.player))
+            state.has("Red Chaos Emerald", world.player),
+            rule_to_str=f"All 7 Chaos Emeralds Required")
 
     elif (world.options.goal_unlock_condition.value == 0):
 
 
-        connect(world, names, "Menu", "Metal Madness", lambda state:
+        connect(world, names, "Menu", "Metal Overlord", lambda state:
             state.has("Emblem", world.player, world.required_emblems) and
             state.has("Green Chaos Emerald", world.player) and
             state.has("Blue Chaos Emerald", world.player) and
@@ -154,7 +156,8 @@ def connect_entrances(world: "SonicHeroesWorld"):
             state.has("White Chaos Emerald", world.player) and
             state.has("Cyan Chaos Emerald", world.player) and
             state.has("Purple Chaos Emerald", world.player) and
-            state.has("Red Chaos Emerald", world.player))
+            state.has("Red Chaos Emerald", world.player),
+            rule_to_str=f"Emblems Required: {world.required_emblems} AND all 7 Chaos Emeralds")
 
 
     #here is levels
@@ -222,7 +225,8 @@ def connect_entrances(world: "SonicHeroesWorld"):
 
                 #have to lambda capture here
                 connect(world, names, f"Gate {gate_i - 1}", f"Gate Boss between Gate {gate_i - 1} and Gate {gate_i}",
-                lambda state, gate_i_= gate_i: state.has("Emblem", world.player, world.gate_cost * gate_i_))
+                lambda state, gate_i_= gate_i: state.has("Emblem", world.player, world.gate_cost * gate_i_),
+                rule_to_str=f"Emblems Required: {world.gate_cost * gate_i}")
 
 
                 extra_tuple = get_extra_or_boss_locs(world, world.shuffleable_boss_list[gate_i - 1])
@@ -230,8 +234,9 @@ def connect_entrances(world: "SonicHeroesWorld"):
                 connect(world, names, f"Gate Boss between Gate {gate_i - 1} and Gate {gate_i}", f"{extra_tuple.name}")
 
 
-                connect(world, names, "Menu", f"Gate {gate_i}",
-                lambda state, gate_i_=gate_i: state.has(f"Boss Gate Item {gate_i_}", world.player))
+                connect(world, names, f"Gate {gate_i - 1}", f"Gate {gate_i}",
+                lambda state, gate_i_=gate_i: state.has(f"Boss Gate Item {gate_i_}", world.player),
+                rule_to_str=f"Boss Gate Item {gate_i} Required")
 
 
 
@@ -243,6 +248,7 @@ def connect(
     target: str,
     rule: Optional[Callable] = None,
     reach: Optional[bool] = False,
+    rule_to_str: Optional[str] = None,
 ) -> Optional[Entrance]:
     source_region = world.multiworld.get_region(source, world.player)
     target_region = world.multiworld.get_region(target, world.player)
@@ -262,8 +268,7 @@ def connect(
     source_region.exits.append(connection)
     connection.connect(target_region)
 
-    world.spoiler_string += f"\nConnection Region {source} to Region {target}\n"
-
+    world.spoiler_string += f"\nConnecting Region {source} to Region {target} with rule: {rule_to_str}\n"
 
     return connection if reach else None
 

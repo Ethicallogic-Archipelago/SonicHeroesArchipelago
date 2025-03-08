@@ -157,7 +157,7 @@ class SonicHeroesWorld(World):
 
         victory_item = SonicHeroesItem("Victory", ItemClassification.progression, None, self.player)
 
-        self.get_location("Metal Madness").place_locked_item(victory_item)
+        self.get_location("Metal Overlord").place_locked_item(victory_item)
 
         #boss_gate_locked_items = []
 
@@ -201,9 +201,13 @@ class SonicHeroesWorld(World):
 
 
 
-    #def write_spoiler_header(self, spoiler_handle: TextIO):
+    def write_spoiler_header(self, spoiler_handle: TextIO):
 
-        #spoiler_handle.write(self.spoiler_string)
+        self.spoiler_string += f"\nGate Costs is: {str(self.gate_emblem_costs)}\n"
+
+
+
+        spoiler_handle.write(self.spoiler_string)
 
 
 
