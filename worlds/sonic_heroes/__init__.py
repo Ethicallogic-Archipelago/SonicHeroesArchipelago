@@ -1,4 +1,5 @@
 import typing
+import string
 from typing import ClassVar, Dict, List, Set, TextIO
 import math
 import dataclasses
@@ -73,7 +74,7 @@ class SonicHeroesWorld(World):
         self.team_locs = []
 
 
-        self.number_of_levels_in_gate = []
+        self.gate_level_counts = []
 
         self.emerald_mission_numbers = [2, 4, 6, 8, 10, 12, 14]
 
@@ -205,19 +206,53 @@ class SonicHeroesWorld(World):
 
         self.spoiler_string += f"\nGate Costs is: {str(self.gate_emblem_costs)}\n"
 
-
-
         spoiler_handle.write(self.spoiler_string)
 
 
 
     def fill_slot_data(self) -> id:
+        #s2-s15 sonic (Inclusive)
+        #d2-d15 dark
+        #r2-r15 rose
+        #c2-c15 chaotix
+        #b16-b22 bosses 23 is Madness
+        templist = []
+        for number in self.shuffleable_level_list:
+            story = self.story_list[math.floor(number / 14)]
+            templist.append(f'{story[:1].upper()}{(number % 14) + 2}')
+
+        self.shuffleable_level_list = templist
+
+        templist = []
+        for number in self.shuffleable_boss_list:
+            templist.append(f'B{number + 16}')
+
+        self.shuffleable_boss_list = templist
+
+        self.shuffleable_boss_list[self.options.number_level_gates] = "B23"
+
+        #Truncate here to remove unneeded values
+        self.shuffleable_boss_list = self.shuffleable_boss_list[0:self.options.number_level_gates + 1]
+
         return {
             "ModVersion": 100,
-            "OptionsDict": self.options.as_dict(*sonic_heroes_option_names_list),
-            "Gate Emblem Costs": self.gate_emblem_costs,
-            "Required Emblems for Goal": self.required_emblems,
-            "Shuffleable Levels": self.shuffleable_level_list,
-            "Shuffleable Bosses": self.shuffleable_boss_list,
-            "Number of Levels per Gate": self.number_of_levels_in_gate,
+            #"OptionsDict": self.options.as_dict(*sonic_heroes_option_names_list),
+
+            "Goal": self.options.goal,
+            "GoalUnlockCondition": self.options.goal_unlock_condition,
+            "SkipMetalMadness": self.options.skip_metal_madness,
+            "RequiredRank": self.options.required_rank,
+            "AlwaysHaveBonusKey": self.options.always_have_bonus_key,
+            "SonicStory": self.options.sonic_story,
+            "DarkStory": self.options.dark_story,
+            "RoseStory": self.options.rose_story,
+            "ChaotixStory": self.options.chaotix_story,
+            "RingLink": self.options.ring_link,
+            "ModernRingLoss": self.options.modern_ring_loss,
+            "DeathLink": self.options.death_link,
+
+            "GateEmblemCosts": self.gate_emblem_costs,
+            "ShuffledLevels": self.shuffleable_level_list,
+            "ShuffledBosses": self.shuffleable_boss_list,
+            "GateLevelCounts": self.gate_level_counts,
         }
