@@ -171,20 +171,22 @@ def connect_entrances(world):
         #print(f'extra_levels: {extra_levels}')
 
         for i in range(level_groups):
-            world.number_of_levels_in_gate.append(levels_per_gate)
+            world.gate_level_counts.append(levels_per_gate)
             if (extra_levels > i):
-                world.number_of_levels_in_gate[i] += 1
+                world.gate_level_counts[i] += 1
 
         level_iterator = 0
 
         for gate in range(level_groups):
-            for level in range(world.number_of_levels_in_gate[gate]):
+            for level in range(world.gate_level_counts[gate]):
                 level_id = world.shuffleable_level_list[level_iterator]
                 team = world.story_list[math.floor(level_id / 14)]
                 story_level_id = (level_id % 14) + 1
                 connect(world, f"Gate {gate}", f"Team {team} Level {story_level_id}")
                 if (story_level_id in world.emerald_mission_numbers):
-                    connect(world, f"Gate {gate}", f"Emerald {int(story_level_id / 2)}")
+                    if int(story_level_id / 2) not in world.placed_emeralds:
+                        connect(world, f"Gate {gate}", f"Emerald {int(story_level_id / 2)}")
+                        world.placed_emeralds.append(int(story_level_id / 2))
                 level_iterator += 1
             if gate == 0:
                 connect(world, "Menu", f"Gate {gate}")

@@ -76,6 +76,8 @@ class SonicHeroesWorld(World):
 
         self.gate_level_counts = []
 
+        self.placed_emeralds = []
+
         self.emerald_mission_numbers = [2, 4, 6, 8, 10, 12, 14]
 
         self.spoiler_string = ""
