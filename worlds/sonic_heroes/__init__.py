@@ -231,10 +231,10 @@ class SonicHeroesWorld(World):
 
         self.shuffleable_boss_list = templist
 
-        self.shuffleable_boss_list[self.options.number_level_gates] = "B23"
+        self.shuffleable_boss_list[self.options.number_level_gates.value] = "B23"
 
         #Truncate here to remove unneeded values
-        self.shuffleable_boss_list = self.shuffleable_boss_list[0:self.options.number_level_gates + 1]
+        self.shuffleable_boss_list = self.shuffleable_boss_list[0:self.options.number_level_gates.value + 1]
 
         return {
             "ModVersion": 100,

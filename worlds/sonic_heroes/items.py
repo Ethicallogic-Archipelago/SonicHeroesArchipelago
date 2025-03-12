@@ -70,8 +70,12 @@ def get_junk_item_names(rand, k: int) -> str:
     return junk
 
 junk_weights = {
-    "Extra Life": 65,
-    "20 Rings": 35
+    "Extra Life": 15,
+    "5 Rings": 10,
+    "10 Rings": 15,
+    "20 Rings": 10,
+    "Shield": 20,
+    "Invincibility": 5,
 }
 
 itemList: List[ItemData] = [
@@ -84,11 +88,13 @@ itemList: List[ItemData] = [
     ItemData(0x93930006, "Purple Chaos Emerald", ItemClassification.progression),
     ItemData(0x93930007, "Red Chaos Emerald", ItemClassification.progression),
     ItemData(0x93930008, "Extra Life", ItemClassification.filler),
-    ItemData(0x93930009, "20 Rings", ItemClassification.filler),
-    ItemData(0x9393000A, "Shield", ItemClassification.filler),
-    ItemData(0x9393000B, "Team Level Up", ItemClassification.filler),
-    ItemData(0x9393000C, "Bonus Stage Key", ItemClassification.filler),
-
+    ItemData(0x93930009, "5 Rings", ItemClassification.filler),
+    ItemData(0x9393000A, "10 Rings", ItemClassification.filler),
+    ItemData(0x9393000B, "20 Rings", ItemClassification.filler),
+    ItemData(0x9393000C, "Shield", ItemClassification.filler),
+    ItemData(0x9393000D, "Invincibility", ItemClassification.filler),
+    #ItemData(0x9393000E, "Team Level Up", ItemClassification.filler),
+    #ItemData(0x9393000F, "Bonus Stage Key", ItemClassification.filler),
 ]
 
 
