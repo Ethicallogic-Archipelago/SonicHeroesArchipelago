@@ -199,7 +199,7 @@ class SonicHeroesWorld(World):
         #d2-d15 dark
         #r2-r15 rose
         #c2-c15 chaotix
-        #b16-b22 bosses 23 is Madness
+        #b16-b22 bosses 23 is Madness 24 is Overlord
         templist = []
         for number in self.shuffleable_level_list:
             story = self.story_list[math.floor(number / 14)]
@@ -213,7 +213,7 @@ class SonicHeroesWorld(World):
 
         self.shuffleable_boss_list = templist
 
-        self.shuffleable_boss_list[self.options.number_level_gates.value] = "B23"
+        self.shuffleable_boss_list[self.options.number_level_gates.value] = "B24"
 
         #Truncate here to remove unneeded values
         self.shuffleable_boss_list = self.shuffleable_boss_list[0:self.options.number_level_gates.value + 1]
