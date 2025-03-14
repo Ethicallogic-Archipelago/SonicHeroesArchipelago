@@ -14,31 +14,19 @@ class ItemData(NamedTuple):
     classification: ItemClassification
 
 def create_item(world: "SonicHeroesWorld", name: str, classification: ItemClassification, amount: Optional[int] = 1):
-
     for i in range(amount):
         world.multiworld.itempool.append(Item(name, classification, item_name_to_id[name], world.player))
 
 
 def create_items(world: "SonicHeroesWorld"):
 
-    total_location_count = len(world.story_list) * (28 + world.options.number_level_gates) + 7
-
+    total_location_count = len(world.multiworld.get_unfilled_locations(world.player))
 
     useful_emblems = world.default_emblem_pool_size * len(world.story_list) - world.required_emblems
 
-    placed_items = 0
-
-
     #Emblems:
     create_item(world, "Emblem", ItemClassification.progression, world.required_emblems)
-
-    placed_items += world.required_emblems
-
-
     create_item(world, "Emblem", ItemClassification.useful, useful_emblems)
-
-    placed_items += useful_emblems
-
 
     #Emeralds:
     create_item(world, "Green Chaos Emerald", ItemClassification.progression)
@@ -49,14 +37,12 @@ def create_items(world: "SonicHeroesWorld"):
     create_item(world, "Purple Chaos Emerald", ItemClassification.progression)
     create_item(world, "Red Chaos Emerald", ItemClassification.progression)
 
-    placed_items += 7
-
-
     #Fillers:
 
-    leftover_items = total_location_count - placed_items
+    remaining_locations = total_location_count - (world.default_emblem_pool_size * len(world.story_list) + 7)
 
-    junk = get_junk_item_names(world.random, leftover_items)
+    #print(f"Remaining items here: {remaining_locations}")
+    junk = get_junk_item_names(world.multiworld.random, remaining_locations)
 
     for name in junk:
         create_item(world, name, ItemClassification.filler)
@@ -72,9 +58,9 @@ def get_junk_item_names(rand, k: int) -> str:
 junk_weights = {
     "Extra Life": 15,
     "5 Rings": 10,
-    "10 Rings": 15,
+    "10 Rings": 20,
     "20 Rings": 10,
-    "Shield": 20,
+    "Shield": 15,
     "Invincibility": 5,
 }
 
@@ -99,7 +85,3 @@ itemList: List[ItemData] = [
 
 
 item_name_to_id: Dict[str, int] = {item.itemName: item.code for item in itemList}
-
-
-
-

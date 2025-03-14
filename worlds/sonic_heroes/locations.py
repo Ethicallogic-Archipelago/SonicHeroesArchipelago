@@ -1,3 +1,4 @@
+from typing import Dict
 from collections import namedtuple
 from BaseClasses import Location
 
@@ -6,474 +7,326 @@ from BaseClasses import Location
 class SonicHeroesLocation(Location):
     game: str = "Sonic Heroes"
 
-
 #use this in regions for Extras/TeamFights
 ExtraTuple = namedtuple('ExtraTuple', ['name', 'loc_dict'])
 
+#this is for location data
+LocData = namedtuple('LocData', ['code', 'region'])
 
-sonic_mission_locs = [
+sonic_heroes_level_names: Dict[int, str] = {
+    1: "Seaside Hill",
+    2: "Ocean Palace",
+    3: "Grand Metropolis",
+    4: "Power Plant",
+    5: "Casino Park",
+    6: "Bingo Highway",
+    7: "Rail Canyon",
+    8: "Bullet Station",
+    9: "Frog Forest",
+    10: "Lost Jungle",
+    11: "Hang Castle",
+    12: "Mystic Mansion",
+    13: "Egg Fleet",
+    14: "Final Fortress"
+}
 
-    [
-        {"Seaside Hill Sonic 1": 0x939300A0},
-        {"Seaside Hill Sonic 2": 0x939300A1},
-    ],
-    [
-        {"Ocean Palace Sonic 1": 0x939300A2},
-        {"Ocean Palace Sonic 2": 0x939300A3},
-    ],
-    [
-        {"Grand Metropolis Sonic 1": 0x939300A4},
-        {"Grand Metropolis Sonic 2": 0x939300A5},
-    ],
-    [
-        {"Power Plant Sonic 1": 0x939300A6},
-        {"Power Plant Sonic 2": 0x939300A7},
-    ],
-    [
-        {"Casino Park Sonic 1": 0x939300A8},
-        {"Casino Park Sonic 2": 0x939300A9},
-    ],
-    [
-        {"Bingo Highway Sonic 1": 0x939300AA},
-        {"Bingo Highway Sonic 2": 0x939300AB},
-    ],
-    [
-        {"Rail Canyon Sonic 1": 0x939300AC},
-        {"Rail Canyon Sonic 2": 0x939300AD},
-    ],
-    [
-        {"Bullet Station Sonic 1": 0x939300AE},
-        {"Bullet Station Sonic 2": 0x939300AF},
-    ],
-    [
-        {"Frog Forest Sonic 1": 0x939300B0},
-        {"Frog Forest Sonic 2": 0x939300B1},
-    ],
-    [
-        {"Lost Jungle Sonic 1": 0x939300B2},
-        {"Lost Jungle Sonic 2": 0x939300B3},
-    ],
-    [
-        {"Hang Castle Sonic 1": 0x939300B4},
-        {"Hang Castle Sonic 2": 0x939300B5},
-    ],
-    [
-        {"Mystic Mansion Sonic 1": 0x939300B6},
-        {"Mystic Mansion Sonic 2": 0x939300B7},
-    ],
-    [
-        {"Egg Fleet Sonic 1": 0x939300B8},
-        {"Egg Fleet Sonic 2": 0x939300B9},
-    ],
-    [
-        {"Final Fortress Sonic 1": 0x939300BA},
-        {"Final Fortress Sonic 2": 0x939300BB},
-    ],
-]
+sonic_heroes_extra_names: Dict[int, str] = {
+    0: "Egg Hawk",
+    1: "Team Fight 1",
+    2: "Robot Carnival",
+    3: "Egg Albatross",
+    4: "Team Fight 2",
+    5: "Robot Storm",
+    6: "Egg Emperor"
+}
+
+sonic_heroes_story_names: Dict[int, str] = {
+    0: "Sonic",
+    1: "Dark",
+    2: "Rose",
+    3: "Chaotix"
+}
+
+location_dict = {}
 
 
-dark_mission_locs = [
+def generate_locations(world):
 
-    [
-        {"Seaside Hill Dark 1": 0x939300CA},
-        {"Seaside Hill Dark 2": 0x939300CB},
-    ],
-    [
-        {"Ocean Palace Dark 1": 0x939300CC},
-        {"Ocean Palace Dark 2": 0x939300CD},
-    ],
-    [
-        {"Grand Metropolis Dark 1": 0x939300CE},
-        {"Grand Metropolis Dark 2": 0x939300CF},
-    ],
-    [
-        {"Power Plant Dark 1": 0x939300D0},
-        {"Power Plant Dark 2": 0x939300D1},
-    ],
-    [
-        {"Casino Park Dark 1": 0x939300D2},
-        {"Casino Park Dark 2": 0x939300D3},
-    ],
-    [
-        {"Bingo Highway Dark 1": 0x939300D4},
-        {"Bingo Highway Dark 2": 0x939300D5},
-    ],
-    [
-        {"Rail Canyon Dark 1": 0x939300D6},
-        {"Rail Canyon Dark 2": 0x939300D7},
-    ],
-    [
-        {"Bullet Station Dark 1": 0x939300D8},
-        {"Bullet Station Dark 2": 0x939300D9},
-    ],
-    [
-        {"Frog Forest Dark 1": 0x939300DA},
-        {"Frog Forest Dark 2": 0x939300DB},
-    ],
-    [
-        {"Lost Jungle Dark 1": 0x939300DC},
-        {"Lost Jungle Dark 2": 0x939300DD},
-    ],
-    [
-        {"Hang Castle Dark 1": 0x939300DE},
-        {"Hang Castle Dark 2": 0x939300DF},
-    ],
-    [
-        {"Mystic Mansion Dark 1": 0x939300E0},
-        {"Mystic Mansion Dark 2": 0x939300E1},
-    ],
-    [
-        {"Egg Fleet Dark 1": 0x939300E2},
-        {"Egg Fleet Dark 2": 0x939300E3},
-    ],
-    [
-        {"Final Fortress Dark 1": 0x939300E4},
-        {"Final Fortress Dark 2": 0x939300E5},
-    ],
-]
+    currentid = 0x939300A0
+
+    for story in range(4):  #for each story
+        if sonic_heroes_story_names[story] in world.story_list: #check of story enabled
+            for mission in range(14): #for each mission
+                if world.options.enable_mission_a:  #if mission A enabled
+                    location_dict[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[story]} Act 1"] = LocData(currentid + (2 * mission) + (42 * story), f"Team {sonic_heroes_story_names[story]} Level {mission + 1}")
+
+                if world.options.enable_mission_b:  #if mission B enabled
+                    location_dict[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[story]} Act 2"] = LocData(currentid + (2 * mission) + (42 * story) + 1, f"Team {sonic_heroes_story_names[story]} Level {mission + 1}")
 
 
-rose_mission_locs = [
-
-    [
-        {"Seaside Hill Rose 1": 0x939300F4},
-        {"Seaside Hill Rose 2": 0x939300F5},
-    ],
-    [
-        {"Ocean Palace Rose 1": 0x939300F6},
-        {"Ocean Palace Rose 2": 0x939300F7},
-    ],
-    [
-        {"Grand Metropolis Rose 1": 0x939300F8},
-        {"Grand Metropolis Rose 2": 0x939300F9},
-    ],
-    [
-        {"Power Plant Rose 1": 0x939300FA},
-        {"Power Plant Rose 2": 0x939300FB},
-    ],
-    [
-        {"Casino Park Rose 1": 0x939300FC},
-        {"Casino Park Rose 2": 0x939300FD},
-    ],
-    [
-        {"Bingo Highway Rose 1": 0x939300FE},
-        {"Bingo Highway Rose 2": 0x939300FF},
-    ],
-    [
-        {"Rail Canyon Rose 1": 0x93930100},
-        {"Rail Canyon Rose 2": 0x93930101},
-    ],
-    [
-        {"Bullet Station Rose 1": 0x93930102},
-        {"Bullet Station Rose 2": 0x93930103},
-    ],
-    [
-        {"Frog Forest Rose 1": 0x93930104},
-        {"Frog Forest Rose 2": 0x93930105},
-    ],
-    [
-        {"Lost Jungle Rose 1": 0x93930106},
-        {"Lost Jungle Rose 2": 0x93930107},
-    ],
-    [
-        {"Hang Castle Rose 1": 0x93930108},
-        {"Hang Castle Rose 2": 0x93930109},
-    ],
-    [
-        {"Mystic Mansion Rose 1": 0x9393010A},
-        {"Mystic Mansion Rose 2": 0x9393010B},
-    ],
-    [
-        {"Egg Fleet Rose 1": 0x9393010C},
-        {"Egg Fleet Rose 2": 0x9393010D},
-    ],
-    [
-        {"Final Fortress Rose 1": 0x9393010E},
-        {"Final Fortress Rose 2": 0x9393010F},
-    ],
-]
+    #emeralds
+    for i in range(7):
+        location_dict[f"{sonic_heroes_level_names[2 * (i + 1)]} Emerald Stage"] = LocData(0x93930148 + i, f"Emerald {i + 1}")
 
 
-chaotix_mission_locs = [
-
-    [
-        {"Seaside Hill Chaotix 1": 0x9393011E},
-        {"Seaside Hill Chaotix 2": 0x9393011F},
-    ],
-    [
-        {"Ocean Palace Chaotix 1": 0x93930120},
-        {"Ocean Palace Chaotix 2": 0x93930121},
-    ],
-    [
-        {"Grand Metropolis Chaotix 1": 0x93930122},
-        {"Grand Metropolis Chaotix 2": 0x93930123},
-    ],
-    [
-        {"Power Plant Chaotix 1": 0x93930124},
-        {"Power Plant Chaotix 2": 0x93930125},
-    ],
-    [
-        {"Casino Park Chaotix 1": 0x93930126},
-        {"Casino Park Chaotix 2": 0x93930127},
-    ],
-    [
-        {"Bingo Highway Chaotix 1": 0x93930128},
-        {"Bingo Highway Chaotix 2": 0x93930129},
-    ],
-    [
-        {"Rail Canyon Chaotix 1": 0x9393012A},
-        {"Rail Canyon Chaotix 2": 0x9393012B},
-    ],
-    [
-        {"Bullet Station Chaotix 1": 0x9393012C},
-        {"Bullet Station Chaotix 2": 0x9393012D},
-    ],
-    [
-        {"Frog Forest Chaotix 1": 0x9393012E},
-        {"Frog Forest Chaotix 2": 0x9393012F},
-    ],
-    [
-        {"Lost Jungle Chaotix 1": 0x93930130},
-        {"Lost Jungle Chaotix 2": 0x93930131},
-    ],
-    [
-        {"Hang Castle Chaotix 1": 0x93930132},
-        {"Hang Castle Chaotix 2": 0x93930133},
-    ],
-    [
-        {"Mystic Mansion Chaotix 1": 0x93930134},
-        {"Mystic Mansion Chaotix 2": 0x93930135},
-    ],
-    [
-        {"Egg Fleet Chaotix 1": 0x93930136},
-        {"Egg Fleet Chaotix 2": 0x93930137},
-    ],
-    [
-        {"Final Fortress Chaotix 1": 0x93930138},
-        {"Final Fortress Chaotix 2": 0x93930139},
-    ],
-]
+    #Boss Gate Locations
+    for i in range(world.options.number_level_gates.value):
+        location_dict[f"Boss Gate {i + 1}"] = LocData(None, f"Gate Boss between Gate {i} and Gate {i + 1}")
 
 
-emerald_locs = [
-    [
-        {"Ocean Palace Emerald Stage": 0x93930148},
-    ],
-    [
-        {"Power Plant Emerald Stage": 0x93930149},
-    ],
-    [
-        {"Bingo Highway Emerald Stage": 0x9393014A},
-    ],
-    [
-        {"Bullet Station Emerald Stage": 0x9393014B},
-    ],
-    [
-        {"Lost Jungle Emerald Stage": 0x9393014C},
-    ],
-    [
-        {"Mystic Mansion Emerald Stage": 0x9393014D},
-    ],
-    [
-        {"Final Fortress Emerald Stage": 0x9393014E},
-    ],
-]
+    currentid = 0x939300BC
+    #extras
+    x = 0
+    for i in range(world.options.number_level_gates.value):
+        for story in world.story_list:
+            for k, v in sonic_heroes_story_names.items():
+                if v == story:
+                    x = k #x = 0-3 for example
+
+            location_dict[f"{sonic_heroes_extra_names[world.shuffleable_boss_list[i]]} {story}"] = LocData(currentid + (2 * i) + (42 * x), f"{sonic_heroes_extra_names[world.shuffleable_boss_list[i]]}")
+
+    #Final Boss
+    location_dict["Metal Overlord"] = LocData(None, "Metal Overlord")
+
+
+    if world.options.dark_sanity: #dark sanity
+        generate_dark_sanity(world)
+
+    if world.options.rose_sanity: #rose sanity
+        generate_rose_sanity(world)
+
+    if world.options.chaotix_sanity: #chaotix sanity
+        generate_chaotix_sanity(world)
+
+
+    world.location_name_to_id = {name: item.code for name, item in location_dict.items()}
 
 
 
-boss_gate_locs = [
-    [
-        {"Boss Gate 1": 0x9393014F},
-    ],
-    [
-        {"Boss Gate 2": 0x93930150},
-    ],
-    [
-        {"Boss Gate 3": 0x93930151},
-    ],
-    [
-        {"Boss Gate 4": 0x93930152},
-    ],
-    [
-        {"Boss Gate 5": 0x93930153},
-    ],
-]
+def create_locations(world, region):
+    create_locations_from_dict(world, location_dict, region)
 
 
-
-egg_hawk_locs = [
-    [
-        {"Egg Hawk Sonic": 0x939300BC},
-    ],
-    [
-        {"Egg Hawk Dark": 0x939300E6},
-    ],
-    [
-        {"Egg Hawk Rose": 0x93930110},
-    ],
-    [
-        {"Egg Hawk Chaotix": 0x9393013A},
-    ],
-]
+def create_locations_from_dict(world, loc_dict, region):
+    for (key, data) in loc_dict.items():
+        if data.region != region.name:
+            continue
+        create_location(world, region, key, data.code)
 
 
-
-team_fight_1_locs = [
-    [
-        {"Team Rose Fight Sonic": 0x939300BE},
-    ],
-    [
-        {"Team Chaotix Fight Dark": 0x939300E8},
-    ],
-    [
-        {"Team Sonic Fight Rose": 0x93930112},
-    ],
-    [
-        {"Team Dark Fight Chaotix": 0x9393013C},
-    ],
-]
-
-robot_carnival_locs = [
-    [
-        {"Robot Carnival Sonic": 0x939300C0},
-    ],
-    [
-        {"Robot Carnival Dark": 0x939300EA},
-    ],
-    [
-        {"Robot Carnival Rose": 0x93930114},
-    ],
-    [
-        {"Robot Carnival Chaotix": 0x9393013E},
-    ],
-]
-
-egg_albatross_locs = [
-    [
-        {"Egg Albatross Sonic": 0x939300C2},
-    ],
-    [
-        {"Egg Albatross Dark": 0x939300EC},
-    ],
-    [
-        {"Egg Albatross Rose": 0x93930116},
-    ],
-    [
-        {"Egg Albatross Chaotix": 0x93930140},
-    ],
-]
-
-
-team_fight_2_locs = [
-    [
-        {"Team Dark Fight Sonic": 0x939300C4},
-    ],
-    [
-        {"Team Sonic Fight Dark": 0x939300EE},
-    ],
-    [
-        {"Team Chaotix Fight Rose": 0x93930118},
-    ],
-    [
-        {"Team Rose Fight Chaotix": 0x93930142},
-    ],
-]
-
-
-robot_storm_locs = [
-    [
-        {"Robot Storm Sonic": 0x939300C6},
-    ],
-    [
-        {"Robot Storm Dark": 0x939300F0},
-    ],
-    [
-        {"Robot Storm Rose": 0x9393011A},
-    ],
-    [
-        {"Robot Storm Chaotix": 0x93930144},
-    ],
-]
-
-
-egg_emperor_locs = [
-    [
-        {"Egg Emperor Sonic": 0x939300C8},
-    ],
-    [
-        {"Egg Emperor Dark": 0x939300F2},
-    ],
-    [
-        {"Egg Emperor Rose": 0x9393011C},
-    ],
-    [
-        {"Egg Emperor Chaotix": 0x93930146},
-    ],
-]
-
-
-goal_loc = [
-    [
-        {"Metal Overlord": None},
-    ],
-]
+def create_location(world, region, name: str, code: int):
+    location = Location(world.player, name, code, region)
+    region.locations.append(location)
 
 
 
 
-tempdict = {}
 
 
-for mission in sonic_mission_locs:
-    for mission_loc in mission:
-        tempdict |= mission_loc
+def generate_dark_sanity(world):
+    if not world.options.enable_mission_b.value:
+        return None #leave if mission B not enabled
 
-for mission in dark_mission_locs:
-    for mission_loc in mission:
-        tempdict |= mission_loc
+    #0x9393014F (starts at 150) - 0x939306C7
+    currentid = 0x9393014F
 
-for mission in rose_mission_locs:
-    for mission_loc in mission:
-        tempdict |= mission_loc
+    for mission in range(14):
+        for i in range(100, 0, -world.options.dark_sanity_enemy_interval):
+            location_dict[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[1]} Act 2 Enemies Killed: {i}"] = LocData(currentid + i + (mission * 100), f"Team {sonic_heroes_story_names[1]} Level {mission + 1}")
 
-for mission in chaotix_mission_locs:
-    for mission_loc in mission:
-        tempdict |= mission_loc
+def generate_rose_sanity(world):
+    if not world.options.enable_mission_b.value:
+        return None #leave if mission B not enabled
 
-for boss in egg_hawk_locs:
-    for boss_loc in boss:
-        tempdict |= boss_loc
+    #0x939306C7 (starts at 6C8) - 0x939311B7
+    currentid = 0x939306C7
 
-for boss in team_fight_1_locs:
-    for boss_loc in boss:
-        tempdict |= boss_loc
-
-for boss in robot_carnival_locs:
-    for boss_loc in boss:
-        tempdict |= boss_loc
-
-for boss in egg_albatross_locs:
-    for boss_loc in boss:
-        tempdict |= boss_loc
-
-for boss in team_fight_2_locs:
-    for boss_loc in boss:
-        tempdict |= boss_loc
-
-for boss in robot_storm_locs:
-    for boss_loc in boss:
-        tempdict |= boss_loc
-
-for boss in egg_emperor_locs:
-    for boss_loc in boss:
-        tempdict |= boss_loc
+    for mission in range(14):
+        for i in range(200, 0, -world.options.rose_sanity_ring_interval):
+            location_dict[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[2]} Act 2 Rings Collected: {i}"] = LocData(currentid + i + (mission * 200), f"Team {sonic_heroes_story_names[2]} Level {mission + 1}")
 
 
-for mission in emerald_locs:
-    for mission_loc in mission:
-        tempdict |= mission_loc
 
 
-location_name_to_id = tempdict
 
 
+def generate_chaotix_sanity(world):
+    #Chaotix Sanity
+    #1189 checks - 524
+    #SH - 10, 20
+    #OP - 0, 0
+    #GM - 85, 85
+    #PP - 3, 5
+    #CP - 200, 500 - 700, 140, 70, 35
+    #BH - 10, 20
+    #RC - 0, 0
+    #BS - 30, 50
+    #FF - 0, 0
+    #LJ - 10, 20
+    #HC - 10, 10
+    #MM - 60, 46
+    #EF - 0, 0
+    #FF - 5, 10
+
+    #0x939311B7 (starts at 1B8) - 0x93934867
+    currentid = 0x939311B7
+
+    #Seaside Hill
+    if world.options.enable_mission_a.value:
+        for i in range (10):
+            location_dict[f"{sonic_heroes_level_names[1]} {sonic_heroes_story_names[3]} Act 1 Hermit Crabs Collected: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 1")
+
+    currentid += 500
+
+    if world.options.enable_mission_b.value:
+        for i in range (20):
+            location_dict[f"{sonic_heroes_level_names[1]} {sonic_heroes_story_names[3]} Act 2 Hermit Crabs Collected: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 1")
+
+    currentid += 500
+
+    #Ocean Palace
+    #no checks
+    currentid += 500
+    currentid += 500
+
+    #Grand Metro
+
+    if world.options.enable_mission_a.value:
+        for i in range (85):
+            location_dict[f"{sonic_heroes_level_names[3]} {sonic_heroes_story_names[3]} Act 1 Enemies Killed: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 3")
+
+    currentid += 500
+
+    if world.options.enable_mission_b.value:
+        for i in range (85):
+            location_dict[f"{sonic_heroes_level_names[3]} {sonic_heroes_story_names[3]} Act 2 Enemies Killed: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 3")
+
+    currentid += 500
+
+
+    #Power Plant
+    if world.options.enable_mission_a.value:
+        for i in range (3):
+            location_dict[f"{sonic_heroes_level_names[4]} {sonic_heroes_story_names[3]} Act 1 Gold Turtles Killed: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 4")
+
+    currentid += 500
+
+    if world.options.enable_mission_b.value:
+        for i in range (5):
+            location_dict[f"{sonic_heroes_level_names[4]} {sonic_heroes_story_names[3]} Act 2 Gold Turtles Killed: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 4")
+
+    currentid += 500
+
+
+    #Casino Park
+    if world.options.enable_mission_a.value:
+        for i in range (200, 0, -world.options.chaotix_sanity_ring_interval.value):
+            location_dict[f"{sonic_heroes_level_names[5]} {sonic_heroes_story_names[3]} Act 1 Rings Collected: {i}"] = LocData(currentid + i, f"Team {sonic_heroes_story_names[3]} Level 5")
+
+    currentid += 500
+
+    if world.options.enable_mission_b.value:
+        for i in range (500, 0, -world.options.chaotix_sanity_ring_interval.value):
+            location_dict[f"{sonic_heroes_level_names[5]} {sonic_heroes_story_names[3]} Act 2 Rings Collected: {i}"] = LocData(currentid + i, f"Team {sonic_heroes_story_names[3]} Level 5")
+
+    currentid += 500
+
+
+    #Bingo Highway
+    if world.options.enable_mission_a.value:
+        for i in range (10):
+            location_dict[f"{sonic_heroes_level_names[6]} {sonic_heroes_story_names[3]} Act 1 Casino Chips Collected: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 6")
+
+    currentid += 500
+
+    if world.options.enable_mission_b.value:
+        for i in range (20):
+            location_dict[f"{sonic_heroes_level_names[6]} {sonic_heroes_story_names[3]} Act 2 Casino Chips Collected: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 6")
+
+    currentid += 500
+
+    #Rail Canyon
+    #no checks
+    currentid += 500
+    currentid += 500
+
+
+    #Bullet Station
+    if world.options.enable_mission_a.value:
+        for i in range (30):
+            location_dict[f"{sonic_heroes_level_names[8]} {sonic_heroes_story_names[3]} Act 1 Capsules Destroyed: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 8")
+
+    currentid += 500
+
+    if world.options.enable_mission_b.value:
+        for i in range (50):
+            location_dict[f"{sonic_heroes_level_names[8]} {sonic_heroes_story_names[3]} Act 2 Capsules Destroyed: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 8")
+
+    currentid += 500
+
+
+    #Frog Forest
+    #no checks
+    currentid += 500
+    currentid += 500
+
+
+    #Lost Jungle
+    if world.options.enable_mission_a.value:
+        for i in range (10):
+            location_dict[f"{sonic_heroes_level_names[10]} {sonic_heroes_story_names[3]} Act 1 Chao Saved: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 10")
+
+    currentid += 500
+
+    if world.options.enable_mission_b.value:
+        for i in range (20):
+            location_dict[f"{sonic_heroes_level_names[10]} {sonic_heroes_story_names[3]} Act 2 Chao Saved: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 10")
+
+    currentid += 500
+
+    #Hang Castle
+    if world.options.enable_mission_a.value:
+        for i in range (10):
+            location_dict[f"{sonic_heroes_level_names[11]} {sonic_heroes_story_names[3]} Act 1 Keys Collected: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 11")
+
+    currentid += 500
+
+    if world.options.enable_mission_b.value:
+        for i in range (10):
+            location_dict[f"{sonic_heroes_level_names[11]} {sonic_heroes_story_names[3]} Act 2 Keys Collected: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 11")
+
+    currentid += 500
+
+
+    #Mystic Mansion
+    if world.options.enable_mission_a.value:
+        for i in range (60):
+            location_dict[f"{sonic_heroes_level_names[12]} {sonic_heroes_story_names[3]} Act 1 Red Torches Extinguished: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 12")
+
+    currentid += 500
+
+    if world.options.enable_mission_b.value:
+        for i in range (46):
+            location_dict[f"{sonic_heroes_level_names[12]} {sonic_heroes_story_names[3]} Act 2 Blue Torches Extinguished: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 12")
+
+    currentid += 500
+
+
+    #Egg Fleet
+    #no checks
+    currentid += 500
+    currentid += 500
+
+
+    #Final Fortress
+    if world.options.enable_mission_a.value:
+        for i in range (5):
+            location_dict[f"{sonic_heroes_level_names[14]} {sonic_heroes_story_names[3]} Act 1 Keys Collected: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 14")
+
+    currentid += 500
+
+    if world.options.enable_mission_b.value:
+        for i in range (10):
+            location_dict[f"{sonic_heroes_level_names[14]} {sonic_heroes_story_names[3]} Act 2 Keys Collected: {i + 1}"] = LocData(currentid + i + 1, f"Team {sonic_heroes_story_names[3]} Level 14")
+
+    currentid += 500

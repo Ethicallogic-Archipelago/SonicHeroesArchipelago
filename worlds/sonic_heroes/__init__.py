@@ -41,8 +41,8 @@ class SonicHeroesWorld(World):
     options: SonicHeroesOptions
     options_dataclass = SonicHeroesOptions
 
-    item_name_to_id: ClassVar[Dict[str, int]] = item_name_to_id
-    location_name_to_id: ClassVar[Dict[str, int]] = location_name_to_id
+    item_name_to_id: ClassVar[Dict[str, int]] = {}
+    location_name_to_id: ClassVar[Dict[str, int]] = {}
 
     topology_present = True
 
@@ -51,7 +51,7 @@ class SonicHeroesWorld(World):
 
         self.disabled_locations: Set[str] = set() #currently not used
 
-        self.default_emblem_pool_size: int = 25 #for only one story
+        self.default_emblem_pool_size: int = 12 #for only one story
 
         self.gate_emblem_costs = []
 
@@ -64,15 +64,6 @@ class SonicHeroesWorld(World):
         self.required_emblems: int = 0
 
         self.gate_cost: int = 0
-
-        #locations for regions here
-        self.goal = []
-        self.gate_locs = []
-        self.gate_boss_locs = []
-        self.emerald_locs = emerald_locs
-
-        self.team_locs = []
-
 
         self.gate_level_counts = []
 
@@ -88,36 +79,32 @@ class SonicHeroesWorld(World):
 
     def generate_early(self) -> None:
 
-        self.goal.append(goal_loc[0])
-
         if (self.options.sonic_story.value):
 
             self.story_list.append("Sonic")
-            self.team_locs.append(sonic_mission_locs)
-
 
         if (self.options.dark_story.value):
 
             self.story_list.append("Dark")
-            self.team_locs.append(dark_mission_locs)
-
 
         if (self.options.rose_story.value):
 
             self.story_list.append("Rose")
-            self.team_locs.append(rose_mission_locs)
-
 
         if (self.options.chaotix_story.value):
 
             self.story_list.append("Chaotix")
-            self.team_locs.append(chaotix_mission_locs)
 
 
         if (len(self.story_list) < 1 or len(self.story_list) > 4):
             raise OptionError("[ERROR] Number of stories enabled is invalid.")
 
-        #self.total_emblems = self.default_emblem_pool_size * len(self.story_list)
+        if (not(self.options.enable_mission_a.value or self.options.enable_mission_b.value)):
+            raise OptionError("[ERROR] Either Mission A or Mission B must be enabled")
+
+        if (self.options.enable_mission_a.value and self.options.enable_mission_b.value):
+            self.default_emblem_pool_size *= 2
+
         self.required_emblems = math.floor(self.default_emblem_pool_size * len(self.story_list) *
         self.options.required_emblems_percent.value / 100)
 
@@ -125,14 +112,11 @@ class SonicHeroesWorld(World):
         if self.options.number_level_gates.value > 3 and len(self.story_list) == 1:
             self.options.number_level_gates.value = 3
 
-
         if self.options.number_level_gates.value == 0:
             self.gate_cost = 0
 
         else:
             self.gate_cost = math.floor(self.required_emblems / (self.options.number_level_gates.value + 1))
-            if self.gate_cost < 1:
-                self.gate_cost = 1
 
 
         for i in range(self.options.number_level_gates.value):
@@ -152,6 +136,7 @@ class SonicHeroesWorld(World):
         self.random.shuffle(self.shuffleable_level_list)
         self.random.shuffle(self.shuffleable_boss_list)
 
+        generate_locations(self)
 
 
     def create_regions(self):
@@ -162,15 +147,12 @@ class SonicHeroesWorld(World):
 
         self.get_location("Metal Overlord").place_locked_item(victory_item)
 
-        #boss_gate_locked_items = []
-
         for i in range(self.options.number_level_gates.value):
 
             boss_gate_item = SonicHeroesItem(f"Boss Gate Item {i + 1}", ItemClassification.progression,
-            0x93930009 + i + 1, self.player)
+            None, self.player)    #0x93930009 + i + 1
 
-            for k in boss_gate_locs[i][0].keys():
-                self.get_location(k).place_locked_item(boss_gate_item)
+            self.get_location(f"Boss Gate {i + 1}").place_locked_item(boss_gate_item)
 
         connect_entrances(self)
 
@@ -238,17 +220,24 @@ class SonicHeroesWorld(World):
 
         return {
             "ModVersion": 100,
-            #"OptionsDict": self.options.as_dict(*sonic_heroes_option_names_list),
 
             "Goal": self.options.goal.value,
             "GoalUnlockCondition": self.options.goal_unlock_condition.value,
             "SkipMetalMadness": self.options.skip_metal_madness.value,
             "RequiredRank": self.options.required_rank.value,
             "AlwaysHaveBonusKey": self.options.always_have_bonus_key.value,
+            "EnableMissionA": self.options.enable_mission_a.value,
+            "EnableMissionB": self.options.enable_mission_b.value,
             "SonicStory": self.options.sonic_story.value,
             "DarkStory": self.options.dark_story.value,
+            "DarkSanity": self.options.dark_sanity.value,
+            "DarkSanityEnemyInterval": self.options.dark_sanity_enemy_interval.value,
             "RoseStory": self.options.rose_story.value,
+            "RoseSanity": self.options.rose_sanity.value,
+            "RoseSanityRingInterval": self.options.rose_sanity_ring_interval.value,
             "ChaotixStory": self.options.chaotix_story.value,
+            "ChaotixSanity": self.options.chaotix_sanity.value,
+            "ChaotixSanityRingInterval": self.options.chaotix_sanity_ring_interval.value,
             "RingLink": self.options.ring_link.value,
             "ModernRingLoss": self.options.modern_ring_loss.value,
             "DeathLink": self.options.death_link.value,
