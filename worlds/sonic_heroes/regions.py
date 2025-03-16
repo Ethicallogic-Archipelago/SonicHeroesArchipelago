@@ -81,11 +81,15 @@ def connect_entrances(world):
 
     #here is levels
     if world.options.number_level_gates.value == 0:
+        connect(world, "Menu", "Gate 0")
         for team in world.story_list:
             for location_number in range(14):
                 connect(world, "Gate 0", f"Team {team} Level {location_number + 1}")
-                if (location_number + 1 in world.emerald_mission_numbers):
-                    connect(world, "Gate 0", f"Emerald {location_number + 1}")
+
+        for i in range(7):
+            connect(world, "Gate 0", f"Emerald {i + 1}")
+        world.gate_level_counts.append(14 * len(world.story_list))
+
     else:
         level_groups = world.options.number_level_gates + 1
         levels_per_gate = math.floor((len(world.story_list) * 14) / level_groups)

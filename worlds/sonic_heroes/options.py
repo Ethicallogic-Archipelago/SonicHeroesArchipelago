@@ -60,11 +60,11 @@ class RequiredRank(Choice):
     option_a = 4
     default = 0
 
-class AlwaysHaveBonusKey(Toggle):
+class DontLoseBonusKey(Toggle):
     """
-    The number emblem-locked gates which lock sets of levels. This is capped to 3 for only 1 story.
+    Keep the Bonus Key for the rest of the level once you collect it
     """
-    display_name = "Always Have Bonus Key for Emerald Stages"
+    display_name = "Dont lose the Bonus Key when dying or getting hit"
 
 class NumberOfLevelGates(Range):
     """
@@ -194,7 +194,7 @@ sonic_heroes_option_groups = [
         SkipMetalMadness,
         RequiredEmblemsPercent,
         RequiredRank,
-        AlwaysHaveBonusKey
+        DontLoseBonusKey
     ]),
     OptionGroup("Level Gates", [
         NumberOfLevelGates,
@@ -231,7 +231,7 @@ class SonicHeroesOptions(PerGameCommonOptions):
     skip_metal_madness: SkipMetalMadness
     required_emblems_percent: RequiredEmblemsPercent
     required_rank: RequiredRank
-    always_have_bonus_key: AlwaysHaveBonusKey
+    dont_lose_bonus_key: DontLoseBonusKey
 
     number_level_gates: NumberOfLevelGates
 

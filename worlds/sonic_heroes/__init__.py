@@ -41,8 +41,8 @@ class SonicHeroesWorld(World):
     options: SonicHeroesOptions
     options_dataclass = SonicHeroesOptions
 
-    item_name_to_id: ClassVar[Dict[str, int]] = {}
-    location_name_to_id: ClassVar[Dict[str, int]] = {}
+    item_name_to_id: ClassVar[Dict[str, int]] = {item.itemName: item.code for item in itemList}
+    location_name_to_id: ClassVar[Dict[str, int]] = full_location_dict
 
     topology_present = True
 
@@ -161,10 +161,10 @@ class SonicHeroesWorld(World):
     def create_item(self, item: str) -> SonicHeroesItem:
 
         if item in junk_weights.keys():
-            return SonicHeroesItem(item, ItemClassification.filler, item_name_to_id[item], self.player)
+            return SonicHeroesItem(item, ItemClassification.filler, self.item_name_to_id[item], self.player)
 
 
-        return SonicHeroesItem(item, ItemClassification.progression, item_name_to_id[item], self.player)
+        return SonicHeroesItem(item, ItemClassification.progression, self.item_name_to_id[item], self.player)
 
 
     def create_items(self):
@@ -225,7 +225,7 @@ class SonicHeroesWorld(World):
             "GoalUnlockCondition": self.options.goal_unlock_condition.value,
             "SkipMetalMadness": self.options.skip_metal_madness.value,
             "RequiredRank": self.options.required_rank.value,
-            "AlwaysHaveBonusKey": self.options.always_have_bonus_key.value,
+            "DontLoseBonusKey": self.options.dont_lose_bonus_key.value,
             "EnableMissionA": self.options.enable_mission_a.value,
             "EnableMissionB": self.options.enable_mission_b.value,
             "SonicStory": self.options.sonic_story.value,

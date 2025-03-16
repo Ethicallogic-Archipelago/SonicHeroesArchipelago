@@ -15,7 +15,7 @@ class ItemData(NamedTuple):
 
 def create_item(world: "SonicHeroesWorld", name: str, classification: ItemClassification, amount: Optional[int] = 1):
     for i in range(amount):
-        world.multiworld.itempool.append(Item(name, classification, item_name_to_id[name], world.player))
+        world.multiworld.itempool.append(Item(name, classification, world.item_name_to_id[name], world.player))
 
 
 def create_items(world: "SonicHeroesWorld"):
@@ -56,12 +56,16 @@ def get_junk_item_names(rand, k: int) -> str:
     return junk
 
 junk_weights = {
-    "Extra Life": 15,
-    "5 Rings": 10,
-    "10 Rings": 20,
-    "20 Rings": 10,
+    "Extra Life": 25,
+    "5 Rings": 30,
+    "10 Rings": 15,
+    "20 Rings": 5,
     "Shield": 15,
-    "Invincibility": 5,
+    #"Invincibility": 5,
+    "Speed Level Up": 15,
+    "Power Level Up": 15,
+    "Flying Level Up": 15,
+    "Team Level Up": 3,
 }
 
 itemList: List[ItemData] = [
@@ -78,10 +82,13 @@ itemList: List[ItemData] = [
     ItemData(0x9393000A, "10 Rings", ItemClassification.filler),
     ItemData(0x9393000B, "20 Rings", ItemClassification.filler),
     ItemData(0x9393000C, "Shield", ItemClassification.filler),
-    ItemData(0x9393000D, "Invincibility", ItemClassification.filler),
-    #ItemData(0x9393000E, "Team Level Up", ItemClassification.filler),
-    #ItemData(0x9393000F, "Bonus Stage Key", ItemClassification.filler),
+    #ItemData(0x9393000D, "Invincibility", ItemClassification.filler),
+    ItemData(0x9393000E, "Speed Level Up", ItemClassification.filler),
+    ItemData(0x9393000F, "Power Level Up", ItemClassification.filler),
+    ItemData(0x93930010, "Flying Level Up", ItemClassification.filler),
+    ItemData(0x93930011, "Team Level Up", ItemClassification.filler),
+    #ItemData(0x93930012, "Bonus Stage Key", ItemClassification.filler),
 ]
 
 
-item_name_to_id: Dict[str, int] = {item.itemName: item.code for item in itemList}
+#item_name_to_id: Dict[str, int] = {item.itemName: item.code for item in itemList}
