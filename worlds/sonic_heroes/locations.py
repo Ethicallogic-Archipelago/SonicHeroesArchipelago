@@ -169,26 +169,34 @@ full_location_dict = {
     "Lost Jungle Emerald Stage": 0x9393014c,
     "Mystic Mansion Emerald Stage": 0x9393014d,
     "Final Fortress Emerald Stage": 0x9393014e,
-    "Robot Storm Sonic": 0x939300bc,
-    "Robot Storm Dark": 0x939300e6,
-    "Robot Storm Rose": 0x93930110,
-    "Robot Storm Chaotix": 0x9393013a,
+    "Egg Hawk Sonic": 0x939300bc,
+    "Egg Hawk Dark": 0x939300e6,
+    "Egg Hawk Rose": 0x93930110,
+    "Egg Hawk Chaotix": 0x9393013a,
     "Team Fight 1 Sonic": 0x939300be,
     "Team Fight 1 Dark": 0x939300e8,
     "Team Fight 1 Rose": 0x93930112,
     "Team Fight 1 Chaotix": 0x9393013c,
-    "Egg Albatross Sonic": 0x939300c0,
-    "Egg Albatross Dark": 0x939300ea,
-    "Egg Albatross Rose": 0x93930114,
-    "Egg Albatross Chaotix": 0x9393013e,
-    "Team Fight 2 Sonic": 0x939300c2,
-    "Team Fight 2 Dark": 0x939300ec,
-    "Team Fight 2 Rose": 0x93930116,
-    "Team Fight 2 Chaotix": 0x93930140,
-    "Egg Emperor Sonic": 0x939300c4,
-    "Egg Emperor Dark": 0x939300ee,
-    "Egg Emperor Rose": 0x93930118,
-    "Egg Emperor Chaotix": 0x93930142,
+    "Robot Carnival Sonic": 0x939300c0,
+    "Robot Carnival Dark": 0x939300ea,
+    "Robot Carnival Rose": 0x93930114,
+    "Robot Carnival Chaotix": 0x9393013e,
+    "Egg Albatross Sonic": 0x939300c2,
+    "Egg Albatross Dark": 0x939300ec,
+    "Egg Albatross Rose": 0x93930116,
+    "Egg Albatross Chaotix": 0x93930140,
+    "Team Fight 2 Sonic": 0x939300c4,
+    "Team Fight 2 Dark": 0x939300ee,
+    "Team Fight 2 Rose": 0x93930118,
+    "Team Fight 2 Chaotix": 0x93930142,
+    "Robot Storm Sonic": 0x939300c6,
+    "Robot Storm Dark": 0x939300F0,
+    "Robot Storm Rose": 0x9393011A,
+    "Robot Storm Chaotix": 0x93930144,
+    "Egg Emperor Sonic": 0x939300C8,
+    "Egg Emperor Dark": 0x939300F2,
+    "Egg Emperor Rose": 0x9393011C,
+    "Egg Emperor Chaotix": 0x93930146,
     "Seaside Hill Dark Act 2 Enemies Killed: 100": 0x939301b3,
     "Seaside Hill Dark Act 2 Enemies Killed: 99": 0x939301b2,
     "Seaside Hill Dark Act 2 Enemies Killed: 98": 0x939301b1,
@@ -5614,7 +5622,10 @@ def generate_locations(world):
                 if v == story:
                     x = k #x = 0-3 for example
 
-            location_dict[f"{sonic_heroes_extra_names[world.shuffleable_boss_list[i]]} {story}"] = LocData(currentid + (2 * i) + (42 * x), f"{sonic_heroes_extra_names[world.shuffleable_boss_list[i]]}")
+
+            world.spoiler_string += f"Entering Location Dict Entry for extra: {world.shuffleable_boss_list[i]}\nThe Entry is: {sonic_heroes_extra_names[world.shuffleable_boss_list[i]]} {story} --- ID: {currentid + (2 * world.shuffleable_boss_list[i]) + (42 * x)} --- Region Name: {sonic_heroes_extra_names[world.shuffleable_boss_list[i]]}\n\n"
+
+            location_dict[f"{sonic_heroes_extra_names[world.shuffleable_boss_list[i]]} {story}"] = LocData(currentid + (2 * world.shuffleable_boss_list[i]) + (42 * x), f"{sonic_heroes_extra_names[world.shuffleable_boss_list[i]]}")
 
     #Final Boss
     location_dict["Metal Overlord"] = LocData(None, "Metal Overlord")
