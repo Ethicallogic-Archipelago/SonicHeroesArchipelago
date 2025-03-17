@@ -38,8 +38,12 @@ def create_items(world: "SonicHeroesWorld"):
     create_item(world, "Red Chaos Emerald", ItemClassification.progression)
 
     #Fillers:
-
     remaining_locations = total_location_count - (world.default_emblem_pool_size * len(world.story_list) + 7)
+
+
+    #limit ring filler if ringsanity options are at 1
+    checkRingFiller(world)
+
 
     #print(f"Remaining items here: {remaining_locations}")
     junk = get_junk_item_names(world.multiworld.random, remaining_locations)
@@ -55,18 +59,54 @@ def get_junk_item_names(rand, k: int) -> str:
         k=k)
     return junk
 
-junk_weights = {
-    "Extra Life": 25,
-    "5 Rings": 30,
-    "10 Rings": 15,
-    "20 Rings": 5,
-    "Shield": 15,
-    #"Invincibility": 5,
-    "Speed Level Up": 15,
-    "Power Level Up": 15,
-    "Flying Level Up": 15,
-    "Team Level Up": 3,
-}
+def checkRingFiller(world):
+
+    #If RingSanity Interval at 1
+    if ("Rose" in world.story_list and world.options.rose_sanity.value and world.options.rose_sanity_ring_interval.value == 1 and world.options.enable_mission_b.value) or ("Chaotix" in world.story_list and world.options.chaotix_sanity.value and world.options.chaotix_sanity_ring_interval.value == 1):
+
+        #out of 800
+        junk_weights["5 Rings"] = 15
+        junk_weights["10 Rings"] = 10
+        junk_weights["20 Rings"] = 5
+
+        junk_weights["Extra Life"] += 35
+        junk_weights["Shield"] += 35
+        junk_weights["Speed Level Up"] += 35
+        junk_weights["Power Level Up"] += 35
+        junk_weights["Flying Level Up"] += 35
+        junk_weights["Team Level Up"] += 35
+
+
+    #If RingSanity Interval at 5
+    if ("Rose" in world.story_list and world.options.rose_sanity.value and world.options.rose_sanity_ring_interval.value == 5 and world.options.enable_mission_b.value) or ("Chaotix" in world.story_list and world.options.chaotix_sanity.value and world.options.chaotix_sanity_ring_interval.value == 5):
+        #out of 800
+        junk_weights["5 Rings"] = 30
+        junk_weights["10 Rings"] = 20
+        junk_weights["20 Rings"] = 10
+
+        junk_weights["Extra Life"] += 30
+        junk_weights["Shield"] += 30
+        junk_weights["Speed Level Up"] += 30
+        junk_weights["Power Level Up"] += 30
+        junk_weights["Flying Level Up"] += 30
+        junk_weights["Team Level Up"] += 30
+
+        #If RingSanity Interval at 10
+    if ("Rose" in world.story_list and world.options.rose_sanity.value and world.options.rose_sanity_ring_interval.value == 10 and world.options.enable_mission_b.value) or ("Chaotix" in world.story_list and world.options.chaotix_sanity.value and world.options.chaotix_sanity_ring_interval.value == 10):
+        #out of 800
+        junk_weights["5 Rings"] = 60
+        junk_weights["10 Rings"] = 40
+        junk_weights["20 Rings"] = 20
+
+        junk_weights["Extra Life"] += 20
+        junk_weights["Shield"] += 20
+        junk_weights["Speed Level Up"] += 20
+        junk_weights["Power Level Up"] += 20
+        junk_weights["Flying Level Up"] += 20
+        junk_weights["Team Level Up"] += 20
+
+
+
 
 itemList: List[ItemData] = [
     ItemData(0x93930000, "Emblem", ItemClassification.progression),
@@ -87,8 +127,35 @@ itemList: List[ItemData] = [
     ItemData(0x9393000F, "Power Level Up", ItemClassification.filler),
     ItemData(0x93930010, "Flying Level Up", ItemClassification.filler),
     ItemData(0x93930011, "Team Level Up", ItemClassification.filler),
-    #ItemData(0x93930012, "Bonus Stage Key", ItemClassification.filler),
 ]
+
+junk_weights = {
+    "Extra Life": 160,
+    "5 Rings": 120,
+    "10 Rings": 80,
+    "20 Rings": 40,
+    "Shield": 160,
+    #"Invincibility": 160,
+    "Speed Level Up": 72,
+    "Power Level Up": 72,
+    "Flying Level Up": 72,
+    "Team Level Up": 24,
+}
+
+
+#EL     20
+#Rings  30      5   10   15
+#Shield 20
+#LvlUp  30      9   9   9   3
+
+
+
+
+#if 1
+#20 rings should be no more than 0.5%
+#10 rings should be no more than 1%
+#5 rings should be no more than 2.5
+
 
 
 #item_name_to_id: Dict[str, int] = {item.itemName: item.code for item in itemList}
