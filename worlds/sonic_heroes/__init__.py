@@ -239,6 +239,7 @@ class SonicHeroesWorld(World):
             "ChaotixSanity": self.options.chaotix_sanity.value,
             "ChaotixSanityRingInterval": self.options.chaotix_sanity_ring_interval.value,
             "RingLink": self.options.ring_link.value,
+            "RingLinkOverlord": self.options.ring_link_overlord.value,
             "ModernRingLoss": self.options.modern_ring_loss.value,
             "DeathLink": self.options.death_link.value,
 

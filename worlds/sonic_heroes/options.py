@@ -179,12 +179,27 @@ class RingLink(Toggle):
     """
     display_name = "Ring Link Enabled"
 
+class RingLinkOverlord(Toggle):
+    """
+    Should Ring Link be enabled on Metal Overlord?
+    This requires to be enabled to have any effect
+    """
+    display_name = "Ring Link on Metal Overlord"
+
 class ModernRingLoss(Toggle):
     """
     Only lose up to 20 Rings when hit instead of all
     """
     display_name = "Modern Ring Loss Enabled"
 
+class TrapFill(Range):
+    """
+    Determines the percentage of the junk fill which is filled with traps.
+    """
+    display_name = "Trap Fill Percentage"
+    range_start = 0
+    range_end = 100
+    default = 0
 
 
 sonic_heroes_option_groups = [
@@ -204,14 +219,19 @@ sonic_heroes_option_groups = [
         EnableMissionB,
         SonicStory,
         DarkStory,
+        RoseStory,
+        ChaotixStory,
+    ]),
+    OptionGroup("Sanity", [
         DarkSanity,
         DarkSanityEnemyInterval,
-        RoseStory,
         RoseSanity,
         RoseSanityRingInterval,
-        ChaotixStory,
         ChaotixSanity,
         ChaotixSanityRingInterval
+    ]),
+    OptionGroup("Traps", [
+        TrapFill
     ]),
     OptionGroup("Ring Options", [
         RingLink,
@@ -249,6 +269,9 @@ class SonicHeroesOptions(PerGameCommonOptions):
     chaotix_sanity_ring_interval: ChaotixSanityRingInterval
 
     ring_link: RingLink
+    ring_link_overlord: RingLinkOverlord
     modern_ring_loss: ModernRingLoss
+
+    trap_fill: TrapFill
 
     death_link: DeathLink

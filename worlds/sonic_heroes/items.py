@@ -28,17 +28,22 @@ def create_items(world: "SonicHeroesWorld"):
     create_item(world, "Emblem", ItemClassification.progression, world.required_emblems)
     create_item(world, "Emblem", ItemClassification.useful, useful_emblems)
 
-    #Emeralds:
-    create_item(world, "Green Chaos Emerald", ItemClassification.progression)
-    create_item(world, "Blue Chaos Emerald", ItemClassification.progression)
-    create_item(world, "Yellow Chaos Emerald", ItemClassification.progression)
-    create_item(world, "White Chaos Emerald", ItemClassification.progression)
-    create_item(world, "Cyan Chaos Emerald", ItemClassification.progression)
-    create_item(world, "Purple Chaos Emerald", ItemClassification.progression)
-    create_item(world, "Red Chaos Emerald", ItemClassification.progression)
+    if (world.options.goal_unlock_condition.value != 1):
+        #Emeralds:
+        create_item(world, "Green Chaos Emerald", ItemClassification.progression)
+        create_item(world, "Blue Chaos Emerald", ItemClassification.progression)
+        create_item(world, "Yellow Chaos Emerald", ItemClassification.progression)
+        create_item(world, "White Chaos Emerald", ItemClassification.progression)
+        create_item(world, "Cyan Chaos Emerald", ItemClassification.progression)
+        create_item(world, "Purple Chaos Emerald", ItemClassification.progression)
+        create_item(world, "Red Chaos Emerald", ItemClassification.progression)
 
     #Fillers:
-    remaining_locations = total_location_count - (world.default_emblem_pool_size * len(world.story_list) + 7)
+    remaining_locations = total_location_count - (world.default_emblem_pool_size * len(world.story_list))
+
+    if (world.options.goal_unlock_condition.value != 1):
+        #remove 7 filler items if Emeralds are added
+        remaining_locations -= 7
 
 
     #limit ring filler if ringsanity options are at 1
@@ -46,10 +51,17 @@ def create_items(world: "SonicHeroesWorld"):
 
 
     #print(f"Remaining items here: {remaining_locations}")
-    junk = get_junk_item_names(world.multiworld.random, remaining_locations)
+    trap_count = round(remaining_locations * world.options.trap_fill.value / 100)
+    junk_count = remaining_locations - trap_count
 
+
+    junk = get_junk_item_names(world.multiworld.random, junk_count)
     for name in junk:
         create_item(world, name, ItemClassification.filler)
+
+    trap = get_trap_item_names(world.multiworld.random, trap_count)
+    for name in trap:
+        create_item(world, name, ItemClassification.trap)
 
 
 def get_junk_item_names(rand, k: int) -> str:
@@ -58,6 +70,14 @@ def get_junk_item_names(rand, k: int) -> str:
         weights=list(junk_weights.values()),
         k=k)
     return junk
+
+
+def get_trap_item_names(rand, k: int) -> str:
+    trap = rand.choices(
+        list(trap_weights.keys()),
+        weights=list(trap_weights.values()),
+        k=k)
+    return trap
 
 def checkRingFiller(world):
 
@@ -127,6 +147,12 @@ itemList: List[ItemData] = [
     ItemData(0x9393000F, "Power Level Up", ItemClassification.filler),
     ItemData(0x93930010, "Flying Level Up", ItemClassification.filler),
     ItemData(0x93930011, "Team Level Up", ItemClassification.filler),
+
+    ItemData(0x93930100, "Stealth Trap", ItemClassification.trap),
+    ItemData(0x93930101, "Freeze Trap", ItemClassification.trap),
+    ItemData(0x93930102, "No Swap Up", ItemClassification.trap),
+    ItemData(0x93930103, "Ring Trap", ItemClassification.trap),
+    ItemData(0x93930104, "Charmy Trap", ItemClassification.trap),
 ]
 
 junk_weights = {
@@ -143,19 +169,30 @@ junk_weights = {
 }
 
 
-#EL     20
-#Rings  30      5   10   15
-#Shield 20
-#LvlUp  30      9   9   9   3
+trap_weights = {
+    "Stealth Trap": 100,
+    "Freeze Trap": 100,
+    "No Swap Up": 100,
+    "Ring Trap": 100,
+    "Charmy Trap": 100
+    }
+
+
+#Traps Here
+
+#Stealth
+#Freeze Trap (Time Stop)
+#No Swapping
+#-50 Rings
+#Charmy Trap/Chaotix Team Blast Sound Trap
+#Omachao Trap/Hint Trap
 
 
 
 
-#if 1
-#20 rings should be no more than 0.5%
-#10 rings should be no more than 1%
-#5 rings should be no more than 2.5
+#stealth
 
-
-
-#item_name_to_id: Dict[str, int] = {item.itemName: item.code for item in itemList}
+#OP 2
+#FF 1 and 2 (Frogs)
+#HC 2
+#EF 1 and 2
