@@ -55,11 +55,22 @@ def create_items(world: "SonicHeroesWorld"):
     junk_count = remaining_locations - trap_count
 
 
+    junk_weights["Stealth Trap"] = world.options.stealth_trap_weight.value
+
+    trap_weights = {
+    "Stealth Trap": world.options.stealth_trap_weight.value,
+    "Freeze Trap": world.options.freeze_trap_weight.value,
+    "No Swap Trap": world.options.no_swap_trap_weight.value,
+    "Ring Trap": world.options.ring_trap_weight.value,
+    "Charmy Trap": world.options.charmy_trap_weight.value
+    }
+
+
     junk = get_junk_item_names(world.multiworld.random, junk_count)
     for name in junk:
         create_item(world, name, ItemClassification.filler)
 
-    trap = get_trap_item_names(world.multiworld.random, trap_count)
+    trap = get_trap_item_names(world.multiworld.random, trap_count, trap_weights)
     for name in trap:
         create_item(world, name, ItemClassification.trap)
 
@@ -72,7 +83,7 @@ def get_junk_item_names(rand, k: int) -> str:
     return junk
 
 
-def get_trap_item_names(rand, k: int) -> str:
+def get_trap_item_names(rand, k: int, trap_weights) -> str:
     trap = rand.choices(
         list(trap_weights.keys()),
         weights=list(trap_weights.values()),
@@ -167,15 +178,6 @@ junk_weights = {
     "Flying Level Up": 72,
     "Team Level Up": 24,
 }
-
-
-trap_weights = {
-    "Stealth Trap": 100,
-    "Freeze Trap": 100,
-    "No Swap Trap": 100,
-    "Ring Trap": 100,
-    "Charmy Trap": 100
-    }
 
 #stealth
 #OP 2

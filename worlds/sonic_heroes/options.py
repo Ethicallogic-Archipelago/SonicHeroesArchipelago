@@ -182,7 +182,7 @@ class RingLink(Toggle):
 class RingLinkOverlord(Toggle):
     """
     Should Ring Link be enabled on Metal Overlord?
-    This requires to be enabled to have any effect
+    This requires Ring Link to be enabled to have any effect
     """
     display_name = "Ring Link on Metal Overlord"
 
@@ -201,7 +201,55 @@ class TrapFill(Range):
     range_end = 100
     default = 0
 
+class StealthTrapWeight(Range):
+    """
+    Determines the weight (not percent) for Stealth Trap.
+    Traps must be enabled for this to have any effect.
+    """
+    display_name = "Stealth Trap Weight"
+    range_start = 0
+    range_end = 100
+    default = 50
 
+class FreezeTrapWeight(Range):
+    """
+    Determines the weight (not percent) for Freeze Trap.
+    Traps must be enabled for this to have any effect.
+    """
+    display_name = "Freeze Trap Weight"
+    range_start = 0
+    range_end = 100
+    default = 50
+
+class NoSwapTrapWeight(Range):
+    """
+    Determines the weight (not percent) for No Swap Trap.
+    Traps must be enabled for this to have any effect.
+    """
+    display_name = "No Swap Trap Weight"
+    range_start = 0
+    range_end = 100
+    default = 50
+
+class RingTrapWeight(Range):
+    """
+    Determines the weight (not percent) for Ring Trap.
+    Traps must be enabled for this to have any effect.
+    """
+    display_name = "Ring Trap Weight"
+    range_start = 0
+    range_end = 100
+    default = 50
+
+class CharmyTrapWeight(Range):
+    """
+    Determines the weight (not percent) for Charmy Trap.
+    Traps must be enabled for this to have any effect.
+    """
+    display_name = "Charmy Trap Weight"
+    range_start = 0
+    range_end = 100
+    default = 50
 
 
 sonic_heroes_option_groups = [
@@ -232,12 +280,18 @@ sonic_heroes_option_groups = [
         ChaotixSanity,
         ChaotixSanityRingInterval
     ]),
-    OptionGroup("Traps", [
-        TrapFill
-    ]),
     OptionGroup("Ring Options", [
         RingLink,
+        RingLinkOverlord,
         ModernRingLoss,
+    ]),
+    OptionGroup("Traps", [
+        TrapFill,
+        StealthTrapWeight,
+        FreezeTrapWeight,
+        NoSwapTrapWeight,
+        RingTrapWeight,
+        CharmyTrapWeight
     ]),
     OptionGroup("DeathLink", [
         DeathLink
@@ -275,5 +329,10 @@ class SonicHeroesOptions(PerGameCommonOptions):
     modern_ring_loss: ModernRingLoss
 
     trap_fill: TrapFill
+    stealth_trap_weight: StealthTrapWeight
+    freeze_trap_weight: FreezeTrapWeight
+    no_swap_trap_weight: NoSwapTrapWeight
+    ring_trap_weight: RingTrapWeight
+    charmy_trap_weight: CharmyTrapWeight
 
     death_link: DeathLink

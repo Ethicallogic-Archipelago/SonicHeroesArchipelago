@@ -102,6 +102,13 @@ class SonicHeroesWorld(World):
         if (not(self.options.enable_mission_a.value or self.options.enable_mission_b.value)):
             raise OptionError("[ERROR] Either Mission A or Mission B must be enabled")
 
+        if (self.options.stealth_trap_weight.value == 0 and
+        self.options.freeze_trap_weight.value == 0 and
+        self.options.no_swap_trap_weight.value == 0 and
+        self.options.ring_trap_weight.value == 0 and
+        self.options.charmy_trap_weight.value == 0):
+            raise OptionError("[ERROR] The Trap Weights must not all be zero")
+
         if (self.options.enable_mission_a.value and self.options.enable_mission_b.value):
             self.default_emblem_pool_size *= 2
 
