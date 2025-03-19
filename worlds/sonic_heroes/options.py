@@ -202,6 +202,8 @@ class TrapFill(Range):
     default = 0
 
 
+
+
 sonic_heroes_option_groups = [
     OptionGroup("Goal Options", [
         Goal,

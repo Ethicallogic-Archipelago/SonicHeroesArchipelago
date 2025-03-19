@@ -150,7 +150,7 @@ itemList: List[ItemData] = [
 
     ItemData(0x93930100, "Stealth Trap", ItemClassification.trap),
     ItemData(0x93930101, "Freeze Trap", ItemClassification.trap),
-    ItemData(0x93930102, "No Swap Up", ItemClassification.trap),
+    ItemData(0x93930102, "No Swap Trap", ItemClassification.trap),
     ItemData(0x93930103, "Ring Trap", ItemClassification.trap),
     ItemData(0x93930104, "Charmy Trap", ItemClassification.trap),
 ]
@@ -172,26 +172,12 @@ junk_weights = {
 trap_weights = {
     "Stealth Trap": 100,
     "Freeze Trap": 100,
-    "No Swap Up": 100,
+    "No Swap Trap": 100,
     "Ring Trap": 100,
     "Charmy Trap": 100
     }
 
-
-#Traps Here
-
-#Stealth
-#Freeze Trap (Time Stop)
-#No Swapping
-#-50 Rings
-#Charmy Trap/Chaotix Team Blast Sound Trap
-#Omachao Trap/Hint Trap
-
-
-
-
 #stealth
-
 #OP 2
 #FF 1 and 2 (Frogs)
 #HC 2
