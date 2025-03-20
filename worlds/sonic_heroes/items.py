@@ -54,9 +54,6 @@ def create_items(world: "SonicHeroesWorld"):
     trap_count = round(remaining_locations * world.options.trap_fill.value / 100)
     junk_count = remaining_locations - trap_count
 
-
-    junk_weights["Stealth Trap"] = world.options.stealth_trap_weight.value
-
     trap_weights = {
     "Stealth Trap": world.options.stealth_trap_weight.value,
     "Freeze Trap": world.options.freeze_trap_weight.value,

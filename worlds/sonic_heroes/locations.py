@@ -5596,10 +5596,10 @@ def generate_locations(world):
     for story in range(4):  #for each story
         if sonic_heroes_story_names[story] in world.story_list: #check of story enabled
             for mission in range(14): #for each mission
-                if world.options.enable_mission_a:  #if mission A enabled
+                if world.options.enable_mission_a.value:  #if mission A enabled
                     location_dict[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[story]} Act 1"] = LocData(currentid + (2 * mission) + (42 * story), f"Team {sonic_heroes_story_names[story]} Level {mission + 1}")
 
-                if world.options.enable_mission_b:  #if mission B enabled
+                if world.options.enable_mission_b.value:  #if mission B enabled
                     location_dict[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[story]} Act 2"] = LocData(currentid + (2 * mission) + (42 * story) + 1, f"Team {sonic_heroes_story_names[story]} Level {mission + 1}")
 
 
