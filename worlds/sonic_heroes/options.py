@@ -35,18 +35,32 @@ class SkipMetalMadness(DefaultOnToggle):
     """
     display_name = "Skip Metal Madness"
 
+
+class ExtraEmblems(Range):
+    """
+    How many extra emblems to add to the itempool?
+    This is capped to avoid too many items
+    There are currently 12 emblems per Story per Mission Type Enabled (A or B or Both)
+    If Sanity options are enabled with a high number of checks, the recommendation is to add extra emblems and reduce the Required Emblems Percent
+    """
+    display_name = "Extra Emblems"
+    range_start = 0
+    range_end = 900
+    default = 0
+
+
 class RequiredEmblemsPercent(Range):
     """
     What percent of the total emblems should be required to unlock the Final Goal? (rounded down)
     This also affects level gates (if enabled)
-    There are currently 24 emblems per story
-    The minimum value is 1 per gate and 1 additional for the final boss (unless there are 0 level gates)
+    This can be 0 which makes all level gates and the final boss have no emblem cost
+    If Sanity options are enabled with a high number of checks, the recommendation is to add extra emblems and reduce the Required Emblems Percent
     """
 
     display_name = "Required Emblems Percent"
     range_start = 0
     range_end = 100
-    default = 80
+    default = 60
 
 class RequiredRank(Choice):
     """
@@ -72,7 +86,7 @@ class NumberOfLevelGates(Range):
     """
     display_name = "Number of Level Gates"
     range_start = 0
-    range_end = 5
+    range_end = 7
     default = 3
 
 class EnableMissionA(DefaultOnToggle):
@@ -257,6 +271,7 @@ sonic_heroes_option_groups = [
         Goal,
         GoalUnlockCondition,
         SkipMetalMadness,
+        ExtraEmblems,
         RequiredEmblemsPercent,
         RequiredRank,
         DontLoseBonusKey
@@ -305,6 +320,7 @@ class SonicHeroesOptions(PerGameCommonOptions):
     goal: Goal
     goal_unlock_condition: GoalUnlockCondition
     skip_metal_madness: SkipMetalMadness
+    extra_emblems: ExtraEmblems
     required_emblems_percent: RequiredEmblemsPercent
     required_rank: RequiredRank
     dont_lose_bonus_key: DontLoseBonusKey

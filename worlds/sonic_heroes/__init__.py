@@ -1,6 +1,6 @@
 import typing
 import string
-from typing import ClassVar, Dict, List, Set, TextIO
+from typing import ClassVar, TextIO
 import math
 import dataclasses
 
@@ -9,18 +9,16 @@ from Options import OptionError
 from worlds.AutoWorld import WebWorld, World
 from worlds.generic.Rules import add_rule, set_rule, forbid_item, add_item_rule
 
+from .names import *
 from .options import *
 from .items import *
-#SonicHeroesItem, item_name_to_id, create_items, junk_weights
 from .locations import *
-#SonicHeroesLocation, location_name_to_id, sonic_mission_locs, sonic_boss_locs, dark_mission_locs,
-#dark_boss_locs, rose_mission_locs, rose_boss_locs, chaotix_mission_locs, chaotix_boss_locs, emerald_locs
 from .regions import *
 
 
 class SonicHeroesWeb(WebWorld):
-    theme = "partyTime"
 
+    theme = "partyTime"
     setup_en = Tutorial(
         tutorial_name="Multiworld Setup Guide",
         description="A guide to setting up the Sonic Heroes randomizer connected to an Archipelago Multiworld.",
@@ -38,41 +36,66 @@ class SonicHeroesWorld(World):
 
     game: str = "Sonic Heroes"
     web = SonicHeroesWeb()
-    options: SonicHeroesOptions
     options_dataclass = SonicHeroesOptions
+    options: SonicHeroesOptions
 
-    item_name_to_id: ClassVar[Dict[str, int]] = {item.itemName: item.code for item in itemList}
-    location_name_to_id: ClassVar[Dict[str, int]] = full_location_dict
+    item_name_to_id: ClassVar[dict[str, int]] = {item.itemName: item.code for item in itemList}  # noqa: F405
+    location_name_to_id: ClassVar[dict[str, int]] = {v.name: k for k, v in location_dict.items()}  # noqa: F405
 
-    topology_present = True
+    topology_present = False
 
 
     def __init__(self, multiworld, player):
 
-        self.disabled_locations: Set[str] = set() #currently not used
-
-        self.default_emblem_pool_size: int = 12 #for only one story
-
+        self.default_emblem_pool_size: int = 12
+        """
+        Number of emblems for only one story and only one mission (A or B)
+        """
+        self.emblem_pool_size = 12
+        """
+        Number of emblems in the itempool
+        """
         self.gate_emblem_costs = []
-
-        self.shuffleable_level_list: List[int] = []
-        self.shuffleable_boss_list: List[int] = []
-
-        self.story_list: List[str] = []
-
-        #self.emblem_cost_victory: int = 0
+        """
+        List of emblem costs for each gate boss
+        """
+        self.shuffleable_level_list: list[int] = []
+        """
+        List of levels that gets shuffled. Used by the client as well.
+        """
+        self.shuffleable_boss_list: list[int] = []
+        """
+        List of bosses/extras that gets shuffled. Used by the client as well.
+        """
+        self.story_list: list[str] = []
+        """
+        List of enabled Stories in order: ["Sonic", "Dark", "Rose", "Chaotix"]
+        """
         self.required_emblems: int = 0
-
+        """
+        Number of required emblems for the final boss (can be 0)
+        """
         self.gate_cost: int = 0
-
+        """
+        Cost for a gate boss (multiplied by the gate)
+        As this is rounded down, the final boss can be different
+        """
         self.gate_level_counts = []
-
+        """
+        Number of levels per gate: [4, 4, 3, 3]
+        """
         self.placed_emeralds = []
-
+        """
+        List to ensure emeralds are only placed once
+        """
         self.emerald_mission_numbers = [2, 4, 6, 8, 10, 12, 14]
-
+        """
+        List of Mission Numbers that contain an emerald bonus stage
+        """
         self.spoiler_string = ""
-
+        """
+        String for printing to the spoiler log
+        """
 
         super().__init__(multiworld, player)
 
@@ -80,21 +103,16 @@ class SonicHeroesWorld(World):
     def generate_early(self) -> None:
 
         if (self.options.sonic_story.value):
-
-            self.story_list.append("Sonic")
+            self.story_list.append(sonic_heroes_story_names[0])
 
         if (self.options.dark_story.value):
-
-            self.story_list.append("Dark")
+            self.story_list.append(sonic_heroes_story_names[1])
 
         if (self.options.rose_story.value):
-
-            self.story_list.append("Rose")
+            self.story_list.append(sonic_heroes_story_names[2])
 
         if (self.options.chaotix_story.value):
-
-            self.story_list.append("Chaotix")
-
+            self.story_list.append(sonic_heroes_story_names[3])
 
         if (len(self.story_list) < 1 or len(self.story_list) > 4):
             raise OptionError("[ERROR] Number of stories enabled is invalid.")
@@ -112,18 +130,49 @@ class SonicHeroesWorld(World):
         if (self.options.enable_mission_a.value and self.options.enable_mission_b.value):
             self.default_emblem_pool_size *= 2
 
-        self.required_emblems = math.floor(self.default_emblem_pool_size * len(self.story_list) *
-        self.options.required_emblems_percent.value / 100)
+        #extra emblem math here
+        max_allowed_emblems = self.default_emblem_pool_size
 
+        max_allowed_emblems *= len(self.story_list)
+
+        if self.options.goal_unlock_condition.value == 1:
+            max_allowed_emblems += 7
+
+
+        #sanity
+        if self.options.enable_mission_a.value:
+            if "Chaotix" in self.story_list:
+                if self.options.chaotix_sanity.value:
+                    #do chaotix sanity
+                    max_allowed_emblems += 223 + int(200 / self.options.chaotix_sanity_ring_interval.value)
+
+        if self.options.enable_mission_b.value:
+            #dark
+            if "Dark" in self.story_list:
+                if self.options.dark_sanity.value:
+                    max_allowed_emblems += int(1400 / self.options.dark_sanity_enemy_interval.value)
+
+            #Rose
+            if "Rose" in self.story_list:
+                if self.options.rose_sanity.value:
+                    max_allowed_emblems += int(2800 / self.options.rose_sanity_ring_interval.value)
+
+            #Chaotix
+            if "Chaotix" in self.story_list:
+                if self.options.chaotix_sanity:
+                    max_allowed_emblems += 266 + int(500 / self.options.chaotix_sanity_ring_interval.value)
+
+
+        self.emblem_pool_size = min(self.options.extra_emblems.value + self.default_emblem_pool_size * len(self.story_list), max_allowed_emblems)
+
+        self.spoiler_string += f"THE EMBLEM POOL SIZE IS {self.emblem_pool_size}\n"
+
+        self.required_emblems = math.floor(self.emblem_pool_size * self.options.required_emblems_percent.value / 100)
 
         if self.options.number_level_gates.value > 3 and len(self.story_list) == 1:
             self.options.number_level_gates.value = 3
 
-        if self.options.number_level_gates.value == 0:
-            self.gate_cost = 0
-
-        else:
-            self.gate_cost = math.floor(self.required_emblems / (self.options.number_level_gates.value + 1))
+        self.gate_cost = math.floor(self.required_emblems / (self.options.number_level_gates.value + 1))
 
 
         for i in range(self.options.number_level_gates.value):
@@ -165,17 +214,15 @@ class SonicHeroesWorld(World):
 
 
 
-    def create_item(self, item: str) -> SonicHeroesItem:
+    def create_item(self, name: str) -> SonicHeroesItem:
 
-        if item in junk_weights.keys():
-            return SonicHeroesItem(item, ItemClassification.filler, self.item_name_to_id[item], self.player)
+        if name in junk_weights.keys():
+            return SonicHeroesItem(name, ItemClassification.filler, self.item_name_to_id[name], self.player)
 
-
-        return SonicHeroesItem(item, ItemClassification.progression, self.item_name_to_id[item], self.player)
+        return SonicHeroesItem(name, ItemClassification.progression, self.item_name_to_id[name], self.player)
 
 
     def create_items(self):
-
         create_items(self)
 
 
@@ -200,8 +247,7 @@ class SonicHeroesWorld(World):
         spoiler_handle.write(self.spoiler_string)
 
 
-
-    def fill_slot_data(self) -> id:
+    def fill_slot_data(self):
         #s2-s15 sonic (Inclusive)
         #d2-d15 dark
         #r2-r15 rose
@@ -218,9 +264,9 @@ class SonicHeroesWorld(World):
         for number in self.shuffleable_boss_list:
             templist.append(f'B{number + 16}')
 
-        self.shuffleable_boss_list = templist
+        templist.append("B23")
 
-        self.shuffleable_boss_list[self.options.number_level_gates.value] = "B23"
+        self.shuffleable_boss_list = templist
 
         #Truncate here to remove unneeded values
         self.shuffleable_boss_list = self.shuffleable_boss_list[0:self.options.number_level_gates.value + 1]
@@ -255,3 +301,30 @@ class SonicHeroesWorld(World):
             "ShuffledBosses": self.shuffleable_boss_list,
             "GateLevelCounts": self.gate_level_counts,
         }
+
+
+
+
+    def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
+        new_hint_data = {}
+        for k, v in location_dict.items():
+            try:
+                location = self.multiworld.get_location(v.name, self.player)
+            except KeyError:
+                continue
+
+            
+            if v.gate == 0:
+                new_hint_data[location.address] = f"Gate {v.gate}: Available from Start"
+
+            elif v.gate > 0:
+                if v.region in sonic_heroes_extra_names.values():
+                    new_hint_data[location.address] = f"Gate {v.gate} Boss: Requires {self.gate_emblem_costs[v.gate]} Emblems and {sonic_heroes_extra_names[self.shuffleable_boss_list[v.gate]]}"
+                else:
+                    new_hint_data[location.address] = f"Gate {v.gate}: Requires {self.gate_emblem_costs[v.gate - 1]} Emblems and {sonic_heroes_extra_names[self.shuffleable_boss_list[v.gate - 1]]}"
+
+            else:
+                self.spoiler_string += f"This check does not exist {location}: {location.address}\n"
+                new_hint_data[location.address] = f"Gate {v.gate}: (Does not exist)"
+
+        hint_data[self.player] = new_hint_data

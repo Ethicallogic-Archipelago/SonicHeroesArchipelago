@@ -1,28 +1,26 @@
-from typing import Dict, Optional, List, Tuple, NamedTuple
+from typing import NamedTuple
 import math
 
 from BaseClasses import Item, ItemClassification
+
+from .names import *
 
 
 class SonicHeroesItem(Item):
     game: str = "Sonic Heroes"
 
-
-class ItemData(NamedTuple):
-    code: int
-    itemName: str
-    classification: ItemClassification
-
-def create_item(world: "SonicHeroesWorld", name: str, classification: ItemClassification, amount: Optional[int] = 1):
+def create_item(world, name: str, classification: ItemClassification, amount: int = 1):
     for i in range(amount):
         world.multiworld.itempool.append(Item(name, classification, world.item_name_to_id[name], world.player))
 
 
-def create_items(world: "SonicHeroesWorld"):
+def create_items(world):
 
     total_location_count = len(world.multiworld.get_unfilled_locations(world.player))
 
-    useful_emblems = world.default_emblem_pool_size * len(world.story_list) - world.required_emblems
+    world.spoiler_string += f"THE FULL ITEM POOL SIZE IS {total_location_count}\n"
+
+    useful_emblems = world.emblem_pool_size - world.required_emblems
 
     #Emblems:
     create_item(world, "Emblem", ItemClassification.progression, world.required_emblems)
@@ -39,7 +37,7 @@ def create_items(world: "SonicHeroesWorld"):
         create_item(world, "Red Chaos Emerald", ItemClassification.progression)
 
     #Fillers:
-    remaining_locations = total_location_count - (world.default_emblem_pool_size * len(world.story_list))
+    remaining_locations = total_location_count - world.emblem_pool_size
 
     if (world.options.goal_unlock_condition.value != 1):
         #remove 7 filler items if Emeralds are added
@@ -136,7 +134,7 @@ def checkRingFiller(world):
 
 
 
-itemList: List[ItemData] = [
+itemList: list[ItemData] = [
     ItemData(0x93930000, "Emblem", ItemClassification.progression),
     ItemData(0x93930001, "Green Chaos Emerald", ItemClassification.progression),
     ItemData(0x93930002, "Blue Chaos Emerald", ItemClassification.progression),

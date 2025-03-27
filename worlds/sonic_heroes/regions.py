@@ -8,6 +8,16 @@ from .locations import *
 def create_region(world, name: str, hint: str):
     region = Region(name, world.player, world.multiworld)
     create_locations(world, region)
+
+    if name == "Metal Overlord":
+        location = Location(world.player, "Metal Overlord", None, region)
+        region.locations.append(location)
+
+    if "Gate Boss between " in name:
+        #Region name: f"Gate Boss between Gate {i} and Gate {i + 1}"
+        location = Location(world.player, f"Boss Gate {int(name[-1:])}", None, region)
+        region.locations.append(location)
+
     world.multiworld.regions.append(region)
 
 
@@ -45,7 +55,7 @@ def create_regions(world):
 
 def connect_entrances(world):
 
-    names: Dict[str, int] = {}
+    names: dict[str, int] = {}
 
     #0 is emblems and emeralds
     #1 is emblems
@@ -86,8 +96,17 @@ def connect_entrances(world):
             for location_number in range(14):
                 connect(world, "Gate 0", f"Team {team} Level {location_number + 1}")
 
+            for k, v in location_dict.items():
+                if v.region == f"Team {team} Level {location_number + 1}":
+                    v.gate = 0
+
         for i in range(7):
             connect(world, "Gate 0", f"Emerald {i + 1}")
+
+            for k, v in location_dict.items():
+                if v.region == f"Emerald {i + 1}":
+                    v.gate = 0
+
         world.gate_level_counts.append(14 * len(world.story_list))
 
     else:
@@ -109,10 +128,22 @@ def connect_entrances(world):
                 team = world.story_list[math.floor(level_id / 14)]
                 story_level_id = (level_id % 14) + 1
                 connect(world, f"Gate {gate}", f"Team {team} Level {story_level_id}")
+
+                for k, v in location_dict.items():
+                    if v.region == f"Team {team} Level {story_level_id}":
+                        v.gate = gate
+
                 if (story_level_id in world.emerald_mission_numbers):
                     if int(story_level_id / 2) not in world.placed_emeralds:
                         connect(world, f"Gate {gate}", f"Emerald {int(story_level_id / 2)}")
                         world.placed_emeralds.append(int(story_level_id / 2))
+
+                        for k, v in location_dict.items():
+                            if v.region == f"Emerald {int(story_level_id / 2)}":
+                                v.gate = gate
+
+
+
                 level_iterator += 1
             if gate == 0:
                 connect(world, "Menu", f"Gate {gate}")
@@ -121,10 +152,18 @@ def connect_entrances(world):
                 lambda state, gate_i_= gate: state.has("Emblem", world.player, world.gate_cost * gate_i_),
                 rule_to_str=f"Emblems Required: {world.gate_cost * gate}")
                 connect(world, f"Gate Boss between Gate {gate - 1} and Gate {gate}", f"{sonic_heroes_extra_names[world.shuffleable_boss_list[gate - 1]]}")
+
+                for k, v in location_dict.items():
+                    if v.region == f"{sonic_heroes_extra_names[world.shuffleable_boss_list[gate - 1]]}":
+                        v.gate = gate - 1
+
                 connect(world, f"Gate {gate - 1}", f"Gate {gate}",
                 lambda state, gate_i_=gate: state.has(f"Boss Gate Item {gate_i_}", world.player),
                 rule_to_str=f"Boss Gate Item {gate} Required")
 
+    #for k, v in location_dict.items():
+        #if v.gate < 0:
+            #world.spoiler_string += f"This Entry has a negative gate: {k}, {v.name}, {v.gate}, {v.region}\n"
 
 
 
@@ -132,7 +171,7 @@ def connect(
     world,
     source: str,
     target: str,
-    rule: Optional[Callable] = None,
+    rule = None,
     reach: Optional[bool] = False,
     rule_to_str: Optional[str] = None,
 ) -> Optional[Entrance]:
