@@ -86,7 +86,7 @@ class NumberOfLevelGates(Range):
     """
     display_name = "Number of Level Gates"
     range_start = 0
-    range_end = 7
+    range_end = 5
     default = 3
 
 class EnableMissionA(DefaultOnToggle):
