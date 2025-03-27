@@ -17,13 +17,13 @@ def generate_locations(world):
             for mission in range(14): #for each mission
                 if world.options.enable_mission_a.value:  #if mission A enabled
                     #location_dict[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[story]} Act 1"] = LocData(currentid + (2 * mission) + (42 * story), f"Team {sonic_heroes_story_names[story]} Level {mission + 1}")
-                    location_dict[currentid + (2 * mission) + (42 * story)].region = f"Team {world.story_list[story]} Level {mission + 1}"
+                    location_dict[currentid + (2 * mission) + (42 * story)].region = f"Team {sonic_heroes_story_names[story]} Level {mission + 1}"
                     # 0x939300a0: LocationData("Seaside Hill Sonic Act 1", "No Region", -99),
 
 
                 if world.options.enable_mission_b.value:  #if mission B enabled
                     #location_dict[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[story]} Act 2"] = LocData(currentid + (2 * mission) + (42 * story) + 1, f"Team {sonic_heroes_story_names[story]} Level {mission + 1}")
-                    location_dict[currentid + (2 * mission) + (42 * story) + 1].region = f"Team {world.story_list[story]} Level {mission + 1}"
+                    location_dict[currentid + (2 * mission) + (42 * story) + 1].region = f"Team {sonic_heroes_story_names[story]} Level {mission + 1}"
 
 
     #emeralds
