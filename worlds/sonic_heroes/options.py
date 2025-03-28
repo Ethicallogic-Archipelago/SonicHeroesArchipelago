@@ -45,7 +45,7 @@ class ExtraEmblems(Range):
     """
     display_name = "Extra Emblems"
     range_start = 0
-    range_end = 900
+    range_end = 150
     default = 0
 
 
