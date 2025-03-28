@@ -7,7 +7,6 @@ import dataclasses
 from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, Region
 from Options import OptionError
 from worlds.AutoWorld import WebWorld, World
-from worlds.generic.Rules import add_rule, set_rule, forbid_item, add_item_rule
 
 from .names import *
 from .options import *

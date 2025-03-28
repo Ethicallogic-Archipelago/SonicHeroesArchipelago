@@ -96,9 +96,9 @@ def connect_entrances(world):
             for location_number in range(14):
                 connect(world, "Gate 0", f"Team {team} Level {location_number + 1}")
 
-            for k, v in location_dict.items():
-                if v.region == f"Team {team} Level {location_number + 1}":
-                    v.gate = 0
+                for k, v in location_dict.items():
+                    if v.region == f"Team {team} Level {location_number + 1}":
+                        v.gate = 0
 
         for i in range(7):
             connect(world, "Gate 0", f"Emerald {i + 1}")
