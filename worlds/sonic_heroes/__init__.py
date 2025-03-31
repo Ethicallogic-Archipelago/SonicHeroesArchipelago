@@ -271,7 +271,7 @@ class SonicHeroesWorld(World):
         self.shuffleable_boss_list = templist
 
         return {
-            "ModVersion": 100,
+            "ModVersion": "1.1.0",
 
             "Goal": self.options.goal.value,
             "GoalUnlockCondition": self.options.goal_unlock_condition.value,
@@ -312,18 +312,19 @@ class SonicHeroesWorld(World):
             except KeyError:
                 continue
 
-            
-            if v.gate == 0:
-                new_hint_data[location.address] = f"Gate {v.gate}: Available from Start"
-
-            elif v.gate > 0:
-                if v.region in sonic_heroes_extra_names.values():
-                    new_hint_data[location.address] = f"Gate {v.gate} Boss: Requires {self.gate_emblem_costs[v.gate]} Emblems and {sonic_heroes_extra_names[self.shuffleable_boss_list[v.gate]]}"
-                else:
-                    new_hint_data[location.address] = f"Gate {v.gate}: Requires {self.gate_emblem_costs[v.gate - 1]} Emblems and {sonic_heroes_extra_names[self.shuffleable_boss_list[v.gate - 1]]}"
+            if v.region in sonic_heroes_extra_names.values():
+                new_hint_data[
+                    location.address] = f"Gate {v.gate} Boss: Requires {self.gate_emblem_costs[v.gate]} Emblems and {sonic_heroes_extra_names[self.shuffleable_boss_list[v.gate]]}"
 
             else:
-                self.spoiler_string += f"This check does not exist {location}: {location.address}\n"
-                new_hint_data[location.address] = f"Gate {v.gate}: (Does not exist)"
+                if v.gate == 0:
+                    new_hint_data[location.address] = f"Gate {v.gate}: Available from Start"
+
+                elif v.gate > 0:
+                    new_hint_data[location.address] = f"Gate {v.gate}: Requires {self.gate_emblem_costs[v.gate - 1]} Emblems and {sonic_heroes_extra_names[self.shuffleable_boss_list[v.gate - 1]]}"
+
+                else:
+                    self.spoiler_string += f"This check does not exist {location}: {location.address}\n"
+                    new_hint_data[location.address] = f"Gate {v.gate}: (Does not exist)"
 
         hint_data[self.player] = new_hint_data

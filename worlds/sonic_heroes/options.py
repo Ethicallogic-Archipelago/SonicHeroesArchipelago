@@ -45,7 +45,7 @@ class ExtraEmblems(Range):
     """
     display_name = "Extra Emblems"
     range_start = 0
-    range_end = 150
+    range_end = 900
     default = 0
 
 
@@ -86,7 +86,7 @@ class NumberOfLevelGates(Range):
     """
     display_name = "Number of Level Gates"
     range_start = 0
-    range_end = 5
+    range_end = 7
     default = 3
 
 class EnableMissionA(DefaultOnToggle):
@@ -123,7 +123,7 @@ class DarkSanity(Toggle):
 
 class DarkSanityEnemyInterval(Choice):
     """
-    How many enemys are needed for a sanity check?
+    How many enemies are needed for a sanity check?
     Requires Mission B to be enabled
     1 results in 1400 checks
     20 results in 70 checks
