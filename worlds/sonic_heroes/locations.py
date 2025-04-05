@@ -102,8 +102,14 @@ def create_locations_from_dict(world, loc_dict, region):
 def create_location(world, region, name: str, code: int):
     location = Location(world.player, name, code, region)
 
+
     if "Emerald Stage" in name:
-        location.progress_type = LocationProgressType.PRIORITY
+        if world.options.emerald_stage_location_type.value == 0:
+            location.progress_type = LocationProgressType.PRIORITY
+
+        elif world.options.emerald_stage_location_type.value == 2:
+            location.progress_type = LocationProgressType.EXCLUDED
+
     region.locations.append(location)
 
 

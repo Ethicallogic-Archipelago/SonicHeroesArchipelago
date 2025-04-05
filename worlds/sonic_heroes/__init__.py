@@ -162,23 +162,35 @@ class SonicHeroesWorld(World):
                     max_allowed_emblems += 266 + int(500 / self.options.chaotix_sanity_ring_interval.value)
 
 
+
+        #if self.options.number_level_gates.value > 3 and len(self.story_list) == 1:
+            #self.options.number_level_gates.value = 3
+
+        max_allowed_emblems += self.options.number_level_gates.value
+
         self.emblem_pool_size = min(self.options.extra_emblems.value + self.default_emblem_pool_size * len(self.story_list), max_allowed_emblems)
+
+        num_mission_types_enabled = 1
+
+        if self.options.enable_mission_a.value and self.options.enable_mission_b.value:
+            num_mission_types_enabled = 2
+
+        extra_itempool_space = ((14 * num_mission_types_enabled) - self.default_emblem_pool_size) * len(self.story_list)
+
+        if self.options.emerald_stage_location_type.value == 2:
+            if max_allowed_emblems + extra_itempool_space - self.emblem_pool_size < 7:
+                raise OptionError("[ERROR] Cannot set Emerald Stages to Excluded without enough space in the itempool")
 
         self.spoiler_string += f"THE EMBLEM POOL SIZE IS {self.emblem_pool_size}\n"
 
         self.required_emblems = math.floor(self.emblem_pool_size * self.options.required_emblems_percent.value / 100)
 
-        if self.options.number_level_gates.value > 3 and len(self.story_list) == 1:
-            self.options.number_level_gates.value = 3
-
         self.gate_cost = math.floor(self.required_emblems / (self.options.number_level_gates.value + 1))
-
 
         for i in range(self.options.number_level_gates.value):
             self.gate_emblem_costs.append((i + 1) * self.gate_cost)
 
         self.gate_emblem_costs.append(self.required_emblems)
-
 
         for i in range(len(self.story_list)):
             for ii in range(14):
@@ -271,7 +283,7 @@ class SonicHeroesWorld(World):
         self.shuffleable_boss_list = templist
 
         return {
-            "ModVersion": "1.1.2",
+            "ModVersion": "1.1.3",
 
             "Goal": self.options.goal.value,
             "GoalUnlockCondition": self.options.goal_unlock_condition.value,

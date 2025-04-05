@@ -29,6 +29,21 @@ class GoalUnlockCondition(Choice):
     option_emeralds_only = 2
     default = 0
 
+
+
+class EmeraldStageLocationType(Choice):
+    """
+    Which Location type should the Emeralds be?
+    Priority is recommended as it gives a reason to do them
+    Excluded requires enough space in the itempool to generate
+    """
+    display_name = "Emerald Stage Location Type"
+    option_priority = 0
+    option_normal = 1
+    option_excluded = 2
+    default = 0
+
+
 class SkipMetalMadness(DefaultOnToggle):
     """
     Skips Metal Madness when selecting it from level select and goes directly to Metal Overlord (final boss)
@@ -82,7 +97,7 @@ class DontLoseBonusKey(Toggle):
 
 class NumberOfLevelGates(Range):
     """
-    The number emblem-locked gates which lock sets of levels. This is capped to 3 for only 1 story.
+    The number emblem-locked gates which lock sets of levels.
     """
     display_name = "Number of Level Gates"
     range_start = 0
@@ -270,6 +285,7 @@ sonic_heroes_option_groups = [
     OptionGroup("Goal Options", [
         Goal,
         GoalUnlockCondition,
+        EmeraldStageLocationType,
         SkipMetalMadness,
         ExtraEmblems,
         RequiredEmblemsPercent,
@@ -319,6 +335,7 @@ sonic_heroes_option_groups = [
 class SonicHeroesOptions(PerGameCommonOptions):
     goal: Goal
     goal_unlock_condition: GoalUnlockCondition
+    emerald_stage_location_type: EmeraldStageLocationType
     skip_metal_madness: SkipMetalMadness
     extra_emblems: ExtraEmblems
     required_emblems_percent: RequiredEmblemsPercent
