@@ -10,7 +10,7 @@ def create_region(world, name: str, hint: str):
     create_locations(world, region)
 
     if name == "Metal Overlord":
-        location = Location(world.player, "Metal Overlord", None, region)
+        location = Location(world.player, "Victory Location", None, region)
         region.locations.append(location)
 
     if "Gate Boss between " in name:
@@ -62,12 +62,12 @@ def connect_entrances(world):
     #2 is emeralds
 
     if (world.options.goal_unlock_condition.value == 1):
-        connect(world, "Menu", "Metal Overlord", lambda state:
+        connect(world, f"Gate {world.options.number_level_gates.value}", "Metal Overlord", lambda state:
         state.has("Emblem", world.player, world.required_emblems),
         rule_to_str=f"Emblems Required: {world.required_emblems}")
 
     elif (world.options.goal_unlock_condition.value == 2):
-        connect(world, "Menu", "Metal Overlord", lambda state:
+        connect(world, f"Gate {world.options.number_level_gates.value}", "Metal Overlord", lambda state:
             state.has("Green Chaos Emerald", world.player) and
             state.has("Blue Chaos Emerald", world.player) and
             state.has("Yellow Chaos Emerald", world.player) and
@@ -78,7 +78,7 @@ def connect_entrances(world):
             rule_to_str=f"All 7 Chaos Emeralds Required")
 
     elif (world.options.goal_unlock_condition.value == 0):
-        connect(world, "Menu", "Metal Overlord", lambda state:
+        connect(world, f"Gate {world.options.number_level_gates.value}", "Metal Overlord", lambda state:
             state.has("Emblem", world.player, world.required_emblems) and
             state.has("Green Chaos Emerald", world.player) and
             state.has("Blue Chaos Emerald", world.player) and
@@ -96,16 +96,8 @@ def connect_entrances(world):
             for location_number in range(14):
                 connect(world, "Gate 0", f"Team {team} Level {location_number + 1}")
 
-                for k, v in location_dict.items():
-                    if v.region == f"Team {team} Level {location_number + 1}":
-                        v.gate = 0
-
         for i in range(7):
             connect(world, "Gate 0", f"Emerald {i + 1}")
-
-            for k, v in location_dict.items():
-                if v.region == f"Emerald {i + 1}":
-                    v.gate = 0
 
         world.gate_level_counts.append(14 * len(world.story_list))
 
@@ -129,20 +121,10 @@ def connect_entrances(world):
                 story_level_id = (level_id % 14) + 1
                 connect(world, f"Gate {gate}", f"Team {team} Level {story_level_id}")
 
-                for k, v in location_dict.items():
-                    if v.region == f"Team {team} Level {story_level_id}":
-                        v.gate = gate
-
                 if (story_level_id in world.emerald_mission_numbers):
                     if int(story_level_id / 2) not in world.placed_emeralds:
                         connect(world, f"Gate {gate}", f"Emerald {int(story_level_id / 2)}")
                         world.placed_emeralds.append(int(story_level_id / 2))
-
-                        for k, v in location_dict.items():
-                            if v.region == f"Emerald {int(story_level_id / 2)}":
-                                v.gate = gate
-
-
 
                 level_iterator += 1
             if gate == 0:
@@ -153,17 +135,9 @@ def connect_entrances(world):
                 rule_to_str=f"Emblems Required: {world.gate_cost * gate}")
                 connect(world, f"Gate Boss between Gate {gate - 1} and Gate {gate}", f"{sonic_heroes_extra_names[world.shuffleable_boss_list[gate - 1]]}")
 
-                for k, v in location_dict.items():
-                    if v.region == f"{sonic_heroes_extra_names[world.shuffleable_boss_list[gate - 1]]}":
-                        v.gate = gate - 1
-
-                connect(world, f"Gate {gate - 1}", f"Gate {gate}",
+                connect(world, f"Gate Boss between Gate {gate - 1} and Gate {gate}", f"Gate {gate}",
                 lambda state, gate_i_=gate: state.has(f"Boss Gate Item {gate_i_}", world.player),
                 rule_to_str=f"Boss Gate Item {gate} Required")
-
-    #for k, v in location_dict.items():
-        #if v.gate < 0:
-            #world.spoiler_string += f"This Entry has a negative gate: {k}, {v.name}, {v.gate}, {v.region}\n"
 
 
 

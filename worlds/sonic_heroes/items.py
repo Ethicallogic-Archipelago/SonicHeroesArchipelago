@@ -23,6 +23,7 @@ def create_items(world):
     useful_emblems = world.emblem_pool_size - world.required_emblems
 
     #Emblems:
+    #create_item(world, "Emblem", ItemClassification.progression, world.emblem_pool_size)
     create_item(world, "Emblem", ItemClassification.progression, world.required_emblems)
     create_item(world, "Emblem", ItemClassification.useful, useful_emblems)
 

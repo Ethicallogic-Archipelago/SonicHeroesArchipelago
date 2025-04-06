@@ -1,6 +1,7 @@
 import typing
 import string
 from typing import ClassVar, TextIO
+import re
 import math
 import dataclasses
 
@@ -39,13 +40,17 @@ class SonicHeroesWorld(World):
     options: SonicHeroesOptions
 
     item_name_to_id: ClassVar[dict[str, int]] = {item.itemName: item.code for item in itemList}  # noqa: F405
-    location_name_to_id: ClassVar[dict[str, int]] = {v.name: k for k, v in location_dict.items()}  # noqa: F405
+    location_name_to_id: ClassVar[dict[str, int]] = {v: k for k, v in location_id_name_dict.items()}  # noqa: F405
 
     topology_present = False
 
 
     def __init__(self, multiworld, player):
 
+        self.location_name_to_region: dict[str, str] = {}
+        """
+        Dictionary to store location ids to region
+        """
         self.default_emblem_pool_size: int = 12
         """
         Number of emblems for only one story and only one mission (A or B)
@@ -212,7 +217,7 @@ class SonicHeroesWorld(World):
 
         victory_item = SonicHeroesItem("Victory", ItemClassification.progression, None, self.player)
 
-        self.get_location("Metal Overlord").place_locked_item(victory_item)
+        self.get_location("Victory Location").place_locked_item(victory_item)
 
         for i in range(self.options.number_level_gates.value):
 
@@ -242,12 +247,10 @@ class SonicHeroesWorld(World):
 
 
     #only 0.6.0 here
-    #def connect_entrances(self):
-
+    def connect_entrances(self):
         #connect_entrances(self)
-
-        #from Utils import visualize_regions
-        #visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
+        from Utils import visualize_regions
+        visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
 
 
 
@@ -318,25 +321,40 @@ class SonicHeroesWorld(World):
 
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
         new_hint_data = {}
-        for k, v in location_dict.items():
-            try:
-                location = self.multiworld.get_location(v.name, self.player)
-            except KeyError:
-                continue
 
-            if v.region in sonic_heroes_extra_names.values():
-                new_hint_data[
-                    location.address] = f"Gate {v.gate} Boss: Requires {self.gate_emblem_costs[v.gate]} Emblems and {sonic_heroes_extra_names[self.shuffleable_boss_list[v.gate]]}"
+        pattern = r"Gate (\d+)"
+        for entrance in self.get_entrances():
+            match = re.search(pattern, entrance.parent_region.name)
+            if match:
+                gate_number = int(match.group(1))
+                for loc in entrance.connected_region.get_locations():
+                    if loc.address is not None:
+                        if loc.name == "Metal Overlord":
+                            if self.options.goal_unlock_condition == 1: #Emblems only
+                                new_hint_data[loc.address] = f"Final Boss after Gate {len(self.gate_emblem_costs) - 1}: Requires {self.gate_emblem_costs[-1]} Emblems"
+                            elif self.options.goal_unlock_condition == 2: #Emeralds Only
+                                if self.options.number_level_gates == 0:
+                                    new_hint_data[loc.address] = f"Final Boss after Gate {len(self.gate_emblem_costs) - 1}: Requires the 7 Chaos Emeralds. Gate {len(self.gate_emblem_costs) - 1} is Available From Start"
+                                else:
+                                    new_hint_data[
+                                        loc.address] = f"Final Boss after Gate {len(self.gate_emblem_costs) - 1}: Requires the 7 Chaos Emeralds. Gate {len(self.gate_emblem_costs) - 1} Requires {self.gate_emblem_costs[-2]} Emblems and {self.shuffleable_boss_list[len(self.gate_emblem_costs) - 2]}"
+                            else: #Both
+                                new_hint_data[loc.address] = f"Final Boss after Gate {len(self.gate_emblem_costs) - 1}: Requires {self.gate_emblem_costs[-1]} Emblems and the 7 Chaos Emeralds"
 
-            else:
-                if v.gate == 0:
-                    new_hint_data[location.address] = f"Gate {v.gate}: Available from Start"
+                        elif entrance.connected_region.name in sonic_heroes_extra_names.values():
+                            new_hint_data[loc.address] = f"Gate {gate_number} Boss: Requires {self.gate_emblem_costs[gate_number]} Emblems and {sonic_heroes_extra_names[self.shuffleable_boss_list[gate_number]]}"
+                            #self.spoiler_string += f"Adding Extended Hint Info for location: {loc.name} :::: Gate {gate_number} Boss: Requires {self.gate_emblem_costs[gate_number]} Emblems and {sonic_heroes_extra_names[self.shuffleable_boss_list[gate_number]]}\n"
 
-                elif v.gate > 0:
-                    new_hint_data[location.address] = f"Gate {v.gate}: Requires {self.gate_emblem_costs[v.gate - 1]} Emblems and {sonic_heroes_extra_names[self.shuffleable_boss_list[v.gate - 1]]}"
+                        else:
+                            if gate_number == 0:
+                                new_hint_data[loc.address] = f"Gate {gate_number}: Available from Start"
+                                #self.spoiler_string += f"Adding Extended Hint Info for location: {loc.name} :::: Gate {gate_number}: Available from Start\n"
+                            else:
+                                new_hint_data[loc.address] = f"Gate {gate_number}: Requires {self.gate_emblem_costs[gate_number - 1]} Emblems and {sonic_heroes_extra_names[self.shuffleable_boss_list[gate_number - 1]]}"
+                                #self.spoiler_string += f"Adding Extended Hint Info for location: {loc.name} :::: Gate {gate_number}: Requires {self.gate_emblem_costs[gate_number - 1]} Emblems and {sonic_heroes_extra_names[self.shuffleable_boss_list[gate_number - 1]]}\n"
 
-                else:
-                    self.spoiler_string += f"This check does not exist {location}: {location.address}\n"
-                    new_hint_data[location.address] = f"Gate {v.gate}: (Does not exist)"
 
+        #for key, value in new_hint_data.items():
+        #    self.spoiler_string += f"Hint for {location_id_name_dict[key]} is: {value}\n"
+        #self.spoiler_string += f"\n\n"
         hint_data[self.player] = new_hint_data
