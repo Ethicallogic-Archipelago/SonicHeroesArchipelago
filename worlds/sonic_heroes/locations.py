@@ -112,6 +112,7 @@ def generate_rose_sanity(world):
 def generate_chaotix_sanity(world):
     #Chaotix Sanity
     #1189 checks - 524
+    #Mission B only is 266 + CP
     #SH - 10, 20
     #OP - 0, 0
     #GM - 85, 85

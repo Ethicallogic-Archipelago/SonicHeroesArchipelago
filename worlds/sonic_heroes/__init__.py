@@ -51,11 +51,11 @@ class SonicHeroesWorld(World):
         """
         Dictionary to store location ids to region
         """
-        self.default_emblem_pool_size: int = 12
+        self.default_emblem_pool_size: int = 0
         """
         Number of emblems for only one story and only one mission (A or B)
         """
-        self.emblem_pool_size = 12
+        self.emblem_pool_size = 0
         """
         Number of emblems in the itempool
         """
@@ -131,6 +131,10 @@ class SonicHeroesWorld(World):
         self.options.charmy_trap_weight.value == 0):
             raise OptionError("[ERROR] The Trap Weights must not all be zero")
 
+        self.default_emblem_pool_size: int = self.options.emblem_pool_size.value
+
+        self.emblem_pool_size = self.options.emblem_pool_size.value
+
         if (self.options.enable_mission_a.value and self.options.enable_mission_b.value):
             self.default_emblem_pool_size *= 2
 
@@ -139,7 +143,7 @@ class SonicHeroesWorld(World):
 
         max_allowed_emblems *= len(self.story_list)
 
-        if self.options.goal_unlock_condition.value == 1:
+        if self.options.goal_unlock_condition.value == 1 and self.options.emerald_stage_location_type != 2:
             max_allowed_emblems += 7
 
 
@@ -166,11 +170,6 @@ class SonicHeroesWorld(World):
                 if self.options.chaotix_sanity:
                     max_allowed_emblems += 266 + int(500 / self.options.chaotix_sanity_ring_interval.value)
 
-
-
-        #if self.options.number_level_gates.value > 3 and len(self.story_list) == 1:
-            #self.options.number_level_gates.value = 3
-
         max_allowed_emblems += self.options.number_level_gates.value
 
         self.emblem_pool_size = min(self.options.extra_emblems.value + self.default_emblem_pool_size * len(self.story_list), max_allowed_emblems)
@@ -188,7 +187,7 @@ class SonicHeroesWorld(World):
 
         self.spoiler_string += f"THE EMBLEM POOL SIZE IS {self.emblem_pool_size}\n"
 
-        self.required_emblems = math.floor(self.emblem_pool_size * self.options.required_emblems_percent.value / 100)
+        self.required_emblems = math.floor(self.default_emblem_pool_size * len(self.story_list) * self.options.required_emblems_percent.value / 100)
 
         self.gate_cost = math.floor(self.required_emblems / (self.options.number_level_gates.value + 1))
 
@@ -244,13 +243,15 @@ class SonicHeroesWorld(World):
 
     def set_rules(self):
         self.multiworld.completion_condition[self.player] = lambda state: state.has("Victory", self.player)
+        if self.gate_cost > 0:
+            self.multiworld.local_early_items[self.player]["Emblem"] = self.gate_cost
 
 
     #only 0.6.0 here
-    def connect_entrances(self):
+    #def connect_entrances(self):
         #connect_entrances(self)
-        from Utils import visualize_regions
-        visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
+        #from Utils import visualize_regions
+        #visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
 
 
 

@@ -51,12 +51,23 @@ class SkipMetalMadness(DefaultOnToggle):
     display_name = "Skip Metal Madness"
 
 
+class EmblemPoolSize(Range):
+    """
+    How many Emblems should be addded to the itempool?
+    This is per Mission Act enabled (A and B) and Story
+    """
+    display_name = "Emblem Pool Size"
+    range_start = 0
+    range_end = 14
+    default = 12
+
+
 class ExtraEmblems(Range):
     """
     How many extra emblems to add to the itempool?
-    This is capped to avoid too many items
-    There are currently 12 emblems per Story per Mission Type Enabled (A or B or Both)
-    If Sanity options are enabled with a high number of checks, the recommendation is to add extra emblems and reduce the Required Emblems Percent
+    These allow for easier unlocking of gates as they are NOT used calculate emblem costs
+    This is capped at available spots in the location pool
+    Very high values can allow for very fast gate and goal unlocks with sanity enabled
     """
     display_name = "Extra Emblems"
     range_start = 0
@@ -66,16 +77,14 @@ class ExtraEmblems(Range):
 
 class RequiredEmblemsPercent(Range):
     """
-    What percent of the total emblems should be required to unlock the Final Goal? (rounded down)
+    What percent of the Emblem pool size emblems should be required to unlock the Final Goal? (rounded down)
     This also affects level gates (if enabled)
     This can be 0 which makes all level gates and the final boss have no emblem cost
-    If Sanity options are enabled with a high number of checks, the recommendation is to add extra emblems and reduce the Required Emblems Percent
     """
-
     display_name = "Required Emblems Percent"
     range_start = 0
     range_end = 100
-    default = 60
+    default = 100
 
 class RequiredRank(Choice):
     """
@@ -287,6 +296,7 @@ sonic_heroes_option_groups = [
         GoalUnlockCondition,
         EmeraldStageLocationType,
         SkipMetalMadness,
+        EmblemPoolSize,
         ExtraEmblems,
         RequiredEmblemsPercent,
         RequiredRank,
@@ -337,6 +347,7 @@ class SonicHeroesOptions(PerGameCommonOptions):
     goal_unlock_condition: GoalUnlockCondition
     emerald_stage_location_type: EmeraldStageLocationType
     skip_metal_madness: SkipMetalMadness
+    emblem_pool_size: EmblemPoolSize
     extra_emblems: ExtraEmblems
     required_emblems_percent: RequiredEmblemsPercent
     required_rank: RequiredRank
