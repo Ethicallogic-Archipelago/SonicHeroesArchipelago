@@ -53,11 +53,11 @@ class SonicHeroesWorld(World):
         """
         self.default_emblem_pool_size: int = 0
         """
-        Number of emblems for only one story and only one mission (A or B)
+        Number of emblems for all stories and mission acts
         """
         self.emblem_pool_size = 0
         """
-        Number of emblems in the itempool
+        Number of emblems in the itempool (including extra)
         """
         self.gate_emblem_costs = []
         """
@@ -100,29 +100,54 @@ class SonicHeroesWorld(World):
         """
         String for printing to the spoiler log
         """
+        ###   4 gates 2 stories    1 3 5 7 9 11 13
 
         super().__init__(multiworld, player)
 
 
     def generate_early(self) -> None:
 
-        if (self.options.sonic_story.value):
+        number_of_enabled_mission_blocks = 0
+        max_allowed_emblems = 0
+        if self.options.sonic_story.value > 0:
+            if self.options.sonic_story.value == 1 or self.options.sonic_story.value == 3:
+                number_of_enabled_mission_blocks += 1
+            if self.options.sonic_story.value == 2 or self.options.sonic_story.value == 3:
+                number_of_enabled_mission_blocks += 1
             self.story_list.append(sonic_heroes_story_names[0])
 
-        if (self.options.dark_story.value):
+        if self.options.dark_story.value > 0:
+            if self.options.dark_story.value == 1 or self.options.dark_story.value == 3:
+                number_of_enabled_mission_blocks += 1
+            if self.options.dark_story.value == 2 or self.options.dark_story.value == 3:
+                number_of_enabled_mission_blocks += 1
+                if self.options.dark_sanity.value > 0:
+                    max_allowed_emblems += int(1400 / self.options.dark_sanity.value)
             self.story_list.append(sonic_heroes_story_names[1])
 
-        if (self.options.rose_story.value):
+
+        if self.options.rose_story.value > 0:
+            if self.options.rose_story.value == 1 or self.options.rose_story.value == 3:
+                number_of_enabled_mission_blocks += 1
+            if self.options.rose_story.value == 2 or self.options.rose_story.value == 3:
+                number_of_enabled_mission_blocks += 1
+                if self.options.rose_sanity.value > 0:
+                    max_allowed_emblems += int(2800 / self.options.rose_sanity.value)
             self.story_list.append(sonic_heroes_story_names[2])
 
-        if (self.options.chaotix_story.value):
+        if self.options.chaotix_story.value > 0:
+            if self.options.chaotix_story.value == 1 or self.options.chaotix_story.value == 3:
+                number_of_enabled_mission_blocks += 1
+                if self.options.chaotix_sanity > 0:
+                    max_allowed_emblems += 223 + int(200 / self.options.chaotix_sanity.value)
+            if self.options.chaotix_story.value == 2 or self.options.chaotix_story.value == 3:
+                number_of_enabled_mission_blocks += 1
+                if self.options.chaotix_sanity > 0:
+                    max_allowed_emblems += 266 + int(500 / self.options.chaotix_sanity.value)
             self.story_list.append(sonic_heroes_story_names[3])
 
-        if (len(self.story_list) < 1 or len(self.story_list) > 4):
+        if len(self.story_list) < 1 or len(self.story_list) > 4:
             raise OptionError("[ERROR] Number of stories enabled is invalid.")
-
-        if (not(self.options.enable_mission_a.value or self.options.enable_mission_b.value)):
-            raise OptionError("[ERROR] Either Mission A or Mission B must be enabled")
 
         if (self.options.stealth_trap_weight.value == 0 and
         self.options.freeze_trap_weight.value == 0 and
@@ -131,55 +156,19 @@ class SonicHeroesWorld(World):
         self.options.charmy_trap_weight.value == 0):
             raise OptionError("[ERROR] The Trap Weights must not all be zero")
 
-        self.default_emblem_pool_size: int = self.options.emblem_pool_size.value
-
         self.emblem_pool_size = self.options.emblem_pool_size.value
-
-        if (self.options.enable_mission_a.value and self.options.enable_mission_b.value):
-            self.default_emblem_pool_size *= 2
+        self.emblem_pool_size *= number_of_enabled_mission_blocks
+        self.default_emblem_pool_size: int = self.emblem_pool_size
 
         #extra emblem math here
-        max_allowed_emblems = self.default_emblem_pool_size
-
-        max_allowed_emblems *= len(self.story_list)
-
+        max_allowed_emblems += self.emblem_pool_size
         if self.options.goal_unlock_condition.value == 1 and self.options.emerald_stage_location_type != 2:
             max_allowed_emblems += 7
-
-
-        #sanity
-        if self.options.enable_mission_a.value:
-            if "Chaotix" in self.story_list:
-                if self.options.chaotix_sanity.value:
-                    #do chaotix sanity
-                    max_allowed_emblems += 223 + int(200 / self.options.chaotix_sanity_ring_interval.value)
-
-        if self.options.enable_mission_b.value:
-            #dark
-            if "Dark" in self.story_list:
-                if self.options.dark_sanity.value:
-                    max_allowed_emblems += int(1400 / self.options.dark_sanity_enemy_interval.value)
-
-            #Rose
-            if "Rose" in self.story_list:
-                if self.options.rose_sanity.value:
-                    max_allowed_emblems += int(2800 / self.options.rose_sanity_ring_interval.value)
-
-            #Chaotix
-            if "Chaotix" in self.story_list:
-                if self.options.chaotix_sanity:
-                    max_allowed_emblems += 266 + int(500 / self.options.chaotix_sanity_ring_interval.value)
-
         max_allowed_emblems += self.options.number_level_gates.value
+        self.emblem_pool_size = min(self.emblem_pool_size + self.options.extra_emblems.value, max_allowed_emblems)
 
-        self.emblem_pool_size = min(self.options.extra_emblems.value + self.default_emblem_pool_size * len(self.story_list), max_allowed_emblems)
 
-        num_mission_types_enabled = 1
-
-        if self.options.enable_mission_a.value and self.options.enable_mission_b.value:
-            num_mission_types_enabled = 2
-
-        extra_itempool_space = ((14 * num_mission_types_enabled) - self.default_emblem_pool_size) * len(self.story_list)
+        extra_itempool_space = (14 * number_of_enabled_mission_blocks) - self.emblem_pool_size
 
         if self.options.emerald_stage_location_type.value == 2:
             if max_allowed_emblems + extra_itempool_space - self.emblem_pool_size < 7:
@@ -187,7 +176,8 @@ class SonicHeroesWorld(World):
 
         self.spoiler_string += f"THE EMBLEM POOL SIZE IS {self.emblem_pool_size}\n"
 
-        self.required_emblems = math.floor(self.default_emblem_pool_size * len(self.story_list) * self.options.required_emblems_percent.value / 100)
+        self.required_emblems = math.floor(self.default_emblem_pool_size * self.options.required_emblems_percent.value / 100)
+
 
         self.gate_cost = math.floor(self.required_emblems / (self.options.number_level_gates.value + 1))
 
@@ -202,6 +192,130 @@ class SonicHeroesWorld(World):
 
         for ii in range(7):
             self.shuffleable_boss_list.append(ii)
+
+
+
+        #how to weight levels based on location counts
+        shuffeable_test_list = []
+
+        #sonic
+        if self.options.sonic_story.value > 0:
+            if self.options.sonic_story.value == 1:
+                for i in range(14):
+                    shuffeable_test_list.append([f"SA", i + 1, 1])
+            elif self.options.sonic_story.value == 2:
+                for i in range(14):
+                    shuffeable_test_list.append([f"SB", i + 1, 1])
+            else: #both acts enabled
+                for i in range(14):
+                    shuffeable_test_list.append([f"SC", i + 1, 2])
+
+        #dark
+        if self.options.dark_story.value > 0:
+            if self.options.dark_story.value == 1:
+                for i in range(14):
+                    shuffeable_test_list.append([f"DA", i + 1, 1])
+            elif self.options.dark_story.value == 2:
+                for i in range(14):
+                    shuffeable_test_list.append([f"DB", i + 1, 1])
+            else:  # both acts enabled
+                for i in range(14):
+                    shuffeable_test_list.append([f"DC", i + 1, 2])
+
+        #rose
+        if self.options.rose_story.value > 0:
+            if self.options.rose_story.value == 1:
+                for i in range(14):
+                    shuffeable_test_list.append([f"RA", i + 1, 1])
+            elif self.options.rose_story.value == 2:
+                for i in range(14):
+                    shuffeable_test_list.append([f"RB", i + 1, 1])
+            else:  # both acts enabled
+                for i in range(14):
+                    shuffeable_test_list.append([f"RC", i + 1, 2])
+
+        #chaotix
+        if self.options.chaotix_story.value > 0:
+            if self.options.chaotix_story.value == 1:
+                for i in range(14):
+                    shuffeable_test_list.append([f"CA", i + 1, 1])
+            elif self.options.chaotix_story.value == 2:
+                for i in range(14):
+                    shuffeable_test_list.append([f"CB", i + 1, 1])
+            else:  # both acts enabled
+                for i in range(14):
+                    shuffeable_test_list.append([f"CC", i + 1, 2])
+
+
+        #now shuffle
+        self.random.shuffle(shuffeable_test_list)
+
+        #shuffeable_test_list = [['DB', 1, 1], ['DB', 3, 1],['DB', 5, 1], ['DB', 7, 1],
+         #['DB', 9, 1], ['DB', 11, 1],['DB', 13, 1], ['CC', 1, 2],
+         #['CC', 2, 2], ['CC', 3, 2], ['CC', 4, 2], ['CC', 5, 2], ['CC', 6, 2], ['CC', 7, 2], ['CC', 8, 2], ['CC', 9, 2],
+         #['CC', 10, 2], ['CC', 11, 2], ['CC', 12, 2], ['CC', 13, 2], ['CC', 14, 2], ['DB', 2, 1], ['DB', 4, 1], ['DB', 6, 1], ['DB', 8, 1], ['DB', 10, 1],  ['DB', 12, 1], ['DB', 14, 1]]
+
+
+
+
+
+        placed_emeralds_test = [2, 4, 6, 8, 10, 12, 14]
+        for entry in shuffeable_test_list:
+            if entry[1] in placed_emeralds_test:
+                entry[2] += 1
+                placed_emeralds_test.remove(entry[1])
+
+        test_levels_per_gate = []
+        test_checks_per_gate = []
+        test_level_list = []
+
+        level_groups = self.options.number_level_gates + 1
+        levels_per_gate = math.floor((len(self.story_list) * 14) / level_groups)
+        total_levels = 14 * len(self.story_list)
+        extra_levels = total_levels % level_groups
+
+        shuffle_index = 0
+        if self.options.number_level_gates > 0:
+            for gate in range(self.options.number_level_gates.value + 1):
+                extra_level_int = 0
+                number_level_in_gate = 0
+                number_check_in_gate = 0
+                temp_int = 0
+                if gate < extra_levels:
+                    extra_level_int += 1
+                while (number_check_in_gate < self.gate_emblem_costs[0] and shuffle_index < len(shuffeable_test_list)) or (number_level_in_gate < levels_per_gate + extra_level_int and shuffle_index < len(shuffeable_test_list)):
+                    team = shuffeable_test_list[shuffle_index][0][:1]
+
+                    for index in range(len(self.story_list)):
+                        if team == self.story_list[index][0:1]:
+                            temp_int = index
+                            team = self.story_list[index]
+
+                    temp_int = 14 * temp_int + shuffeable_test_list[shuffle_index][1] - 1
+                    test_level_list.append(temp_int)
+                    number_check_in_gate += shuffeable_test_list[shuffle_index][2]
+                    number_level_in_gate += 1
+
+
+                    if gate == self.options.number_level_gates.value:
+                        number_check_in_gate -= shuffeable_test_list[shuffle_index][2]
+                    shuffle_index += 1
+
+                test_levels_per_gate.append(number_level_in_gate)
+                test_checks_per_gate.append(number_check_in_gate)
+
+
+
+        print(f"Shuffle Test List: {shuffeable_test_list}")
+        print(f"test levels per gate: {test_levels_per_gate}")
+        print(f"test checks per gate: {test_checks_per_gate}")
+        print(f"Temp Level List: {test_level_list}")
+        print(f"Gate Emblem costs: {self.gate_emblem_costs}")
+
+
+        self.shuffleable_level_list = test_level_list
+        self.gate_level_counts = test_levels_per_gate
+
 
 
         self.random.shuffle(self.shuffleable_level_list)
@@ -247,11 +361,9 @@ class SonicHeroesWorld(World):
             self.multiworld.local_early_items[self.player]["Emblem"] = self.gate_cost
 
 
-    #only 0.6.0 here
-    #def connect_entrances(self):
-        #connect_entrances(self)
-        #from Utils import visualize_regions
-        #visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
+    def connect_entrances(self):
+        from Utils import visualize_regions
+        visualize_regions(self.multiworld.get_region("Menu", self.player), f"{self.player_name}_world.puml")
 
 
 
@@ -294,18 +406,13 @@ class SonicHeroesWorld(World):
             "SkipMetalMadness": self.options.skip_metal_madness.value,
             "RequiredRank": self.options.required_rank.value,
             "DontLoseBonusKey": self.options.dont_lose_bonus_key.value,
-            "EnableMissionA": self.options.enable_mission_a.value,
-            "EnableMissionB": self.options.enable_mission_b.value,
             "SonicStory": self.options.sonic_story.value,
             "DarkStory": self.options.dark_story.value,
             "DarkSanity": self.options.dark_sanity.value,
-            "DarkSanityEnemyInterval": self.options.dark_sanity_enemy_interval.value,
             "RoseStory": self.options.rose_story.value,
             "RoseSanity": self.options.rose_sanity.value,
-            "RoseSanityRingInterval": self.options.rose_sanity_ring_interval.value,
             "ChaotixStory": self.options.chaotix_story.value,
             "ChaotixSanity": self.options.chaotix_sanity.value,
-            "ChaotixSanityRingInterval": self.options.chaotix_sanity_ring_interval.value,
             "RingLink": self.options.ring_link.value,
             "RingLinkOverlord": self.options.ring_link_overlord.value,
             "ModernRingLoss": self.options.modern_ring_loss.value,

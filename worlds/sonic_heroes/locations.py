@@ -12,15 +12,37 @@ def generate_locations(world):
 
     currentid = 0x939300A0
 
-    for story in range(4):  #for each story
-        if sonic_heroes_story_names[story] in world.story_list: #check of story enabled
-            for mission in range(14): #for each mission
-                if world.options.enable_mission_a.value:  #if mission A enabled
-                    world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + (42 * story)]] = f"Team {sonic_heroes_story_names[story]} Level {mission + 1}"
+    #Sonic
+    if world.options.sonic_story.value > 0:
+        for mission in range(14):
+            if world.options.sonic_story.value == 1 or world.options.sonic_story.value == 3:
+                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission)]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
+            if world.options.sonic_story.value == 2 or world.options.sonic_story.value == 3:
+                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 1]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
 
-                if world.options.enable_mission_b.value:  #if mission B enabled
-                    world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + (
-                                42 * story) + 1]] = f"Team {sonic_heroes_story_names[story]} Level {mission + 1}"
+    #Dark
+    if world.options.dark_story.value > 0:
+        for mission in range(14):
+            if world.options.dark_story.value == 1 or world.options.dark_story.value == 3:
+                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 42]] = f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
+            if world.options.dark_story.value == 2 or world.options.dark_story.value == 3:
+                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 42 + 1]] = f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
+
+    #Rose
+    if world.options.rose_story.value > 0:
+        for mission in range(14):
+            if world.options.rose_story.value == 1 or world.options.rose_story.value == 3:
+                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 84]] = f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
+            if world.options.rose_story.value == 2 or world.options.rose_story.value == 3:
+                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 84 + 1]] = f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
+
+    #Chaotix
+    if world.options.chaotix_story.value > 0:
+        for mission in range(14):
+            if world.options.chaotix_story.value == 1 or world.options.chaotix_story.value == 3:
+                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 126]] = f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
+            if world.options.chaotix_story.value == 2 or world.options.chaotix_story.value == 3:
+                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 126 + 1]] = f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
 
     #emeralds
     for i in range(7):
@@ -36,20 +58,19 @@ def generate_locations(world):
                     x = k #x = 0-3 for example
 
 
-            world.spoiler_string += f"Entering Location Dict Entry for extra: {world.shuffleable_boss_list[i]}\nThe Entry is: {sonic_heroes_extra_names[world.shuffleable_boss_list[i]]} {story} --- ID: {currentid + (2 * world.shuffleable_boss_list[i]) + (42 * x)} --- Region Name: {sonic_heroes_extra_names[world.shuffleable_boss_list[i]]}\n\n"
-            #location_dict[currentid + (2 * world.shuffleable_boss_list[i]) + (42 * x)].region = f"{sonic_heroes_extra_names[world.shuffleable_boss_list[i]]}"
+            #world.spoiler_string += f"Entering Location Dict Entry for extra: {world.shuffleable_boss_list[i]}\nThe Entry is: {sonic_heroes_extra_names[world.shuffleable_boss_list[i]]} {story} --- ID: {currentid + (2 * world.shuffleable_boss_list[i]) + (42 * x)} --- Region Name: {sonic_heroes_extra_names[world.shuffleable_boss_list[i]]}\n\n"
             world.location_name_to_region[location_id_name_dict[currentid + (2 * world.shuffleable_boss_list[i]) + (42 * x)]] = f"{sonic_heroes_extra_names[world.shuffleable_boss_list[i]]}"
 
     #Final Boss
     world.location_name_to_region[location_id_name_dict[0x9393165d]] = f"Metal Overlord"
 
-    if world.options.dark_sanity: #dark sanity
+    if world.options.dark_sanity.value > 0 and (world.options.dark_story.value == 2 or world.options.dark_story.value == 3):
         generate_dark_sanity(world)
 
-    if world.options.rose_sanity: #rose sanity
+    if world.options.rose_sanity.value > 0 and (world.options.rose_story.value == 2 or world.options.rose_story.value == 3):
         generate_rose_sanity(world)
 
-    if world.options.chaotix_sanity: #chaotix sanity
+    if world.options.chaotix_sanity.value > 0 and world.options.chaotix_story.value > 0:
         generate_chaotix_sanity(world)
 
 
@@ -85,26 +106,20 @@ def create_location(world, region, name: str, code: int):
 
 
 def generate_dark_sanity(world):
-    if not world.options.enable_mission_b.value:
-        return None #leave if mission B not enabled
-
     #0x9393014F (starts at 150) - 0x939306C7
     currentid = 0x9393014F
 
     for mission in range(14):
-        for i in range(100, 0, -world.options.dark_sanity_enemy_interval):
+        for i in range(100, 0, -world.options.dark_sanity):
             world.location_name_to_region[location_id_name_dict[currentid + i + (mission * 100)]] = f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
 
 
 def generate_rose_sanity(world):
-    if not world.options.enable_mission_b.value:
-        return None #leave if mission B not enabled
-
     #0x939306C7 (starts at 6C8) - 0x939311B7
     currentid = 0x939306C7
 
     for mission in range(14):
-        for i in range(200, 0, -world.options.rose_sanity_ring_interval):
+        for i in range(200, 0, -world.options.rose_sanity):
             world.location_name_to_region[location_id_name_dict[
                 currentid + i + (mission * 200)]] = f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
 
@@ -112,10 +127,12 @@ def generate_rose_sanity(world):
 def generate_chaotix_sanity(world):
     #Chaotix Sanity
     #1189 checks - 524
+    #Mission A only is 223 + CP
     #Mission B only is 266 + CP
+    #Both is 489
     #SH - 10, 20
     #OP - 0, 0
-    #GM - 85, 85
+    #GM - 85, 85 (time limit)
     #PP - 3, 5
     #CP - 200, 500 - 700, 140, 70, 35
     #BH - 10, 20
@@ -132,13 +149,13 @@ def generate_chaotix_sanity(world):
     currentid = 0x939311B7
 
     #Seaside Hill
-    if world.options.enable_mission_a.value:
+    if world.options.chaotix_story.value == 1 or world.options.chaotix_story.value == 3:
         for i in range (10):
             world.location_name_to_region[location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 1"
 
     currentid += 10
 
-    if world.options.enable_mission_b.value:
+    if world.options.chaotix_story.value == 2 or world.options.chaotix_story.value == 3:
         for i in range (20):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 1"
@@ -150,14 +167,14 @@ def generate_chaotix_sanity(world):
 
 
     #Grand Metro
-    if world.options.enable_mission_a.value:
+    if world.options.chaotix_story.value == 1 or world.options.chaotix_story.value == 3:
         for i in range (85):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 3"
 
     currentid += 85
 
-    if world.options.enable_mission_b.value:
+    if world.options.chaotix_story.value == 2 or world.options.chaotix_story.value == 3:
         for i in range (85):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 3"
@@ -166,14 +183,14 @@ def generate_chaotix_sanity(world):
 
 
     #Power Plant
-    if world.options.enable_mission_a.value:
+    if world.options.chaotix_story.value == 1 or world.options.chaotix_story.value == 3:
         for i in range (3):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 4"
 
     currentid += 3
 
-    if world.options.enable_mission_b.value:
+    if world.options.chaotix_story.value == 2 or world.options.chaotix_story.value == 3:
         for i in range (5):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 4"
@@ -182,15 +199,15 @@ def generate_chaotix_sanity(world):
 
 
     #Casino Park
-    if world.options.enable_mission_a.value:
-        for i in range (200, 0, -world.options.chaotix_sanity_ring_interval.value):
+    if world.options.chaotix_story.value == 1 or world.options.chaotix_story.value == 3:
+        for i in range (200, 0, -world.options.chaotix_sanity.value):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i]] = f"Team {sonic_heroes_story_names[3]} Level 5"
 
     currentid += 200
 
-    if world.options.enable_mission_b.value:
-        for i in range (500, 0, -world.options.chaotix_sanity_ring_interval.value):
+    if world.options.chaotix_story.value == 2 or world.options.chaotix_story.value == 3:
+        for i in range (500, 0, -world.options.chaotix_sanity.value):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i]] = f"Team {sonic_heroes_story_names[3]} Level 5"
 
@@ -198,14 +215,14 @@ def generate_chaotix_sanity(world):
 
 
     #Bingo Highway
-    if world.options.enable_mission_a.value:
+    if world.options.chaotix_story.value == 1 or world.options.chaotix_story.value == 3:
         for i in range (10):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 6"
 
     currentid += 10
 
-    if world.options.enable_mission_b.value:
+    if world.options.chaotix_story.value == 2 or world.options.chaotix_story.value == 3:
         for i in range (20):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 6"
@@ -217,14 +234,14 @@ def generate_chaotix_sanity(world):
 
 
     #Bullet Station
-    if world.options.enable_mission_a.value:
+    if world.options.chaotix_story.value == 1 or world.options.chaotix_story.value == 3:
         for i in range (30):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 8"
 
     currentid += 30
 
-    if world.options.enable_mission_b.value:
+    if world.options.chaotix_story.value == 2 or world.options.chaotix_story.value == 3:
         for i in range (50):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 8"
@@ -237,14 +254,14 @@ def generate_chaotix_sanity(world):
 
 
     #Lost Jungle
-    if world.options.enable_mission_a.value:
+    if world.options.chaotix_story.value == 1 or world.options.chaotix_story.value == 3:
         for i in range (10):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 10"
 
     currentid += 10
 
-    if world.options.enable_mission_b.value:
+    if world.options.chaotix_story.value == 2 or world.options.chaotix_story.value == 3:
         for i in range (20):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 10"
@@ -252,14 +269,14 @@ def generate_chaotix_sanity(world):
     currentid += 20
 
     #Hang Castle
-    if world.options.enable_mission_a.value:
+    if world.options.chaotix_story.value == 1 or world.options.chaotix_story.value == 3:
         for i in range (10):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 11"
 
     currentid += 10
 
-    if world.options.enable_mission_b.value:
+    if world.options.chaotix_story.value == 2 or world.options.chaotix_story.value == 3:
         for i in range (10):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 11"
@@ -268,14 +285,14 @@ def generate_chaotix_sanity(world):
 
 
     #Mystic Mansion
-    if world.options.enable_mission_a.value:
+    if world.options.chaotix_story.value == 1 or world.options.chaotix_story.value == 3:
         for i in range (60):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 12"
 
     currentid += 60
 
-    if world.options.enable_mission_b.value:
+    if world.options.chaotix_story.value == 2 or world.options.chaotix_story.value == 3:
         for i in range (46):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 12"
@@ -288,14 +305,14 @@ def generate_chaotix_sanity(world):
 
 
     #Final Fortress
-    if world.options.enable_mission_a.value:
+    if world.options.chaotix_story.value == 1 or world.options.chaotix_story.value == 3:
         for i in range (5):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 14"
 
     currentid += 5
 
-    if world.options.enable_mission_b.value:
+    if world.options.chaotix_story.value == 2 or world.options.chaotix_story.value == 3:
         for i in range (10):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 14"

@@ -61,12 +61,12 @@ def connect_entrances(world):
     #1 is emblems
     #2 is emeralds
 
-    if (world.options.goal_unlock_condition.value == 1):
+    if world.options.goal_unlock_condition.value == 1:
         connect(world, f"Gate {world.options.number_level_gates.value}", "Metal Overlord", lambda state:
         state.has("Emblem", world.player, world.required_emblems),
         rule_to_str=f"Emblems Required: {world.required_emblems}")
 
-    elif (world.options.goal_unlock_condition.value == 2):
+    elif world.options.goal_unlock_condition.value == 2:
         connect(world, f"Gate {world.options.number_level_gates.value}", "Metal Overlord", lambda state:
             state.has("Green Chaos Emerald", world.player) and
             state.has("Blue Chaos Emerald", world.player) and
@@ -77,7 +77,7 @@ def connect_entrances(world):
             state.has("Red Chaos Emerald", world.player),
             rule_to_str=f"All 7 Chaos Emeralds Required")
 
-    elif (world.options.goal_unlock_condition.value == 0):
+    elif world.options.goal_unlock_condition.value == 0:
         connect(world, f"Gate {world.options.number_level_gates.value}", "Metal Overlord", lambda state:
             state.has("Emblem", world.player, world.required_emblems) and
             state.has("Green Chaos Emerald", world.player) and
@@ -103,14 +103,14 @@ def connect_entrances(world):
 
     else:
         level_groups = world.options.number_level_gates + 1
-        levels_per_gate = math.floor((len(world.story_list) * 14) / level_groups)
-        total_levels = 14 * len(world.story_list)
-        extra_levels = total_levels % level_groups
+        #levels_per_gate = math.floor((len(world.story_list) * 14) / level_groups)
+        #total_levels = 14 * len(world.story_list)
+        #extra_levels = total_levels % level_groups
 
-        for i in range(level_groups):
-            world.gate_level_counts.append(levels_per_gate)
-            if (extra_levels > i):
-                world.gate_level_counts[i] += 1
+        #for i in range(level_groups):
+            #world.gate_level_counts.append(levels_per_gate)
+            #if (extra_levels > i):
+                #world.gate_level_counts[i] += 1
 
         level_iterator = 0
 
@@ -121,7 +121,7 @@ def connect_entrances(world):
                 story_level_id = (level_id % 14) + 1
                 connect(world, f"Gate {gate}", f"Team {team} Level {story_level_id}")
 
-                if (story_level_id in world.emerald_mission_numbers):
+                if story_level_id in world.emerald_mission_numbers:
                     if int(story_level_id / 2) not in world.placed_emeralds:
                         connect(world, f"Gate {gate}", f"Emerald {int(story_level_id / 2)}")
                         world.placed_emeralds.append(int(story_level_id / 2))
@@ -161,6 +161,7 @@ def connect(
     connection.connect(target_region)
 
     world.spoiler_string += f"\nConnecting Region {source} to Region {target} with rule: {rule_to_str}\n"
+    #print(f"\nConnecting Region {source} to Region {target} with rule: {rule_to_str}\n")
 
     return connection if reach else None
 

@@ -9,6 +9,7 @@ class Goal(Choice):
 
     Metal Overlord: Beat Metal Overlord
     """
+    internal_name = "goal"
     display_name = "Goal"
     option_metal_overlord = 0
     default = 0
@@ -23,6 +24,7 @@ class GoalUnlockCondition(Choice):
 
     Emeralds Only: Only requires the 7 Chaos Emeralds with no Emblem requirements. Level Gates will still require Emblems to proceed
     """
+    internal_name = "goal_unlock_condition"
     display_name = "Goal Unlock Condition"
     option_normal = 0
     option_emblems_only = 1
@@ -37,6 +39,7 @@ class EmeraldStageLocationType(Choice):
     Priority is recommended as it gives a reason to do them
     Excluded requires enough space in the itempool to generate
     """
+    internal_name = "emerald_stage_location_type"
     display_name = "Emerald Stage Location Type"
     option_priority = 0
     option_normal = 1
@@ -48,14 +51,16 @@ class SkipMetalMadness(DefaultOnToggle):
     """
     Skips Metal Madness when selecting it from level select and goes directly to Metal Overlord (final boss)
     """
+    internal_name = "skip_metal_madness"
     display_name = "Skip Metal Madness"
 
 
 class EmblemPoolSize(Range):
     """
-    How many Emblems should be addded to the itempool?
+    How many Emblems should be added to the itempool?
     This is per Mission Act enabled (A and B) and Story
     """
+    internal_name = "emblem_pool_size"
     display_name = "Emblem Pool Size"
     range_start = 0
     range_end = 14
@@ -69,6 +74,7 @@ class ExtraEmblems(Range):
     This is capped at available spots in the location pool
     Very high values can allow for very fast gate and goal unlocks with sanity enabled
     """
+    internal_name = "extra_emblems"
     display_name = "Extra Emblems"
     range_start = 0
     range_end = 900
@@ -81,6 +87,7 @@ class RequiredEmblemsPercent(Range):
     This also affects level gates (if enabled)
     This can be 0 which makes all level gates and the final boss have no emblem cost
     """
+    internal_name = "required_emblems_percent"
     display_name = "Required Emblems Percent"
     range_start = 0
     range_end = 100
@@ -90,6 +97,7 @@ class RequiredRank(Choice):
     """
     Determines what minimum Rank is required to send a check for a mission
     """
+    internal_name = "required_rank"
     display_name = "Required Rank"
     option_e = 0
     option_d = 1
@@ -102,114 +110,120 @@ class DontLoseBonusKey(Toggle):
     """
     Keep the Bonus Key for the rest of the level once you collect it
     """
+    internal_name = "dont_lose_bonus_key"
     display_name = "Dont lose the Bonus Key when dying or getting hit"
 
 class NumberOfLevelGates(Range):
     """
     The number emblem-locked gates which lock sets of levels.
     """
+    internal_name = "number_of_level_gates"
     display_name = "Number of Level Gates"
     range_start = 0
     range_end = 7
     default = 3
 
-class EnableMissionA(DefaultOnToggle):
-    """
-    Should the First Mission for each Level be enabled?
-    Dark and Rose Sanity only affect Mission B
-    """
-    display_name = "Enable Mission A"
-
-class EnableMissionB(DefaultOnToggle):
-    """
-    Should the Second Mission for each Level be enabled?
-    This will include any Sanity Options chosen as well
-    """
-    display_name = "Enable Mission B"
-
-class SonicStory(DefaultOnToggle):
+class SonicStory(Choice):
     """
     Should Sonic Story Missions be enabled?
     """
-    display_name = "Sonic Story Enabled"
+    internal_name = "sonic_story"
+    display_name = "Sonic Story"
+    option_disabled = 0
+    option_mission_a_only = 1
+    option_mission_b_only = 2
+    option_both_missions_enabled = 3
+    default = 0
 
-class DarkStory(Toggle):
+
+class DarkStory(Choice):
     """
     Should Dark Story Missions be enabled?
+    Mission B will allow for Dark Enemy Sanity
     """
-    display_name = "Dark Story Enabled"
+    internal_name = "dark_story"
+    display_name = "Dark Story"
+    option_disabled = 0
+    option_mission_a_only = 1
+    option_mission_b_only = 2
+    option_both_missions_enabled = 3
+    default = 0
 
-class DarkSanity(Toggle):
-    """
-    Dark Mission B Enemy (100 enemies objective) Sanity
-    """
-    display_name = "Dark Sanity Enabled"
-
-class DarkSanityEnemyInterval(Choice):
+class DarkSanity(Choice):
     """
     How many enemies are needed for a sanity check?
     Requires Mission B to be enabled
     1 results in 1400 checks
     20 results in 70 checks
     """
-    display_name = "Dark Sanity Enemy Interval"
+    internal_name = "dark_sanity"
+    display_name = "Dark Sanity"
+    option_disabled = 0
     option_1 = 1
     option_5 = 5
     option_10 = 10
     option_20 = 20
-    default = 10
+    default = 0
 
-class RoseStory(Toggle):
+class RoseStory(Choice):
     """
     Should Rose Story Missions be enabled?
+    Mission B will allow for Rose Ring Sanity
     """
-    display_name = "Rose Story Enabled"
+    internal_name = "rose_story"
+    display_name = "Rose Story"
+    option_disabled = 0
+    option_mission_a_only = 1
+    option_mission_b_only = 2
+    option_both_missions_enabled = 3
+    default = 0
 
-class RoseSanity(Toggle):
-    """
-    Rose Mission B Ring Sanity
-    """
-    display_name = "Rose Sanity Enabled"
-
-class RoseSanityRingInterval(Choice):
+class RoseSanity(Choice):
     """
     How many rings are needed for a sanity check?
     Requires Mission B to be enabled
+    Each
     1 results in 2800 checks
     20 results in 140 checks
     """
-    display_name = "Rose Sanity Ring Interval"
+    internal_name = "rose_sanity"
+    display_name = "Rose Sanity"
+    option_disabled = 0
     option_1 = 1
     option_5 = 5
     option_10 = 10
     option_20 = 20
-    default = 10
+    default = 0
 
-class ChaotixStory(Toggle):
+class ChaotixStory(Choice):
     """
     Should Chaotix Story Missions be enabled?
+    Either Mission Act, or both, will allow for Chaotix Sanity
     """
-    display_name = "Chaotix Story Enabled"
+    internal_name = "chaotix_story"
+    display_name = "Chaotix Story"
+    option_disabled = 0
+    option_mission_a_only = 1
+    option_mission_b_only = 2
+    option_both_missions_enabled = 3
+    default = 0
 
-class ChaotixSanity(Toggle):
+class ChaotixSanity(Choice):
     """
-    Chaotix Sanity
-    """
-    display_name = "Chaotix Sanity Enabled"
-
-class ChaotixSanityRingInterval(Choice):
-    """
-    How many rings are needed for a sanity check for Casino Park?
+    Should Chaotix Sanity be enabled, and if so, how many rings are needed for a check on Casino Park?
     Mission A is 200 Rings and Mission B is 500.
-    1 results in 1189 checks (if both missions are enabled)
-    20 results in 524 checks (if both missions are enabled)
+    Mission A only is 223 + 200 / value (if enabled) 423    263     243     233
+    Mission B only is 266 + 500 / value (if enabled) 766    366     316     291
+    Both Missions are 489 + 700 / value (if enabled) 1189   629     559     524
     """
-    display_name = "Chaotix Sanity Ring Interval"
+    internal_name = "chaotix_sanity"
+    display_name = "Chaotix Sanity"
+    option_disabled = 0
     option_1 = 1
     option_5 = 5
     option_10 = 10
     option_20 = 20
-    default = 10
+    default = 0
 
 class RingLink(Toggle):
     """
@@ -306,20 +320,15 @@ sonic_heroes_option_groups = [
         NumberOfLevelGates,
     ]),
     OptionGroup("Story Options", [
-        EnableMissionA,
-        EnableMissionB,
         SonicStory,
         DarkStory,
         RoseStory,
-        ChaotixStory,
+        ChaotixStory
     ]),
     OptionGroup("Sanity", [
         DarkSanity,
-        DarkSanityEnemyInterval,
         RoseSanity,
-        RoseSanityRingInterval,
-        ChaotixSanity,
-        ChaotixSanityRingInterval
+        ChaotixSanity
     ]),
     OptionGroup("Ring Options", [
         RingLink,
@@ -355,18 +364,13 @@ class SonicHeroesOptions(PerGameCommonOptions):
 
     number_level_gates: NumberOfLevelGates
 
-    enable_mission_a: EnableMissionA
-    enable_mission_b: EnableMissionB
     sonic_story: SonicStory
     dark_story: DarkStory
     dark_sanity: DarkSanity
-    dark_sanity_enemy_interval: DarkSanityEnemyInterval
     rose_story: RoseStory
     rose_sanity: RoseSanity
-    rose_sanity_ring_interval: RoseSanityRingInterval
     chaotix_story: ChaotixStory
     chaotix_sanity: ChaotixSanity
-    chaotix_sanity_ring_interval: ChaotixSanityRingInterval
 
     ring_link: RingLink
     ring_link_overlord: RingLinkOverlord

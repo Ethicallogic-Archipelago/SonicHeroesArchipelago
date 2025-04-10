@@ -89,7 +89,7 @@ def get_trap_item_names(rand, k: int, trap_weights) -> str:
 def checkRingFiller(world):
 
     #If RingSanity Interval at 1
-    if ("Rose" in world.story_list and world.options.rose_sanity.value and world.options.rose_sanity_ring_interval.value == 1 and world.options.enable_mission_b.value) or ("Chaotix" in world.story_list and world.options.chaotix_sanity.value and world.options.chaotix_sanity_ring_interval.value == 1):
+    if ("Rose" in world.story_list and world.options.rose_sanity.value == 1 and world.options.rose_sanity.value > 1) or ("Chaotix" in world.story_list and world.options.chaotix_sanity.value == 1):
 
         #out of 800
         junk_weights["5 Rings"] = 15
@@ -105,7 +105,7 @@ def checkRingFiller(world):
 
 
     #If RingSanity Interval at 5
-    if ("Rose" in world.story_list and world.options.rose_sanity.value and world.options.rose_sanity_ring_interval.value == 5 and world.options.enable_mission_b.value) or ("Chaotix" in world.story_list and world.options.chaotix_sanity.value and world.options.chaotix_sanity_ring_interval.value == 5):
+    if ("Rose" in world.story_list and world.options.rose_sanity.value == 5 and world.options.rose_sanity.value > 1) or ("Chaotix" in world.story_list and world.options.chaotix_sanity.value == 5):
         #out of 800
         junk_weights["5 Rings"] = 30
         junk_weights["10 Rings"] = 20
@@ -119,7 +119,7 @@ def checkRingFiller(world):
         junk_weights["Team Level Up"] += 30
 
         #If RingSanity Interval at 10
-    if ("Rose" in world.story_list and world.options.rose_sanity.value and world.options.rose_sanity_ring_interval.value == 10 and world.options.enable_mission_b.value) or ("Chaotix" in world.story_list and world.options.chaotix_sanity.value and world.options.chaotix_sanity_ring_interval.value == 10):
+    if ("Rose" in world.story_list and world.options.rose_sanity.value == 10 and world.options.rose_sanity.value > 1) or ("Chaotix" in world.story_list and world.options.chaotix_sanity.value == 10):
         #out of 800
         junk_weights["5 Rings"] = 60
         junk_weights["10 Rings"] = 40
