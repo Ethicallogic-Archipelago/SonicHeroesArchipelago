@@ -306,11 +306,11 @@ class SonicHeroesWorld(World):
 
 
 
-        print(f"Shuffle Test List: {shuffeable_test_list}")
-        print(f"test levels per gate: {test_levels_per_gate}")
-        print(f"test checks per gate: {test_checks_per_gate}")
-        print(f"Temp Level List: {test_level_list}")
-        print(f"Gate Emblem costs: {self.gate_emblem_costs}")
+        #print(f"Shuffle Test List: {shuffeable_test_list}")
+        #print(f"test levels per gate: {test_levels_per_gate}")
+        #print(f"test checks per gate: {test_checks_per_gate}")
+        #print(f"Temp Level List: {test_level_list}")
+        #print(f"Gate Emblem costs: {self.gate_emblem_costs}")
 
 
         self.shuffleable_level_list = test_level_list
@@ -399,7 +399,7 @@ class SonicHeroesWorld(World):
         self.shuffleable_boss_list = templist
 
         return {
-            "ModVersion": "1.1.3",
+            "ModVersion": "1.2.0",
 
             "Goal": self.options.goal.value,
             "GoalUnlockCondition": self.options.goal_unlock_condition.value,

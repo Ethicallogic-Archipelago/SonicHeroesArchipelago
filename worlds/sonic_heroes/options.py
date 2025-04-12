@@ -211,10 +211,9 @@ class ChaotixStory(Choice):
 class ChaotixSanity(Choice):
     """
     Should Chaotix Sanity be enabled, and if so, how many rings are needed for a check on Casino Park?
-    Mission A is 200 Rings and Mission B is 500.
-    Mission A only is 223 + 200 / value (if enabled) 423    263     243     233
-    Mission B only is 266 + 500 / value (if enabled) 766    366     316     291
-    Both Missions are 489 + 700 / value (if enabled) 1189   629     559     524
+    Mission A only Check Count: 223 + 200 / value (if enabled)
+    Mission B only Check Count: 266 + 500 / value (if enabled)
+    Both Missions Check Count: 489 + 700 / value (if enabled)
     """
     internal_name = "chaotix_sanity"
     display_name = "Chaotix Sanity"
