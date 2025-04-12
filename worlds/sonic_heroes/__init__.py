@@ -262,7 +262,8 @@ class SonicHeroesWorld(World):
         placed_emeralds_test = [2, 4, 6, 8, 10, 12, 14]
         for entry in shuffeable_test_list:
             if entry[1] in placed_emeralds_test:
-                entry[2] += 1
+                if self.options.emerald_stage_location_type != 2:
+                    entry[2] += 1
                 placed_emeralds_test.remove(entry[1])
 
         test_levels_per_gate = []
