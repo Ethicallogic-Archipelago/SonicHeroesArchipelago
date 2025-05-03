@@ -284,7 +284,7 @@ class SonicHeroesWorld(World):
                 temp_int = 0
                 if gate < extra_levels:
                     extra_level_int += 1
-                while (number_check_in_gate < self.gate_emblem_costs[0] and shuffle_index < len(shuffeable_test_list)) or (number_level_in_gate < levels_per_gate + extra_level_int and shuffle_index < len(shuffeable_test_list)):
+                while (number_check_in_gate < self.gate_emblem_costs[0] or number_level_in_gate < levels_per_gate + extra_level_int) and shuffle_index < len(shuffeable_test_list):
                     team = shuffeable_test_list[shuffle_index][0][:1]
 
                     for index in range(len(self.story_list)):
@@ -305,6 +305,19 @@ class SonicHeroesWorld(World):
                 test_levels_per_gate.append(number_level_in_gate)
                 test_checks_per_gate.append(number_check_in_gate)
 
+
+        else:
+            #do stuff here
+            temp_int = 0
+            for i in range(len(shuffeable_test_list)):
+                team = shuffeable_test_list[i][0][:1]
+                for index in range(len(self.story_list)):
+                    if team == self.story_list[index][0:1]:
+                        temp_int = index
+                        team = self.story_list[index]
+                temp_int = 14 * temp_int + shuffeable_test_list[i][1] - 1
+                test_level_list.append(temp_int)
+            #test_levels_per_gate.append(len(test_level_list))
 
 
         #print(f"Shuffle Test List: {shuffeable_test_list}")
@@ -446,7 +459,7 @@ class SonicHeroesWorld(World):
                                     new_hint_data[loc.address] = f"Final Boss after Gate {len(self.gate_emblem_costs) - 1}: Requires the 7 Chaos Emeralds. Gate {len(self.gate_emblem_costs) - 1} is Available From Start"
                                 else:
                                     new_hint_data[
-                                        loc.address] = f"Final Boss after Gate {len(self.gate_emblem_costs) - 1}: Requires the 7 Chaos Emeralds. Gate {len(self.gate_emblem_costs) - 1} Requires {self.gate_emblem_costs[-2]} Emblems and {self.shuffleable_boss_list[len(self.gate_emblem_costs) - 2]}"
+                                        loc.address] = f"Final Boss after Gate {len(self.gate_emblem_costs) - 1}: Requires the 7 Chaos Emeralds. Gate {len(self.gate_emblem_costs) - 1} Requires {self.gate_emblem_costs[-2]} Emblems and {sonic_heroes_extra_names[self.shuffleable_boss_list[len(self.gate_emblem_costs) - 2]]}"
                             else: #Both
                                 new_hint_data[loc.address] = f"Final Boss after Gate {len(self.gate_emblem_costs) - 1}: Requires {self.gate_emblem_costs[-1]} Emblems and the 7 Chaos Emeralds"
 

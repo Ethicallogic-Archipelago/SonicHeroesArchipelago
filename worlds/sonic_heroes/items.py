@@ -40,7 +40,7 @@ def create_items(world):
     #Fillers:
     remaining_locations = total_location_count - world.emblem_pool_size
 
-    if (world.options.goal_unlock_condition.value != 1):
+    if world.options.goal_unlock_condition.value != 1:
         #remove 7 filler items if Emeralds are added
         remaining_locations -= 7
 

@@ -176,7 +176,7 @@ class RoseStory(Choice):
     option_mission_a_only = 1
     option_mission_b_only = 2
     option_both_missions_enabled = 3
-    default = 0
+    default = 1
 
 class RoseSanity(Choice):
     """
