@@ -1,9 +1,6 @@
-import typing
-import string
+
 from typing import ClassVar, TextIO
 import re
-import math
-import dataclasses
 
 from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, Region
 from Options import OptionError
@@ -99,6 +96,10 @@ class SonicHeroesWorld(World):
         self.spoiler_string = ""
         """
         String for printing to the spoiler log
+        """
+        self.excluded_sanity_locations = []
+        """
+        List of excluded sanity locations (by ID) for option SanityExcludedPercent
         """
         ###   4 gates 2 stories    1 3 5 7 9 11 13
 

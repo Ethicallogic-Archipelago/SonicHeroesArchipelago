@@ -1,5 +1,4 @@
-from typing import Dict, NamedTuple
-from collections import namedtuple
+
 from BaseClasses import Location, LocationProgressType
 
 from .names import ItemData, sonic_heroes_story_names, sonic_heroes_level_names, sonic_heroes_extra_names, location_id_name_dict
@@ -87,6 +86,9 @@ def create_locations_from_dict(world, loc_dict, region):
 
 def create_location(world, region, name: str, code: int):
     location = Location(world.player, name, code, region)
+    team = "None"
+    mission = "None"
+    act = 0
 
     if "Metal Overlord" in name:
         location.progress_type = LocationProgressType.EXCLUDED
@@ -97,6 +99,11 @@ def create_location(world, region, name: str, code: int):
 
         elif world.options.emerald_stage_location_type.value == 2:
             location.progress_type = LocationProgressType.EXCLUDED
+
+    if code in world.excluded_sanity_locations:
+        location.progress_type = LocationProgressType.EXCLUDED
+        world.spoiler_string += f"Adding Location: {name} to Excluded Locations\n"
+
 
     region.locations.append(location)
 
@@ -112,6 +119,8 @@ def generate_dark_sanity(world):
     for mission in range(14):
         for i in range(100, 0, -world.options.dark_sanity):
             world.location_name_to_region[location_id_name_dict[currentid + i + (mission * 100)]] = f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
+            if i >= 101 - world.options.sanity_excluded_percent:
+                world.excluded_sanity_locations.append(currentid + i + (mission * 100))
 
 
 def generate_rose_sanity(world):
@@ -122,6 +131,8 @@ def generate_rose_sanity(world):
         for i in range(200, 0, -world.options.rose_sanity):
             world.location_name_to_region[location_id_name_dict[
                 currentid + i + (mission * 200)]] = f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
+            if i >= 201 - (world.options.sanity_excluded_percent * 2):
+                world.excluded_sanity_locations.append(currentid + i + (mission * 200))
 
 
 def generate_chaotix_sanity(world):
@@ -152,6 +163,8 @@ def generate_chaotix_sanity(world):
     if world.options.chaotix_story.value == 1 or world.options.chaotix_story.value == 3:
         for i in range (10):
             world.location_name_to_region[location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 1"
+            if i >= 10 - (10 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 10
 
@@ -159,6 +172,8 @@ def generate_chaotix_sanity(world):
         for i in range (20):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 1"
+            if i >= 20 - (20 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 20
 
@@ -171,6 +186,8 @@ def generate_chaotix_sanity(world):
         for i in range (85):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 3"
+            if i >= 85 - (85 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 85
 
@@ -178,6 +195,8 @@ def generate_chaotix_sanity(world):
         for i in range (85):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 3"
+            if i >= 85 - (85 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 85
 
@@ -187,6 +206,8 @@ def generate_chaotix_sanity(world):
         for i in range (3):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 4"
+            if i >= 3 - (3 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 3
 
@@ -194,6 +215,8 @@ def generate_chaotix_sanity(world):
         for i in range (5):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 4"
+            if i >= 5 - (5 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 5
 
@@ -203,6 +226,8 @@ def generate_chaotix_sanity(world):
         for i in range (200, 0, -world.options.chaotix_sanity.value):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i]] = f"Team {sonic_heroes_story_names[3]} Level 5"
+            if i - 1 >= 200 - (200 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i)
 
     currentid += 200
 
@@ -210,6 +235,8 @@ def generate_chaotix_sanity(world):
         for i in range (500, 0, -world.options.chaotix_sanity.value):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i]] = f"Team {sonic_heroes_story_names[3]} Level 5"
+            if i - 1 >= 500 - (500 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i)
 
     currentid += 500
 
@@ -219,6 +246,8 @@ def generate_chaotix_sanity(world):
         for i in range (10):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 6"
+            if i >= 10 - (10 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 10
 
@@ -226,6 +255,8 @@ def generate_chaotix_sanity(world):
         for i in range (20):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 6"
+            if i >= 20 - (20 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 20
 
@@ -238,6 +269,8 @@ def generate_chaotix_sanity(world):
         for i in range (30):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 8"
+            if i >= 30 - (30 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 30
 
@@ -245,6 +278,8 @@ def generate_chaotix_sanity(world):
         for i in range (50):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 8"
+            if i >= 50 - (50 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 50
 
@@ -258,6 +293,8 @@ def generate_chaotix_sanity(world):
         for i in range (10):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 10"
+            if i >= 10 - (10 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 10
 
@@ -265,6 +302,8 @@ def generate_chaotix_sanity(world):
         for i in range (20):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 10"
+            if i >= 20 - (20 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 20
 
@@ -273,6 +312,8 @@ def generate_chaotix_sanity(world):
         for i in range (10):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 11"
+            if i >= 10 - (10 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 10
 
@@ -280,6 +321,8 @@ def generate_chaotix_sanity(world):
         for i in range (10):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 11"
+            if i >= 10 - (10 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 10
 
@@ -289,6 +332,8 @@ def generate_chaotix_sanity(world):
         for i in range (60):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 12"
+            if i >= 60 - (60 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 60
 
@@ -296,6 +341,8 @@ def generate_chaotix_sanity(world):
         for i in range (46):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 12"
+            if i >= 46 - (46 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 46
 
@@ -309,6 +356,8 @@ def generate_chaotix_sanity(world):
         for i in range (5):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 14"
+            if i >= 5 - (5 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 5
 
@@ -316,6 +365,8 @@ def generate_chaotix_sanity(world):
         for i in range (10):
             world.location_name_to_region[
                 location_id_name_dict[currentid + i + 1]] = f"Team {sonic_heroes_story_names[3]} Level 14"
+            if i >= 10 - (10 * (world.options.sanity_excluded_percent / 100)):
+                world.excluded_sanity_locations.append(currentid + i + 1)
 
     currentid += 10
 

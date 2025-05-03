@@ -224,6 +224,20 @@ class ChaotixSanity(Choice):
     option_20 = 20
     default = 0
 
+
+class SanityExcludedPercent(Range):
+    """
+    How much percent of sanity checks should be excluded (only have filler/trap items)?
+    This helps with large amounts of sanity checks having all of the progressive items in a sync.
+    """
+    internal_name = "sanity_excluded_percent"
+    display_name = "Sanity Excluded Percent"
+    range_start = 0
+    range_end = 100
+    default = 80
+
+
+
 class RingLink(Toggle):
     """
     Ring Link
@@ -327,7 +341,8 @@ sonic_heroes_option_groups = [
     OptionGroup("Sanity", [
         DarkSanity,
         RoseSanity,
-        ChaotixSanity
+        ChaotixSanity,
+        SanityExcludedPercent
     ]),
     OptionGroup("Ring Options", [
         RingLink,
@@ -370,6 +385,7 @@ class SonicHeroesOptions(PerGameCommonOptions):
     rose_sanity: RoseSanity
     chaotix_story: ChaotixStory
     chaotix_sanity: ChaotixSanity
+    sanity_excluded_percent: SanityExcludedPercent
 
     ring_link: RingLink
     ring_link_overlord: RingLinkOverlord
