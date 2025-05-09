@@ -91,7 +91,7 @@ class RequiredEmblemsPercent(Range):
     display_name = "Required Emblems Percent"
     range_start = 0
     range_end = 100
-    default = 100
+    default = 80
 
 class RequiredRank(Choice):
     """
@@ -134,6 +134,15 @@ class SonicStory(Choice):
     option_mission_b_only = 2
     option_both_missions_enabled = 3
     default = 0
+
+class SuperHardModeSonicAct2(Toggle):
+    """
+    Should Sonic Act B Missions be replaced with the Super Hard Mode version?
+    The location names will remain the same
+    You will always go to the bonus stage at the end of the level
+    """
+    internal_name = "super_hard_mode_sonic_act_2"
+    display_name = "Super Hard Mode Sonic Act 2"
 
 
 class DarkStory(Choice):
@@ -237,6 +246,22 @@ class SanityExcludedPercent(Range):
     default = 80
 
 
+class KeySanity(Choice):
+    """
+    Getting a bonus key sends a check.
+    This is separate per team enabled
+    Only 1 Set makes it only 1 set of keys to collect (for the team)
+    Set For Each Act has one set of keys for each Act enabled
+    Try to find the secret hidden key (it's excluded so that it doesn't break a sync)
+    There are 160 (+1 hidden) keys for all 4 stories
+    """
+    internal_name = "key_sanity"
+    display_name = "Key Sanity"
+    option_disabled = 0
+    option_Only1Set = 1
+    option_SetForEachAct = 2
+    default = 0
+
 
 class RingLink(Toggle):
     """
@@ -336,13 +361,18 @@ sonic_heroes_option_groups = [
         SonicStory,
         DarkStory,
         RoseStory,
-        ChaotixStory
+        ChaotixStory,
+        SuperHardModeSonicAct2
     ]),
     OptionGroup("Sanity", [
         DarkSanity,
         RoseSanity,
         ChaotixSanity,
-        SanityExcludedPercent
+        SanityExcludedPercent,
+        KeySanity
+
+
+
     ]),
     OptionGroup("Ring Options", [
         RingLink,
@@ -379,6 +409,7 @@ class SonicHeroesOptions(PerGameCommonOptions):
     number_level_gates: NumberOfLevelGates
 
     sonic_story: SonicStory
+    super_hard_mode_sonic_act_2: SuperHardModeSonicAct2
     dark_story: DarkStory
     dark_sanity: DarkSanity
     rose_story: RoseStory
@@ -386,6 +417,7 @@ class SonicHeroesOptions(PerGameCommonOptions):
     chaotix_story: ChaotixStory
     chaotix_sanity: ChaotixSanity
     sanity_excluded_percent: SanityExcludedPercent
+    key_sanity: KeySanity
 
     ring_link: RingLink
     ring_link_overlord: RingLinkOverlord
