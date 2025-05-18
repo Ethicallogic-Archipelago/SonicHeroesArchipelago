@@ -14,33 +14,47 @@ def generate_locations(world):
     #Sonic
     if world.options.sonic_story.value > 0:
         for mission in range(14):
-            if world.options.key_sanity == 1 and ((not world.options.super_hard_mode_sonic_act_2.value) or world.options.sonic_story.value != 2):
+            if world.options.sonic_key_sanity == 1 and ((not world.options.super_hard_mode_sonic_act_2.value) or world.options.sonic_story.value != 2):
                 for key in range(world.key_sanity_key_amounts[0][mission]):
                     world.location_name_to_region[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[0]} Bonus Key {key + 1}"] = \
                         f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
 
             if world.options.sonic_story.value == 1:
                 world.location_name_to_region[location_id_name_dict[currentid + (2 * mission)]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-                if world.options.key_sanity.value == 2:
+                if world.options.sonic_key_sanity.value == 2:
                     for key in range(world.key_sanity_key_amounts[0][mission]):
                         world.location_name_to_region[
                             f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[0]} Act 1 Bonus Key {key + 1}"] = \
                             f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
 
-            if world.options.sonic_story.value == 2 and not world.options.super_hard_mode_sonic_act_2.value:
-                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 1]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-                if world.options.key_sanity.value == 2:
-                    for key in range(world.key_sanity_key_amounts[0][mission]):
-                        world.location_name_to_region[
-                            f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[0]} Act 2 Bonus Key {key + 1}"] = \
-                            f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
+
+            if world.options.sonic_story.value == 2:
+                if world.options.super_hard_mode_sonic_act_2.value:
+                    world.location_name_to_region[location_id_name_dict[0x9393184c + mission]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
+
+                else:
+                    world.location_name_to_region[location_id_name_dict[
+                        currentid + (2 * mission) + 1]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
+                    if world.options.sonic_key_sanity.value == 2:
+                        for key in range(world.key_sanity_key_amounts[0][mission]):
+                            world.location_name_to_region[
+                                f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[0]} Act 2 Bonus Key {key + 1}"] = \
+                                f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
+
 
             if world.options.sonic_story.value == 3:
+
                 world.location_name_to_region[location_id_name_dict[
                     currentid + (2 * mission)]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-                world.location_name_to_region[location_id_name_dict[
-                    currentid + (2 * mission) + 1]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-                if world.options.key_sanity.value == 2:
+
+                if world.options.super_hard_mode_sonic_act_2.value:
+                    world.location_name_to_region[location_id_name_dict[
+                        0x9393184c + mission]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
+
+                else:
+                    world.location_name_to_region[location_id_name_dict[
+                        currentid + (2 * mission) + 1]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
+                if world.options.sonic_key_sanity.value == 2:
                     for key in range(world.key_sanity_key_amounts[0][mission]):
                         world.location_name_to_region[
                             f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[0]} Act 1 Bonus Key {key + 1}"] = \
@@ -54,14 +68,14 @@ def generate_locations(world):
     #Dark
     if world.options.dark_story.value > 0:
         for mission in range(14):
-            if world.options.key_sanity == 1:
+            if world.options.dark_key_sanity == 1:
                 for key in range(world.key_sanity_key_amounts[1][mission]):
                     world.location_name_to_region[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[1]} Bonus Key {key + 1}"] = \
                         f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
 
             if world.options.dark_story.value == 1:
                 world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 42]] = f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
-                if world.options.key_sanity.value == 2:
+                if world.options.dark_key_sanity.value == 2:
                     for key in range(world.key_sanity_key_amounts[1][mission]):
                         world.location_name_to_region[
                             f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[1]} Act 1 Bonus Key {key + 1}"] = \
@@ -69,7 +83,7 @@ def generate_locations(world):
 
             if world.options.dark_story.value == 2:
                 world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 42 + 1]] = f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
-                if world.options.key_sanity.value == 2:
+                if world.options.dark_key_sanity.value == 2:
                     for key in range(world.key_sanity_key_amounts[1][mission]):
                         world.location_name_to_region[
                             f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[1]} Act 2 Bonus Key {key + 1}"] = \
@@ -80,7 +94,7 @@ def generate_locations(world):
                     currentid + (2 * mission) + 42]] = f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
                 world.location_name_to_region[location_id_name_dict[
                     currentid + (2 * mission) + 42 + 1]] = f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
-                if world.options.key_sanity.value == 2:
+                if world.options.dark_key_sanity.value == 2:
                     for key in range(world.key_sanity_key_amounts[1][mission]):
                         world.location_name_to_region[
                             f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[1]} Act 1 Bonus Key {key + 1}"] = \
@@ -94,7 +108,7 @@ def generate_locations(world):
     #Rose
     if world.options.rose_story.value > 0:
         for mission in range(14):
-            if world.options.key_sanity == 1:
+            if world.options.rose_key_sanity == 1:
                 for key in range(world.key_sanity_key_amounts[2][mission]):
                     if key + 1 == 4:
                         world.location_name_to_region[
@@ -106,7 +120,7 @@ def generate_locations(world):
 
             if world.options.rose_story.value == 1:
                 world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 84]] = f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-                if world.options.key_sanity.value == 2:
+                if world.options.rose_key_sanity.value == 2:
                     for key in range(world.key_sanity_key_amounts[2][mission]):
                         if key + 1 == 4:
                             world.location_name_to_region[
@@ -119,7 +133,7 @@ def generate_locations(world):
 
             if world.options.rose_story.value == 2:
                 world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 84 + 1]] = f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-                if world.options.key_sanity.value == 2:
+                if world.options.rose_key_sanity.value == 2:
                     for key in range(world.key_sanity_key_amounts[2][mission]):
                         if key + 1 == 4:
                             world.location_name_to_region[
@@ -135,7 +149,7 @@ def generate_locations(world):
                     currentid + (2 * mission) + 84]] = f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
                 world.location_name_to_region[location_id_name_dict[
                     currentid + (2 * mission) + 84 + 1]] = f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-                if world.options.key_sanity.value == 2:
+                if world.options.rose_key_sanity.value == 2:
                     for key in range(world.key_sanity_key_amounts[2][mission]):
                         if key + 1 == 4:
                             world.location_name_to_region[
@@ -155,14 +169,14 @@ def generate_locations(world):
     #Chaotix
     if world.options.chaotix_story.value > 0:
         for mission in range(14):
-            if world.options.key_sanity == 1:
+            if world.options.chaotix_key_sanity == 1:
                 for key in range(world.key_sanity_key_amounts[3][mission]):
                     world.location_name_to_region[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[3]} Bonus Key {key + 1}"] = \
                         f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
 
             if world.options.chaotix_story.value == 1:
                 world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 126]] = f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
-                if world.options.key_sanity.value == 2:
+                if world.options.chaotix_key_sanity.value == 2:
                     for key in range(world.key_sanity_key_amounts[3][mission]):
                         world.location_name_to_region[
                             f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[3]} Act 1 Bonus Key {key + 1}"] = \
@@ -170,7 +184,7 @@ def generate_locations(world):
 
             if world.options.chaotix_story.value == 2:
                 world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 126 + 1]] = f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
-                if world.options.key_sanity.value == 2:
+                if world.options.chaotix_key_sanity.value == 2:
                     for key in range(world.key_sanity_key_amounts[3][mission]):
                         world.location_name_to_region[
                             f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[3]} Act 2 Bonus Key {key + 1}"] = \
@@ -181,7 +195,7 @@ def generate_locations(world):
                     currentid + (2 * mission) + 126]] = f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
                 world.location_name_to_region[location_id_name_dict[
                     currentid + (2 * mission) + 126 + 1]] = f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
-                if world.options.key_sanity.value == 2:
+                if world.options.chaotix_key_sanity.value == 2:
                     for key in range(world.key_sanity_key_amounts[3][mission]):
                         world.location_name_to_region[
                             f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[3]} Act 1 Bonus Key {key + 1}"] = \
@@ -208,7 +222,7 @@ def generate_locations(world):
             world.location_name_to_region[location_id_name_dict[currentid + (2 * world.shuffleable_boss_list[i]) + (42 * x)]] = f"{sonic_heroes_extra_names[world.shuffleable_boss_list[i]]}"
 
     #Final Boss
-    world.location_name_to_region[location_id_name_dict[0x93931840]] = f"Metal Overlord"
+    world.location_name_to_region["Metal Overlord"] = f"Metal Overlord"
 
     if world.options.dark_sanity.value > 0 and (world.options.dark_story.value == 2 or world.options.dark_story.value == 3):
         generate_dark_sanity(world)

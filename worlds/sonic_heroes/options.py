@@ -18,7 +18,7 @@ class GoalUnlockCondition(Choice):
     """
     Determines how the Goal level is unlocked
 
-    Normal: Requires all 7 Chaos Emeralds plus the number of Emblems chosen
+    Both: Requires all 7 Chaos Emeralds plus the number of Emblems chosen
 
     Emblems Only: Only requires the chosen number of Emblems
 
@@ -26,7 +26,7 @@ class GoalUnlockCondition(Choice):
     """
     internal_name = "goal_unlock_condition"
     display_name = "Goal Unlock Condition"
-    option_normal = 0
+    option_both = 0
     option_emblems_only = 1
     option_emeralds_only = 2
     default = 0
@@ -91,7 +91,7 @@ class RequiredEmblemsPercent(Range):
     display_name = "Required Emblems Percent"
     range_start = 0
     range_end = 100
-    default = 80
+    default = 70
 
 class RequiredRank(Choice):
     """
@@ -144,6 +144,19 @@ class SuperHardModeSonicAct2(Toggle):
     internal_name = "super_hard_mode_sonic_act_2"
     display_name = "Super Hard Mode Sonic Act 2"
 
+class SonicKeySanity(Choice):
+    """
+    Getting a bonus key sends a check.
+    This is separate per team enabled
+    Only 1 Set makes it only 1 set of keys to collect (for the team)
+    Set For Each Act has one set of keys for each Act enabled (requires both Acts enabled to have both sets)
+    """
+    internal_name = "sonic_key_sanity"
+    display_name = "Sonic Key Sanity"
+    option_disabled = 0
+    option_Only1Set = 1
+    option_SetForEachAct = 2
+    default = 0
 
 class DarkStory(Choice):
     """
@@ -172,6 +185,20 @@ class DarkSanity(Choice):
     option_5 = 5
     option_10 = 10
     option_20 = 20
+    default = 0
+
+class DarkKeySanity(Choice):
+    """
+    Getting a bonus key sends a check.
+    This is separate per team enabled
+    Only 1 Set makes it only 1 set of keys to collect (for the team)
+    Set For Each Act has one set of keys for each Act enabled (requires both Acts enabled to have both sets)
+    """
+    internal_name = "dark_key_sanity"
+    display_name = "Dark Key Sanity"
+    option_disabled = 0
+    option_Only1Set = 1
+    option_SetForEachAct = 2
     default = 0
 
 class RoseStory(Choice):
@@ -204,6 +231,20 @@ class RoseSanity(Choice):
     option_20 = 20
     default = 0
 
+class RoseKeySanity(Choice):
+    """
+    Getting a bonus key sends a check.
+    This is separate per team enabled
+    Only 1 Set makes it only 1 set of keys to collect (for the team)
+    Set For Each Act has one set of keys for each Act enabled (requires both Acts enabled to have both sets)
+    """
+    internal_name = "rose_key_sanity"
+    display_name = "Rose Key Sanity"
+    option_disabled = 0
+    option_Only1Set = 1
+    option_SetForEachAct = 2
+    default = 0
+
 class ChaotixStory(Choice):
     """
     Should Chaotix Story Missions be enabled?
@@ -233,10 +274,24 @@ class ChaotixSanity(Choice):
     option_20 = 20
     default = 0
 
+class ChaotixKeySanity(Choice):
+    """
+    Getting a bonus key sends a check.
+    This is separate per team enabled
+    Only 1 Set makes it only 1 set of keys to collect (for the team)
+    Set For Each Act has one set of keys for each Act enabled (requires both Acts enabled to have both sets)
+    """
+    internal_name = "chaotix_key_sanity"
+    display_name = "Chaotix Key Sanity"
+    option_disabled = 0
+    option_Only1Set = 1
+    option_SetForEachAct = 2
+    default = 0
 
 class SanityExcludedPercent(Range):
     """
     How much percent of sanity checks should be excluded (only have filler/trap items)?
+    This currently does not affect Key Sanity.
     This helps with large amounts of sanity checks having all of the progressive items in a sync.
     """
     internal_name = "sanity_excluded_percent"
@@ -244,24 +299,6 @@ class SanityExcludedPercent(Range):
     range_start = 0
     range_end = 100
     default = 80
-
-
-class KeySanity(Choice):
-    """
-    Getting a bonus key sends a check.
-    This is separate per team enabled
-    Only 1 Set makes it only 1 set of keys to collect (for the team)
-    Set For Each Act has one set of keys for each Act enabled
-    Try to find the secret hidden key (it's excluded so that it doesn't break a sync)
-    There are 160 (+1 hidden) keys for all 4 stories
-    """
-    internal_name = "key_sanity"
-    display_name = "Key Sanity"
-    option_disabled = 0
-    option_Only1Set = 1
-    option_SetForEachAct = 2
-    default = 0
-
 
 class RingLink(Toggle):
     """
@@ -365,14 +402,14 @@ sonic_heroes_option_groups = [
         SuperHardModeSonicAct2
     ]),
     OptionGroup("Sanity", [
+        SonicKeySanity,
         DarkSanity,
+        DarkKeySanity,
         RoseSanity,
+        RoseKeySanity,
         ChaotixSanity,
-        SanityExcludedPercent,
-        KeySanity
-
-
-
+        ChaotixKeySanity,
+        SanityExcludedPercent
     ]),
     OptionGroup("Ring Options", [
         RingLink,
@@ -410,14 +447,17 @@ class SonicHeroesOptions(PerGameCommonOptions):
 
     sonic_story: SonicStory
     super_hard_mode_sonic_act_2: SuperHardModeSonicAct2
+    sonic_key_sanity: SonicKeySanity
     dark_story: DarkStory
     dark_sanity: DarkSanity
+    dark_key_sanity: DarkKeySanity
     rose_story: RoseStory
     rose_sanity: RoseSanity
+    rose_key_sanity: RoseKeySanity
     chaotix_story: ChaotixStory
     chaotix_sanity: ChaotixSanity
+    chaotix_key_sanity: ChaotixKeySanity
     sanity_excluded_percent: SanityExcludedPercent
-    key_sanity: KeySanity
 
     ring_link: RingLink
     ring_link_overlord: RingLinkOverlord

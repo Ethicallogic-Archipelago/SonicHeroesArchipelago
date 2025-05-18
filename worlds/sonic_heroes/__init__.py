@@ -103,7 +103,7 @@ class SonicHeroesWorld(World):
         """
         self.key_sanity_key_amounts = [
             [
-                3, 3, 2, 3, 3, 3, 3, 3, 3, 2, 3, 2, 3, 3
+                3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
             ],
             [
                 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
@@ -112,7 +112,7 @@ class SonicHeroesWorld(World):
                 2, 3, 2, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3
             ],
             [
-                2, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
+                2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
             ]
         ]
         ###   4 gates 2 stories    1 3 5 7 9 11 13
@@ -122,9 +122,8 @@ class SonicHeroesWorld(World):
 
     def generate_early(self) -> None:
 
-        if (self.options.super_hard_mode_sonic_act_2.value and self.options.sonic_story.value < 2):
+        if self.options.super_hard_mode_sonic_act_2.value and self.options.sonic_story.value < 2:
             raise OptionError("[ERROR] Super Hard Mode Sonic Act 2 requires Sonic Act 2 to be enabled.")
-
 
         number_of_enabled_mission_blocks = 0
         max_allowed_emblems = 0
@@ -395,8 +394,8 @@ class SonicHeroesWorld(World):
 
 
     def connect_entrances(self):
-        from Utils import visualize_regions
-        visualize_regions(self.multiworld.get_region("Menu", self.player), f"{self.player_name}_world.puml")
+        #from Utils import visualize_regions
+        #visualize_regions(self.multiworld.get_region("Menu", self.player), f"{self.player_name}_world.puml")
         pass
 
 
@@ -433,8 +432,7 @@ class SonicHeroesWorld(World):
         self.shuffleable_boss_list = templist
 
         return {
-            "ModVersion": "1.2.1",
-
+            "ModVersion": "1.3.0",
             "Goal": self.options.goal.value,
             "GoalUnlockCondition": self.options.goal_unlock_condition.value,
             "SkipMetalMadness": self.options.skip_metal_madness.value,
@@ -442,13 +440,16 @@ class SonicHeroesWorld(World):
             "DontLoseBonusKey": self.options.dont_lose_bonus_key.value,
             "SonicStory": self.options.sonic_story.value,
             "SuperHardModeSonicAct2": self.options.super_hard_mode_sonic_act_2.value,
+            "SonicKeySanity": self.options.sonic_key_sanity.value,
             "DarkStory": self.options.dark_story.value,
             "DarkSanity": self.options.dark_sanity.value,
+            "DarkKeySanity": self.options.dark_key_sanity.value,
             "RoseStory": self.options.rose_story.value,
             "RoseSanity": self.options.rose_sanity.value,
+            "RoseKeySanity": self.options.rose_key_sanity.value,
             "ChaotixStory": self.options.chaotix_story.value,
             "ChaotixSanity": self.options.chaotix_sanity.value,
-            "KeySanity": self.options.key_sanity.value,
+            "ChaotixKeySanity": self.options.chaotix_key_sanity.value,
             "RingLink": self.options.ring_link.value,
             "RingLinkOverlord": self.options.ring_link_overlord.value,
             "ModernRingLoss": self.options.modern_ring_loss.value,
