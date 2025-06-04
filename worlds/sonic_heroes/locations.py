@@ -9,200 +9,12 @@ class SonicHeroesLocation(Location):
 
 def generate_locations(world):
 
-    currentid = 0x939300A0
+    #currentid = 0x939300A0
 
-    #Sonic
-    if world.options.sonic_story.value > 0:
-        for mission in range(14):
-            if world.options.sonic_key_sanity == 1 and ((not world.options.super_hard_mode_sonic_act_2.value) or world.options.sonic_story.value != 2):
-                for key in range(world.key_sanity_key_amounts[0][mission]):
-                    world.location_name_to_region[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[0]} Bonus Key {key + 1}"] = \
-                        f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-
-            if world.options.sonic_story.value == 1:
-                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission)]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-                if world.options.sonic_key_sanity.value == 2:
-                    for key in range(world.key_sanity_key_amounts[0][mission]):
-                        world.location_name_to_region[
-                            f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[0]} Act 1 Bonus Key {key + 1}"] = \
-                            f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-
-
-            if world.options.sonic_story.value == 2:
-                if world.options.super_hard_mode_sonic_act_2.value:
-                    world.location_name_to_region[location_id_name_dict[0x9393184c + mission]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-
-                else:
-                    world.location_name_to_region[location_id_name_dict[
-                        currentid + (2 * mission) + 1]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-                    if world.options.sonic_key_sanity.value == 2:
-                        for key in range(world.key_sanity_key_amounts[0][mission]):
-                            world.location_name_to_region[
-                                f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[0]} Act 2 Bonus Key {key + 1}"] = \
-                                f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-
-
-            if world.options.sonic_story.value == 3:
-
-                world.location_name_to_region[location_id_name_dict[
-                    currentid + (2 * mission)]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-
-                if world.options.super_hard_mode_sonic_act_2.value:
-                    world.location_name_to_region[location_id_name_dict[
-                        0x9393184c + mission]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-
-                else:
-                    world.location_name_to_region[location_id_name_dict[
-                        currentid + (2 * mission) + 1]] = f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-                if world.options.sonic_key_sanity.value == 2:
-                    for key in range(world.key_sanity_key_amounts[0][mission]):
-                        world.location_name_to_region[
-                            f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[0]} Act 1 Bonus Key {key + 1}"] = \
-                            f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-                        if not world.options.super_hard_mode_sonic_act_2.value:
-                            world.location_name_to_region[
-                                f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[0]} Act 2 Bonus Key {key + 1}"] = \
-                                f"Team {sonic_heroes_story_names[0]} Level {mission + 1}"
-
-
-    #Dark
-    if world.options.dark_story.value > 0:
-        for mission in range(14):
-            if world.options.dark_key_sanity == 1:
-                for key in range(world.key_sanity_key_amounts[1][mission]):
-                    world.location_name_to_region[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[1]} Bonus Key {key + 1}"] = \
-                        f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
-
-            if world.options.dark_story.value == 1:
-                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 42]] = f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
-                if world.options.dark_key_sanity.value == 2:
-                    for key in range(world.key_sanity_key_amounts[1][mission]):
-                        world.location_name_to_region[
-                            f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[1]} Act 1 Bonus Key {key + 1}"] = \
-                            f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
-
-            if world.options.dark_story.value == 2:
-                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 42 + 1]] = f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
-                if world.options.dark_key_sanity.value == 2:
-                    for key in range(world.key_sanity_key_amounts[1][mission]):
-                        world.location_name_to_region[
-                            f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[1]} Act 2 Bonus Key {key + 1}"] = \
-                            f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
-
-            if world.options.dark_story.value == 3:
-                world.location_name_to_region[location_id_name_dict[
-                    currentid + (2 * mission) + 42]] = f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
-                world.location_name_to_region[location_id_name_dict[
-                    currentid + (2 * mission) + 42 + 1]] = f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
-                if world.options.dark_key_sanity.value == 2:
-                    for key in range(world.key_sanity_key_amounts[1][mission]):
-                        world.location_name_to_region[
-                            f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[1]} Act 1 Bonus Key {key + 1}"] = \
-                            f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
-                        world.location_name_to_region[
-                            f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[1]} Act 2 Bonus Key {key + 1}"] = \
-                            f"Team {sonic_heroes_story_names[1]} Level {mission + 1}"
-
-
-
-    #Rose
-    if world.options.rose_story.value > 0:
-        for mission in range(14):
-            if world.options.rose_key_sanity == 1:
-                for key in range(world.key_sanity_key_amounts[2][mission]):
-                    if key + 1 == 4:
-                        world.location_name_to_region[
-                            f"SUPER SECRET HIDDEN Bonus Key"] = \
-                            f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-                    else:
-                        world.location_name_to_region[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[2]} Bonus Key {key + 1}"] = \
-                        f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-
-            if world.options.rose_story.value == 1:
-                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 84]] = f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-                if world.options.rose_key_sanity.value == 2:
-                    for key in range(world.key_sanity_key_amounts[2][mission]):
-                        if key + 1 == 4:
-                            world.location_name_to_region[
-                                f"SUPER SECRET HIDDEN Act 1 Bonus Key"] = \
-                                f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-                        else:
-                            world.location_name_to_region[
-                                f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[2]} Act 1 Bonus Key {key + 1}"] = \
-                                f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-
-            if world.options.rose_story.value == 2:
-                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 84 + 1]] = f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-                if world.options.rose_key_sanity.value == 2:
-                    for key in range(world.key_sanity_key_amounts[2][mission]):
-                        if key + 1 == 4:
-                            world.location_name_to_region[
-                                f"SUPER SECRET HIDDEN Act 2 Bonus Key"] = \
-                                f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-                        else:
-                            world.location_name_to_region[
-                                f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[2]} Act 2 Bonus Key {key + 1}"] = \
-                                f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-
-            if world.options.rose_story.value == 3:
-                world.location_name_to_region[location_id_name_dict[
-                    currentid + (2 * mission) + 84]] = f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-                world.location_name_to_region[location_id_name_dict[
-                    currentid + (2 * mission) + 84 + 1]] = f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-                if world.options.rose_key_sanity.value == 2:
-                    for key in range(world.key_sanity_key_amounts[2][mission]):
-                        if key + 1 == 4:
-                            world.location_name_to_region[
-                                f"SUPER SECRET HIDDEN Act 1 Bonus Key"] = \
-                                f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-                            world.location_name_to_region[
-                                f"SUPER SECRET HIDDEN Act 2 Bonus Key"] = \
-                                f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-                        else:
-                            world.location_name_to_region[
-                                f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[2]} Act 1 Bonus Key {key + 1}"] = \
-                                f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-                            world.location_name_to_region[
-                                f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[2]} Act 2 Bonus Key {key + 1}"] = \
-                                f"Team {sonic_heroes_story_names[2]} Level {mission + 1}"
-
-    #Chaotix
-    if world.options.chaotix_story.value > 0:
-        for mission in range(14):
-            if world.options.chaotix_key_sanity == 1:
-                for key in range(world.key_sanity_key_amounts[3][mission]):
-                    world.location_name_to_region[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[3]} Bonus Key {key + 1}"] = \
-                        f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
-
-            if world.options.chaotix_story.value == 1:
-                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 126]] = f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
-                if world.options.chaotix_key_sanity.value == 2:
-                    for key in range(world.key_sanity_key_amounts[3][mission]):
-                        world.location_name_to_region[
-                            f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[3]} Act 1 Bonus Key {key + 1}"] = \
-                            f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
-
-            if world.options.chaotix_story.value == 2:
-                world.location_name_to_region[location_id_name_dict[currentid + (2 * mission) + 126 + 1]] = f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
-                if world.options.chaotix_key_sanity.value == 2:
-                    for key in range(world.key_sanity_key_amounts[3][mission]):
-                        world.location_name_to_region[
-                            f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[3]} Act 2 Bonus Key {key + 1}"] = \
-                            f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
-
-            if world.options.chaotix_story.value == 3:
-                world.location_name_to_region[location_id_name_dict[
-                    currentid + (2 * mission) + 126]] = f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
-                world.location_name_to_region[location_id_name_dict[
-                    currentid + (2 * mission) + 126 + 1]] = f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
-                if world.options.chaotix_key_sanity.value == 2:
-                    for key in range(world.key_sanity_key_amounts[3][mission]):
-                        world.location_name_to_region[
-                            f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[3]} Act 1 Bonus Key {key + 1}"] = \
-                            f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
-                        world.location_name_to_region[
-                            f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[3]} Act 2 Bonus Key {key + 1}"] = \
-                            f"Team {sonic_heroes_story_names[3]} Level {mission + 1}"
+    generate_missions(world, 0)
+    generate_missions(world, 1)
+    generate_missions(world, 2)
+    generate_missions(world, 3)
 
     #emeralds
     for i in range(7):
@@ -267,6 +79,131 @@ def create_location(world, region, name: str, code: int):
 
 
     region.locations.append(location)
+
+def generate_missions(world, storyindex):
+    if world.story_options[storyindex] == 0: #disabled
+        return
+
+    elif world.story_options[storyindex] == 1: #Act 1 only
+        for mission in range(14):
+            world.location_name_to_region[
+                f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[storyindex]} Act 1"] = \
+                f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+
+    elif world.story_options[storyindex] == 2: #Act 2 Only
+        for mission in range(14):
+            if storyindex == 0 and world.options.super_hard_mode_sonic_act_2.value:
+                world.location_name_to_region[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[storyindex]} Super Hard Mode"] = \
+                    f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+            else:
+                world.location_name_to_region[
+                    f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[storyindex]} Act 2"] = \
+                    f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+
+
+    elif world.story_options[storyindex] == 3: #Both Acts
+        for mission in range(14):
+            world.location_name_to_region[
+                f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[storyindex]} Act 1"] = \
+                f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+            if storyindex == 0 and world.options.super_hard_mode_sonic_act_2.value:
+                world.location_name_to_region[f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[storyindex]} Super Hard Mode"] = \
+                    f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+            else:
+                world.location_name_to_region[
+                    f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[storyindex]} Act 2"] = \
+                    f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+
+    generate_key_sanity(world, storyindex)
+    generate_checkpoint_sanity(world, storyindex)
+
+def generate_key_sanity(world, storyindex):
+    if world.key_sanity_options[storyindex] == 0: #disabled
+        return
+
+    elif storyindex == 0 and world.story_options[0] == 2 and world.options.super_hard_mode_sonic_act_2.value == 1: #Sonic with Act 2 Only and Super Hard
+        return
+
+    elif world.key_sanity_options[storyindex] == 1: #only 1 Set
+        for mission in range(14):
+            for key in range(world.key_sanity_key_amounts[storyindex][mission]):
+                if key + 1 == 4:
+                    world.location_name_to_region[
+                        f"SUPER SECRET HIDDEN Bonus Key"] = \
+                        f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+                else:
+                    world.location_name_to_region[
+                        f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[storyindex]} Bonus Key {key + 1}"] = \
+                        f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+
+
+    elif world.key_sanity_options[storyindex] == 2: #set for each act
+        for mission in range(14):
+            for key in range(world.key_sanity_key_amounts[storyindex][mission]):
+                if world.story_options[storyindex] != 2: #Act 1 enabled
+                    if key + 1 == 4:
+                        world.location_name_to_region[
+                            f"SUPER SECRET HIDDEN Act 1 Bonus Key"] = \
+                            f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+                    else:
+                        world.location_name_to_region[
+                            f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[storyindex]} Act 1 Bonus Key {key + 1}"] = \
+                            f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+
+                if world.story_options[storyindex] != 1: #Act 2 enabled
+                    if not(storyindex == 0 and world.options.super_hard_mode_sonic_act_2.value == 1): #check for Super Hard
+                        if key + 1 == 4:
+                            world.location_name_to_region[
+                                f"SUPER SECRET HIDDEN Act 2 Bonus Key"] = \
+                                f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+                        else:
+                            world.location_name_to_region[
+                                f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[storyindex]} Act 2 Bonus Key {key + 1}"] = \
+                                f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+
+
+def generate_checkpoint_sanity(world, storyindex):
+    if world.checkpoint_sanity_options[storyindex] == 0:  # disabled
+        return
+
+    #"Final Fortress Rose Act 2 Checkpoint 1",
+    #"Grand Metropolis Super Hard Mode Checkpoint 1",
+
+    elif world.checkpoint_sanity_options[storyindex] == 1: #only 1 set
+        for mission in range(14):
+            for cp in range(world.checkpoint_amounts[storyindex][mission]):
+                world.location_name_to_region[
+                    f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[storyindex]} Checkpoint {cp + 1}"] = \
+                    f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+
+    elif world.checkpoint_sanity_options[storyindex] == 2: #SuperHard Only (only Sonic)
+        for mission in range(14):
+            for cp in range(world.checkpoint_amounts[4][mission]):
+                world.location_name_to_region[
+                    f"{sonic_heroes_level_names[mission + 1]} Super Hard Mode Checkpoint {cp + 1}"] = \
+                    f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+
+
+    elif world.checkpoint_sanity_options[storyindex] == 3: #Each Act
+        for mission in range(14):
+            if world.story_options[storyindex] != 2:  # Act 1 enabled
+                for cp in range(world.checkpoint_amounts[storyindex][mission]):
+                    world.location_name_to_region[
+                        f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[storyindex]} Act 1 Checkpoint {cp + 1}"] = \
+                        f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+
+            if world.story_options[storyindex] != 1:  # Act 2 enabled
+                if world.options.super_hard_mode_sonic_act_2.value and storyindex == 0: #SuperHardMode
+                    for cp in range(world.checkpoint_amounts[4][mission]):
+                        world.location_name_to_region[
+                            f"{sonic_heroes_level_names[mission + 1]} Super Hard Mode Checkpoint {cp + 1}"] = \
+                            f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
+
+                else:
+                    for cp in range(world.checkpoint_amounts[storyindex][mission]):
+                        world.location_name_to_region[
+                            f"{sonic_heroes_level_names[mission + 1]} {sonic_heroes_story_names[storyindex]} Act 2 Checkpoint {cp + 1}"] = \
+                            f"Team {sonic_heroes_story_names[storyindex]} Level {mission + 1}"
 
 
 

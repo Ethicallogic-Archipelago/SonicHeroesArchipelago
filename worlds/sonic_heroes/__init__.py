@@ -31,7 +31,7 @@ class SonicHeroesWeb(WebWorld):
 
 class SonicHeroesWorld(World):
 
-    game: str = "Sonic Heroes"
+    game = "Sonic Heroes"
     web = SonicHeroesWeb()
     options_dataclass = SonicHeroesOptions
     options: SonicHeroesOptions
@@ -101,6 +101,18 @@ class SonicHeroesWorld(World):
         """
         List of excluded sanity locations (by ID) for option SanityExcludedPercent
         """
+        self.story_options = []
+        """
+        List of Story Options
+        """
+        self.key_sanity_options = []
+        """
+        List of Key Sanity Options
+        """
+        self.checkpoint_sanity_options = []
+        """
+        List of Checkpoint Sanity Options
+        """
         self.key_sanity_key_amounts = [
             [
                 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
@@ -109,13 +121,83 @@ class SonicHeroesWorld(World):
                 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
             ],
             [
-                2, 3, 2, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3
+                2, 3, 3, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3
             ],
             [
-                2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
+                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
             ]
         ]
-        ###   4 gates 2 stories    1 3 5 7 9 11 13
+        """
+        List of the number of intended bonus keys in each level for each team (plus 1 hidden one)
+        """
+        self.checkpoint_amounts = [ #total 246
+            [ #Sonic
+                5, 4, 4, 4, 3, 4, 6, 4, 3, 5, 3, 4, 5, 3 #57
+            ],
+            [ #Dark
+                4, 5, 4, 4, 3, 4, 6, 5, 3, 5, 3, 4, 5, 3 #58 not 50
+            ],
+            [ #Rose
+                2, 2, 3, 2, 1, 3, 4, 2, 2, 3, 3, 2, 2, 2 #33
+            ],
+            [ #Chaotix
+                4, 2, 4, 3, 3, 2, 5, 4, 3, 4, 2, 5, 4, 3 #48
+            ],
+            [ #SuperHard
+                4, 5, 4, 4, 3, 4, 6, 4, 3, 5, 3, 5, 5, 3 #58
+            ]
+        ]
+        """
+        List of intended Checkpoints in each level (super hard is included)
+        Sonic 57
+        SuperHard 58
+        Dark 58
+        Rose 33
+        Chaotix 48
+        Total 254 
+        
+        
+        Not Included:        
+        Sonic: 4
+        1 before start of level
+        1 OOB
+        2 mutually exclusive (right next to another, only 1 check)        
+        
+        SuperHard: 3
+        1 before start of level
+        1 OOB
+        1 mutually exclusive (right next to another, only 1 check)
+        
+        Dark: 1
+        1 mutually exclusive (right next to another, only 1 check)
+        
+        Rose: 20
+        2 before start of level
+        17 after goal
+        1 at start position of level (lol)
+        
+        Chaotix: 5
+        4 OOB
+        1 does not exist (lol)     
+        
+        
+        Total Excluded: 33
+        4 before start of level
+        17 after goal
+        6 OOB
+        4 mutually exclusive (right next to another, only 1 check)  
+        1 at start position of level (lol)
+        1 does not exist (lol)      
+        
+        
+        Total of all:
+        Sonic 57 + 4        61
+        SuperHard 58 + 3    61
+        Dark 58 + 1         59
+        Rose 33 + 20        53
+        Chaotix 48 + 5      53
+        Total 254 + 33      287
+        """
 
         super().__init__(multiworld, player)
 
@@ -124,6 +206,36 @@ class SonicHeroesWorld(World):
 
         if self.options.super_hard_mode_sonic_act_2.value and self.options.sonic_story.value < 2:
             raise OptionError("[ERROR] Super Hard Mode Sonic Act 2 requires Sonic Act 2 to be enabled.")
+
+        if (not self.options.super_hard_mode_sonic_act_2.value) and self.options.sonic_checkpoint_sanity.value == 2:
+            raise OptionError("[ERROR] Super Hard Mode Checkpoint Sanity requires Sonic Super Hard.")
+
+        if self.options.sonic_story == 2 and self.options.super_hard_mode_sonic_act_2.value and self.options.sonic_checkpoint_sanity.value == 1:
+            raise OptionError("[ERROR] Only Sonic Normal Checkpoint Sanity cannot have only SuperHard Mode enabled.")
+
+
+        self.story_options = \
+            [
+                self.options.sonic_story.value,
+                self.options.dark_story.value,
+                self.options.rose_story.value,
+                self.options.chaotix_story.value,
+            ]
+
+        self.key_sanity_options = \
+            [
+                self.options.sonic_key_sanity.value,
+                self.options.dark_key_sanity.value,
+                self.options.rose_key_sanity.value,
+                self.options.chaotix_key_sanity.value,
+            ]
+        self.checkpoint_sanity_options = \
+            [
+                self.options.sonic_checkpoint_sanity.value,
+                self.options.dark_checkpoint_sanity.value,
+                self.options.rose_checkpoint_sanity.value,
+                self.options.chaotix_checkpoint_sanity.value,
+            ]
 
         number_of_enabled_mission_blocks = 0
         max_allowed_emblems = 0
@@ -183,7 +295,7 @@ class SonicHeroesWorld(World):
         if self.options.goal_unlock_condition.value == 1 and self.options.emerald_stage_location_type != 2:
             max_allowed_emblems += 7
         max_allowed_emblems += self.options.number_level_gates.value
-        self.emblem_pool_size = min(self.emblem_pool_size + self.options.extra_emblems.value, max_allowed_emblems)
+        self.emblem_pool_size = min(self.emblem_pool_size, max_allowed_emblems)
 
 
         extra_itempool_space = (14 * number_of_enabled_mission_blocks) - self.emblem_pool_size
@@ -394,8 +506,10 @@ class SonicHeroesWorld(World):
 
 
     def connect_entrances(self):
-        #from Utils import visualize_regions
-        #visualize_regions(self.multiworld.get_region("Menu", self.player), f"{self.player_name}_world.puml")
+        from Utils import visualize_regions
+        visualize_regions(self.multiworld.get_region("Menu", self.player), f"{self.player_name}_world.puml", show_entrance_names=True, regions_to_highlight=self.multiworld.get_all_state(self.player).reachable_regions[self.player])
+        #!pragma layout smetana
+        #put this at top to display PUML (after start UML)
         pass
 
 
@@ -432,7 +546,7 @@ class SonicHeroesWorld(World):
         self.shuffleable_boss_list = templist
 
         return {
-            "ModVersion": "1.3.0",
+            "ModVersion": "1.4.0",
             "Goal": self.options.goal.value,
             "GoalUnlockCondition": self.options.goal_unlock_condition.value,
             "SkipMetalMadness": self.options.skip_metal_madness.value,
@@ -441,15 +555,19 @@ class SonicHeroesWorld(World):
             "SonicStory": self.options.sonic_story.value,
             "SuperHardModeSonicAct2": self.options.super_hard_mode_sonic_act_2.value,
             "SonicKeySanity": self.options.sonic_key_sanity.value,
+            "SonicCheckpointSanity": self.options.sonic_checkpoint_sanity.value,
             "DarkStory": self.options.dark_story.value,
             "DarkSanity": self.options.dark_sanity.value,
             "DarkKeySanity": self.options.dark_key_sanity.value,
+            "DarkCheckpointSanity": self.options.dark_checkpoint_sanity.value,
             "RoseStory": self.options.rose_story.value,
             "RoseSanity": self.options.rose_sanity.value,
             "RoseKeySanity": self.options.rose_key_sanity.value,
+            "RoseCheckpointSanity": self.options.rose_checkpoint_sanity.value,
             "ChaotixStory": self.options.chaotix_story.value,
             "ChaotixSanity": self.options.chaotix_sanity.value,
             "ChaotixKeySanity": self.options.chaotix_key_sanity.value,
+            "ChaotixCheckpointSanity": self.options.chaotix_checkpoint_sanity.value,
             "RingLink": self.options.ring_link.value,
             "RingLinkOverlord": self.options.ring_link_overlord.value,
             "ModernRingLoss": self.options.modern_ring_loss.value,

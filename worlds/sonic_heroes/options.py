@@ -66,21 +66,6 @@ class EmblemPoolSize(Range):
     range_end = 14
     default = 12
 
-
-class ExtraEmblems(Range):
-    """
-    How many extra emblems to add to the itempool?
-    These allow for easier unlocking of gates as they are NOT used calculate emblem costs
-    This is capped at available spots in the location pool
-    Very high values can allow for very fast gate and goal unlocks with sanity enabled
-    """
-    internal_name = "extra_emblems"
-    display_name = "Extra Emblems"
-    range_start = 0
-    range_end = 900
-    default = 0
-
-
 class RequiredEmblemsPercent(Range):
     """
     What percent of the Emblem pool size emblems should be required to unlock the Final Goal? (rounded down)
@@ -158,6 +143,17 @@ class SonicKeySanity(Choice):
     option_SetForEachAct = 2
     default = 0
 
+class SonicCheckpointSanity(Choice):
+    """
+    """
+    internal_name = "sonic_checkpoint_sanity"
+    display_name = "Sonic Checkpoint Sanity"
+    option_disabled = 0
+    option_Only1SetNormal = 1
+    option_OnlySuperHard = 2
+    option_SetForEachAct = 3
+    default = 0
+
 class DarkStory(Choice):
     """
     Should Dark Story Missions be enabled?
@@ -199,6 +195,16 @@ class DarkKeySanity(Choice):
     option_disabled = 0
     option_Only1Set = 1
     option_SetForEachAct = 2
+    default = 0
+
+class DarkCheckpointSanity(Choice):
+    """
+    """
+    internal_name = "dark_checkpoint_sanity"
+    display_name = "Dark Checkpoint Sanity"
+    option_disabled = 0
+    option_Only1Set = 1
+    option_SetForEachAct = 3
     default = 0
 
 class RoseStory(Choice):
@@ -245,6 +251,16 @@ class RoseKeySanity(Choice):
     option_SetForEachAct = 2
     default = 0
 
+class RoseCheckpointSanity(Choice):
+    """
+    """
+    internal_name = "rose_checkpoint_sanity"
+    display_name = "Rose Checkpoint Sanity"
+    option_disabled = 0
+    option_Only1Set = 1
+    option_SetForEachAct = 3
+    default = 0
+
 class ChaotixStory(Choice):
     """
     Should Chaotix Story Missions be enabled?
@@ -286,6 +302,16 @@ class ChaotixKeySanity(Choice):
     option_disabled = 0
     option_Only1Set = 1
     option_SetForEachAct = 2
+    default = 0
+
+class ChaotixCheckpointSanity(Choice):
+    """
+    """
+    internal_name = "chaotix_checkpoint_sanity"
+    display_name = "Chaotix Checkpoint Sanity"
+    option_disabled = 0
+    option_Only1Set = 1
+    option_SetForEachAct = 3
     default = 0
 
 class SanityExcludedPercent(Range):
@@ -386,7 +412,6 @@ sonic_heroes_option_groups = [
         EmeraldStageLocationType,
         SkipMetalMadness,
         EmblemPoolSize,
-        ExtraEmblems,
         RequiredEmblemsPercent,
         RequiredRank,
         DontLoseBonusKey
@@ -403,12 +428,16 @@ sonic_heroes_option_groups = [
     ]),
     OptionGroup("Sanity", [
         SonicKeySanity,
+        SonicCheckpointSanity,
         DarkSanity,
         DarkKeySanity,
+        DarkCheckpointSanity,
         RoseSanity,
         RoseKeySanity,
+        RoseCheckpointSanity,
         ChaotixSanity,
         ChaotixKeySanity,
+        ChaotixCheckpointSanity,
         SanityExcludedPercent
     ]),
     OptionGroup("Ring Options", [
@@ -438,7 +467,6 @@ class SonicHeroesOptions(PerGameCommonOptions):
     emerald_stage_location_type: EmeraldStageLocationType
     skip_metal_madness: SkipMetalMadness
     emblem_pool_size: EmblemPoolSize
-    extra_emblems: ExtraEmblems
     required_emblems_percent: RequiredEmblemsPercent
     required_rank: RequiredRank
     dont_lose_bonus_key: DontLoseBonusKey
@@ -448,15 +476,19 @@ class SonicHeroesOptions(PerGameCommonOptions):
     sonic_story: SonicStory
     super_hard_mode_sonic_act_2: SuperHardModeSonicAct2
     sonic_key_sanity: SonicKeySanity
+    sonic_checkpoint_sanity: SonicCheckpointSanity
     dark_story: DarkStory
     dark_sanity: DarkSanity
     dark_key_sanity: DarkKeySanity
+    dark_checkpoint_sanity: DarkCheckpointSanity
     rose_story: RoseStory
     rose_sanity: RoseSanity
     rose_key_sanity: RoseKeySanity
+    rose_checkpoint_sanity: RoseCheckpointSanity
     chaotix_story: ChaotixStory
     chaotix_sanity: ChaotixSanity
     chaotix_key_sanity: ChaotixKeySanity
+    chaotix_checkpoint_sanity: ChaotixCheckpointSanity
     sanity_excluded_percent: SanityExcludedPercent
 
     ring_link: RingLink
