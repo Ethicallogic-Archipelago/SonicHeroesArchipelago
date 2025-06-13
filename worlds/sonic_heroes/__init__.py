@@ -124,27 +124,27 @@ class SonicHeroesWorld(World):
                 2, 3, 3, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3
             ],
             [
-                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
+                3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3
             ]
         ]
         """
         List of the number of intended bonus keys in each level for each team (plus 1 hidden one)
         """
-        self.checkpoint_amounts = [ #total 246
+        self.checkpoint_amounts = [
             [ #Sonic
-                5, 4, 4, 4, 3, 4, 6, 4, 3, 5, 3, 4, 5, 3 #57
+                5, 4, 4, 4, 3, 4, 6, 4, 3, 5, 3, 4, 5, 3
             ],
             [ #Dark
-                4, 5, 4, 4, 3, 4, 6, 5, 3, 5, 3, 4, 5, 3 #58 not 50
+                4, 5, 4, 4, 3, 4, 6, 5, 3, 5, 3, 4, 5, 3
             ],
             [ #Rose
-                2, 2, 3, 2, 1, 3, 4, 2, 2, 3, 3, 2, 2, 2 #33
+                2, 2, 3, 2, 1, 3, 4, 2, 2, 2, 2, 2, 3, 2
             ],
             [ #Chaotix
-                4, 2, 4, 3, 3, 2, 5, 4, 3, 4, 2, 5, 4, 3 #48
+                4, 2, 4, 3, 3, 2, 5, 4, 3, 2, 2, 4, 4, 3
             ],
             [ #SuperHard
-                4, 5, 4, 4, 3, 4, 6, 4, 3, 5, 3, 5, 5, 3 #58
+                4, 5, 4, 4, 3, 4, 6, 4, 3, 5, 3, 5, 5, 3
             ]
         ]
         """
@@ -506,8 +506,8 @@ class SonicHeroesWorld(World):
 
 
     def connect_entrances(self):
-        from Utils import visualize_regions
-        visualize_regions(self.multiworld.get_region("Menu", self.player), f"{self.player_name}_world.puml", show_entrance_names=True, regions_to_highlight=self.multiworld.get_all_state(self.player).reachable_regions[self.player])
+        #from Utils import visualize_regions
+        #visualize_regions(self.multiworld.get_region("Menu", self.player), f"{self.player_name}_world.puml", show_entrance_names=True, regions_to_highlight=self.multiworld.get_all_state(self.player).reachable_regions[self.player])
         #!pragma layout smetana
         #put this at top to display PUML (after start UML)
         pass
@@ -546,7 +546,7 @@ class SonicHeroesWorld(World):
         self.shuffleable_boss_list = templist
 
         return {
-            "ModVersion": "1.4.0",
+            "ModVersion": "1.5.0",
             "Goal": self.options.goal.value,
             "GoalUnlockCondition": self.options.goal_unlock_condition.value,
             "SkipMetalMadness": self.options.skip_metal_madness.value,
