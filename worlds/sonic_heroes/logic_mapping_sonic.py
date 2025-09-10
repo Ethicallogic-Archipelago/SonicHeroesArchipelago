@@ -395,7 +395,7 @@ def create_logic_mapping_dict_casino_park_sonic(world: SonicHeroesWorld):
 
         "GongSonicCP": lambda state: can_gong(world, SONIC, CASINOPARK, state),
 
-        "Cannonand(FlyingCharorSpeedChar)andPinballandPulleyandSingleSpringandTripleSpringSonicCP": lambda state: can_cannon(world, SONIC, CASINOPARK, state) and has_char(world, SONIC, CASINOPARK, state, speed=True, flying=True, orcondition=True) and can_pinball(world, SONIC, CASINOPARK, state) and can_pulley(world, SONIC, CASINOPARK, state) and can_single_spring(world, SONIC, CASINOPARK, state) and can_triple_spring(world, SONIC, CASINOPARK, state),
+        "Cannonand(FlyingCharorSpeedChar)andPinballandPulleyandSingleSpringandTripleSpringSonicCP": lambda state: can_cannon(world, SONIC, CASINOPARK, state, speed=True, flying=True, orcondition=True) and can_pinball(world, SONIC, CASINOPARK, state) and can_pulley(world, SONIC, CASINOPARK, state) and can_single_spring(world, SONIC, CASINOPARK, state) and can_triple_spring(world, SONIC, CASINOPARK, state),
 
         "PulleyandTripleSpringSonicCP": lambda state: can_pulley(world, SONIC, CASINOPARK, state) and can_triple_spring(world, SONIC, CASINOPARK, state),
 

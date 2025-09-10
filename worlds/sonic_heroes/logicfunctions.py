@@ -553,21 +553,45 @@ def can_rainbow_hoops(world, team, level, state: CollectionState):
 def can_dash_ramp(world, team, level, state: CollectionState):
     return True
 
+def can_cannon_obj(world, team, level, state: CollectionState):
+    return True
 
 def can_cannon(world, team, level, state: CollectionState, speed=False, flying=False, power=False, orcondition=False):
-    return True
+    if not speed and not flying and not power:
+        return False
+
+    result = not orcondition
+    if speed:
+        if orcondition:
+            result = result or can_cannon_speed(world, team, level, state)
+        else:
+            result = result and can_cannon_speed(world, team, level, state)
+
+    if flying:
+        if orcondition:
+            result = result or can_cannon_flying(world, team, level, state)
+        else:
+            result = result and can_cannon_flying(world, team, level, state)
+
+    if power:
+        if orcondition:
+            result = result or can_cannon_power(world, team, level, state)
+        else:
+            result = result and can_cannon_power(world, team, level, state)
+
+    return result
 
 
 def can_cannon_speed(world, team, level, state: CollectionState):
-    return can_cannon(world, team, level, state) and has_char(world, team, level, state, speed=True)
+    return can_cannon_obj(world, team, level, state) and has_char(world, team, level, state, speed=True)
 
 
 def can_cannon_flying(world, team, level, state: CollectionState):
-    return can_cannon(world, team, level, state) and has_char(world, team, level, state, flying=True)
+    return can_cannon_obj(world, team, level, state) and has_char(world, team, level, state, flying=True)
 
 
 def can_cannon_power(world, team, level, state: CollectionState):
-    return can_cannon(world, team, level, state) and has_char(world, team, level, state, power=True)
+    return can_cannon_obj(world, team, level, state) and has_char(world, team, level, state, power=True)
 
 def can_weight(world, team, level, state: CollectionState):
     return True

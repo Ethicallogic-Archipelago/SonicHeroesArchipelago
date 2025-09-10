@@ -97,7 +97,7 @@ class SonicHeroesWorld(World):
 
     def create_items(self) -> None:
         create_items(self)
-        self.multiworld.push_precollected(self.create_item(PLAYABLEKNUCKLES))
+        self.multiworld.push_precollected(self.create_item(PLAYABLETAILS))
 
         pass
 
