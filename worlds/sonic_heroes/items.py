@@ -39,11 +39,11 @@ def create_items(world: SonicHeroesWorld):
     create_item(world, PLAYABLESONIC, ItemClassification.progression)
     total_location_count -= 1
 
-    create_item(world, PLAYABLETAILS, ItemClassification.progression)
-    total_location_count -= 1
-
-    #create_item(world, PLAYABLEKNUCKLES, ItemClassification.progression)
+    #create_item(world, PLAYABLETAILS, ItemClassification.progression)
     #total_location_count -= 1
+
+    create_item(world, PLAYABLEKNUCKLES, ItemClassification.progression)
+    total_location_count -= 1
 
     create_item(world, progressive_ability_item_names[SONIC][OCEANREGION][SPEED], ItemClassification.progression, 4)
     total_location_count -= 4
