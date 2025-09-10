@@ -1,112 +1,15 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from worlds.sonic_heroes import SonicHeroesWorld
+
+
+
 from dataclasses import dataclass
+from Options import *
+from .constants import *
 
-from Options import Choice, Range, Toggle, DefaultOnToggle, OptionGroup, PerGameCommonOptions, DeathLink
-
-
-class Goal(Choice):
-    """
-    Determines the goal of the seed
-
-    Metal Overlord: Beat Metal Overlord
-    """
-    internal_name = "goal"
-    display_name = "Goal"
-    option_metal_overlord = 0
-    default = 0
-
-class GoalUnlockCondition(Choice):
-    """
-    Determines how the Goal level is unlocked
-
-    Both: Requires all 7 Chaos Emeralds plus the number of Emblems chosen
-
-    Emblems Only: Only requires the chosen number of Emblems
-
-    Emeralds Only: Only requires the 7 Chaos Emeralds with no Emblem requirements. Level Gates will still require Emblems to proceed
-    """
-    internal_name = "goal_unlock_condition"
-    display_name = "Goal Unlock Condition"
-    option_both = 0
-    option_emblems_only = 1
-    option_emeralds_only = 2
-    default = 0
-
-
-
-class EmeraldStageLocationType(Choice):
-    """
-    Which Location type should the Emeralds be?
-    Priority is recommended as it gives a reason to do them
-    Excluded requires enough space in the itempool to generate
-    """
-    internal_name = "emerald_stage_location_type"
-    display_name = "Emerald Stage Location Type"
-    option_priority = 0
-    option_normal = 1
-    option_excluded = 2
-    default = 0
-
-
-class SkipMetalMadness(DefaultOnToggle):
-    """
-    Skips Metal Madness when selecting it from level select and goes directly to Metal Overlord (final boss)
-    """
-    internal_name = "skip_metal_madness"
-    display_name = "Skip Metal Madness"
-
-
-class EmblemPoolSize(Range):
-    """
-    How many Emblems should be added to the itempool?
-    This is per Mission Act enabled (A and B) and Story
-    """
-    internal_name = "emblem_pool_size"
-    display_name = "Emblem Pool Size"
-    range_start = 0
-    range_end = 14
-    default = 12
-
-class RequiredEmblemsPercent(Range):
-    """
-    What percent of the Emblem pool size emblems should be required to unlock the Final Goal? (rounded down)
-    This also affects level gates (if enabled)
-    This can be 0 which makes all level gates and the final boss have no emblem cost
-    """
-    internal_name = "required_emblems_percent"
-    display_name = "Required Emblems Percent"
-    range_start = 0
-    range_end = 100
-    default = 70
-
-class RequiredRank(Choice):
-    """
-    Determines what minimum Rank is required to send a check for a mission
-    """
-    internal_name = "required_rank"
-    display_name = "Required Rank"
-    option_e = 0
-    option_d = 1
-    option_c = 2
-    option_b = 3
-    option_a = 4
-    default = 0
-
-class DontLoseBonusKey(Toggle):
-    """
-    Keep the Bonus Key for the rest of the level once you collect it
-    """
-    internal_name = "dont_lose_bonus_key"
-    display_name = "Dont lose the Bonus Key when dying or getting hit"
-
-class NumberOfLevelGates(Range):
-    """
-    The number emblem-locked gates which lock sets of levels.
-    """
-    internal_name = "number_of_level_gates"
-    display_name = "Number of Level Gates"
-    range_start = 0
-    range_end = 7
-    default = 3
 
 class SonicStory(Choice):
     """
@@ -120,14 +23,6 @@ class SonicStory(Choice):
     option_both_missions_enabled = 3
     default = 0
 
-class SuperHardModeSonicAct2(Toggle):
-    """
-    Should Sonic Act B Missions be replaced with the Super Hard Mode version?
-    The location names will remain the same
-    You will always go to the bonus stage at the end of the level
-    """
-    internal_name = "super_hard_mode_sonic_act_2"
-    display_name = "Super Hard Mode Sonic Act 2"
 
 class SonicKeySanity(Choice):
     """
@@ -143,6 +38,7 @@ class SonicKeySanity(Choice):
     option_SetForEachAct = 2
     default = 0
 
+
 class SonicCheckpointSanity(Choice):
     """
     """
@@ -154,352 +50,67 @@ class SonicCheckpointSanity(Choice):
     option_SetForEachAct = 3
     default = 0
 
-class DarkStory(Choice):
-    """
-    Should Dark Story Missions be enabled?
-    Mission B will allow for Dark Enemy Sanity
-    """
-    internal_name = "dark_story"
-    display_name = "Dark Story"
-    option_disabled = 0
-    option_mission_a_only = 1
-    option_mission_b_only = 2
-    option_both_missions_enabled = 3
-    default = 0
-
-class DarkSanity(Choice):
-    """
-    How many enemies are needed for a sanity check?
-    Requires Mission B to be enabled
-    1 results in 1400 checks
-    20 results in 70 checks
-    """
-    internal_name = "dark_sanity"
-    display_name = "Dark Sanity"
-    option_disabled = 0
-    option_1 = 1
-    option_5 = 5
-    option_10 = 10
-    option_20 = 20
-    default = 0
-
-class DarkKeySanity(Choice):
-    """
-    Getting a bonus key sends a check.
-    This is separate per team enabled
-    Only 1 Set makes it only 1 set of keys to collect (for the team)
-    Set For Each Act has one set of keys for each Act enabled (requires both Acts enabled to have both sets)
-    """
-    internal_name = "dark_key_sanity"
-    display_name = "Dark Key Sanity"
-    option_disabled = 0
-    option_Only1Set = 1
-    option_SetForEachAct = 2
-    default = 0
-
-class DarkCheckpointSanity(Choice):
-    """
-    """
-    internal_name = "dark_checkpoint_sanity"
-    display_name = "Dark Checkpoint Sanity"
-    option_disabled = 0
-    option_Only1Set = 1
-    option_SetForEachAct = 3
-    default = 0
-
-class RoseStory(Choice):
-    """
-    Should Rose Story Missions be enabled?
-    Mission B will allow for Rose Ring Sanity
-    """
-    internal_name = "rose_story"
-    display_name = "Rose Story"
-    option_disabled = 0
-    option_mission_a_only = 1
-    option_mission_b_only = 2
-    option_both_missions_enabled = 3
-    default = 1
-
-class RoseSanity(Choice):
-    """
-    How many rings are needed for a sanity check?
-    Requires Mission B to be enabled
-    Each
-    1 results in 2800 checks
-    20 results in 140 checks
-    """
-    internal_name = "rose_sanity"
-    display_name = "Rose Sanity"
-    option_disabled = 0
-    option_1 = 1
-    option_5 = 5
-    option_10 = 10
-    option_20 = 20
-    default = 0
-
-class RoseKeySanity(Choice):
-    """
-    Getting a bonus key sends a check.
-    This is separate per team enabled
-    Only 1 Set makes it only 1 set of keys to collect (for the team)
-    Set For Each Act has one set of keys for each Act enabled (requires both Acts enabled to have both sets)
-    """
-    internal_name = "rose_key_sanity"
-    display_name = "Rose Key Sanity"
-    option_disabled = 0
-    option_Only1Set = 1
-    option_SetForEachAct = 2
-    default = 0
-
-class RoseCheckpointSanity(Choice):
-    """
-    """
-    internal_name = "rose_checkpoint_sanity"
-    display_name = "Rose Checkpoint Sanity"
-    option_disabled = 0
-    option_Only1Set = 1
-    option_SetForEachAct = 3
-    default = 0
-
-class ChaotixStory(Choice):
-    """
-    Should Chaotix Story Missions be enabled?
-    Either Mission Act, or both, will allow for Chaotix Sanity
-    """
-    internal_name = "chaotix_story"
-    display_name = "Chaotix Story"
-    option_disabled = 0
-    option_mission_a_only = 1
-    option_mission_b_only = 2
-    option_both_missions_enabled = 3
-    default = 0
-
-class ChaotixSanity(Choice):
-    """
-    Should Chaotix Sanity be enabled, and if so, how many rings are needed for a check on Casino Park?
-    Mission A only Check Count: 223 + 200 / value (if enabled)
-    Mission B only Check Count: 266 + 500 / value (if enabled)
-    Both Missions Check Count: 489 + 700 / value (if enabled)
-    """
-    internal_name = "chaotix_sanity"
-    display_name = "Chaotix Sanity"
-    option_disabled = 0
-    option_1 = 1
-    option_5 = 5
-    option_10 = 10
-    option_20 = 20
-    default = 0
-
-class ChaotixKeySanity(Choice):
-    """
-    Getting a bonus key sends a check.
-    This is separate per team enabled
-    Only 1 Set makes it only 1 set of keys to collect (for the team)
-    Set For Each Act has one set of keys for each Act enabled (requires both Acts enabled to have both sets)
-    """
-    internal_name = "chaotix_key_sanity"
-    display_name = "Chaotix Key Sanity"
-    option_disabled = 0
-    option_Only1Set = 1
-    option_SetForEachAct = 2
-    default = 0
-
-class ChaotixCheckpointSanity(Choice):
-    """
-    """
-    internal_name = "chaotix_checkpoint_sanity"
-    display_name = "Chaotix Checkpoint Sanity"
-    option_disabled = 0
-    option_Only1Set = 1
-    option_SetForEachAct = 3
-    default = 0
-
-class SanityExcludedPercent(Range):
-    """
-    How much percent of sanity checks should be excluded (only have filler/trap items)?
-    This currently does not affect Key Sanity.
-    This helps with large amounts of sanity checks having all of the progressive items in a sync.
-    """
-    internal_name = "sanity_excluded_percent"
-    display_name = "Sanity Excluded Percent"
-    range_start = 0
-    range_end = 100
-    default = 80
-
-class RingLink(Toggle):
-    """
-    Ring Link
-    """
-    display_name = "Ring Link Enabled"
-
-class RingLinkOverlord(Toggle):
-    """
-    Should Ring Link be enabled on Metal Overlord?
-    This requires Ring Link to be enabled to have any effect
-    """
-    display_name = "Ring Link on Metal Overlord"
-
-class ModernRingLoss(Toggle):
-    """
-    Only lose up to 20 Rings when hit instead of all
-    """
-    display_name = "Modern Ring Loss Enabled"
-
-class TrapFill(Range):
-    """
-    Determines the percentage of the junk fill which is filled with traps.
-    """
-    display_name = "Trap Fill Percentage"
-    range_start = 0
-    range_end = 100
-    default = 0
-
-class StealthTrapWeight(Range):
-    """
-    Determines the weight (not percent) for Stealth Trap.
-    Traps must be enabled for this to have any effect.
-    """
-    display_name = "Stealth Trap Weight"
-    range_start = 0
-    range_end = 100
-    default = 50
-
-class FreezeTrapWeight(Range):
-    """
-    Determines the weight (not percent) for Freeze Trap.
-    Traps must be enabled for this to have any effect.
-    """
-    display_name = "Freeze Trap Weight"
-    range_start = 0
-    range_end = 100
-    default = 50
-
-class NoSwapTrapWeight(Range):
-    """
-    Determines the weight (not percent) for No Swap Trap.
-    Traps must be enabled for this to have any effect.
-    """
-    display_name = "No Swap Trap Weight"
-    range_start = 0
-    range_end = 100
-    default = 50
-
-class RingTrapWeight(Range):
-    """
-    Determines the weight (not percent) for Ring Trap.
-    Traps must be enabled for this to have any effect.
-    """
-    display_name = "Ring Trap Weight"
-    range_start = 0
-    range_end = 100
-    default = 50
-
-class CharmyTrapWeight(Range):
-    """
-    Determines the weight (not percent) for Charmy Trap.
-    Traps must be enabled for this to have any effect.
-    """
-    display_name = "Charmy Trap Weight"
-    range_start = 0
-    range_end = 100
-    default = 50
 
 
-sonic_heroes_option_groups = [
-    OptionGroup("Goal Options", [
-        Goal,
-        GoalUnlockCondition,
-        EmeraldStageLocationType,
-        SkipMetalMadness,
-        EmblemPoolSize,
-        RequiredEmblemsPercent,
-        RequiredRank,
-        DontLoseBonusKey
-    ]),
-    OptionGroup("Level Gates", [
-        NumberOfLevelGates,
-    ]),
-    OptionGroup("Story Options", [
-        SonicStory,
-        DarkStory,
-        RoseStory,
-        ChaotixStory,
-        SuperHardModeSonicAct2
-    ]),
-    OptionGroup("Sanity", [
-        SonicKeySanity,
-        SonicCheckpointSanity,
-        DarkSanity,
-        DarkKeySanity,
-        DarkCheckpointSanity,
-        RoseSanity,
-        RoseKeySanity,
-        RoseCheckpointSanity,
-        ChaotixSanity,
-        ChaotixKeySanity,
-        ChaotixCheckpointSanity,
-        SanityExcludedPercent
-    ]),
-    OptionGroup("Ring Options", [
-        RingLink,
-        RingLinkOverlord,
-        ModernRingLoss,
-    ]),
-    OptionGroup("Traps", [
-        TrapFill,
-        StealthTrapWeight,
-        FreezeTrapWeight,
-        NoSwapTrapWeight,
-        RingTrapWeight,
-        CharmyTrapWeight
-    ]),
-    OptionGroup("DeathLink", [
-        DeathLink
-    ]),
+
+
+
+
+class SecretLocations(Toggle):
+    """
+
+    """
+    internal_name = "secret_locations"
+    display_name = "Secret/OOB Locations"
+
+
+
+
+sonic_heroes_option_groups = \
+    [
+    OptionGroup("Stories",
+                [
+                    SonicStory,
+                    SecretLocations,
+                ]),
+
+    OptionGroup("Sanity",
+                [
+                    SonicKeySanity,
+                    SonicCheckpointSanity
+                ]),
+    OptionGroup("DeathLink",
+                [
+                    DeathLink
+                ]),
 ]
-
 
 
 @dataclass
 class SonicHeroesOptions(PerGameCommonOptions):
-    goal: Goal
-    goal_unlock_condition: GoalUnlockCondition
-    emerald_stage_location_type: EmeraldStageLocationType
-    skip_metal_madness: SkipMetalMadness
-    emblem_pool_size: EmblemPoolSize
-    required_emblems_percent: RequiredEmblemsPercent
-    required_rank: RequiredRank
-    dont_lose_bonus_key: DontLoseBonusKey
-
-    number_level_gates: NumberOfLevelGates
 
     sonic_story: SonicStory
-    super_hard_mode_sonic_act_2: SuperHardModeSonicAct2
     sonic_key_sanity: SonicKeySanity
     sonic_checkpoint_sanity: SonicCheckpointSanity
-    dark_story: DarkStory
-    dark_sanity: DarkSanity
-    dark_key_sanity: DarkKeySanity
-    dark_checkpoint_sanity: DarkCheckpointSanity
-    rose_story: RoseStory
-    rose_sanity: RoseSanity
-    rose_key_sanity: RoseKeySanity
-    rose_checkpoint_sanity: RoseCheckpointSanity
-    chaotix_story: ChaotixStory
-    chaotix_sanity: ChaotixSanity
-    chaotix_key_sanity: ChaotixKeySanity
-    chaotix_checkpoint_sanity: ChaotixCheckpointSanity
-    sanity_excluded_percent: SanityExcludedPercent
-
-    ring_link: RingLink
-    ring_link_overlord: RingLinkOverlord
-    modern_ring_loss: ModernRingLoss
-
-    trap_fill: TrapFill
-    stealth_trap_weight: StealthTrapWeight
-    freeze_trap_weight: FreezeTrapWeight
-    no_swap_trap_weight: NoSwapTrapWeight
-    ring_trap_weight: RingTrapWeight
-    charmy_trap_weight: CharmyTrapWeight
+    secret_locations: SecretLocations
 
     death_link: DeathLink
+
+
+
+def check_invalid_options(world: SonicHeroesWorld):
+
+    if world.options.sonic_story.value == 0:
+        raise OptionError(f"SONIC STORY MUST BE ENABLED")
+
+    if world.options.sonic_key_sanity.value == 0:
+        raise OptionError(f"SONIC KEYSANITY MUST BE ENABLED")
+
+    if world.options.sonic_checkpoint_sanity.value == 0 or world.options.sonic_checkpoint_sanity.value == 2:
+        raise OptionError(f"SONIC CHECKPOINTSANITY OPTION ERROR")
+
+
+
+
+
+

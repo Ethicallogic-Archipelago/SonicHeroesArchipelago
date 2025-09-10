@@ -1,182 +1,175 @@
-from typing import NamedTuple
-import math
+from __future__ import annotations
 
-from BaseClasses import Item, ItemClassification
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from worlds.sonic_heroes import SonicHeroesWorld
 
-from .names import *
+
+from BaseClasses import Item
+from .constants import *
 
 
 class SonicHeroesItem(Item):
-    game: str = "Sonic Heroes"
+    game: str = SONICHEROES
 
-def create_item(world, name: str, classification: ItemClassification, amount: int = 1):
+
+def create_item(world: SonicHeroesWorld, name: str, classification: ItemClassification, amount: int = 1):
     for i in range(amount):
-        world.multiworld.itempool.append(Item(name, classification, world.item_name_to_id[name], world.player))
+        world.multiworld.itempool.append(SonicHeroesItem(name, classification, world.item_name_to_id[name], world.player))
 
+def create_filler_items(world: SonicHeroesWorld, amount: int):
+    filler_list = world.multiworld.random.choices(list(filler_items_to_weights.keys()), weights=list(filler_items_to_weights.values()), k=amount)
 
-def create_items(world):
-
-    total_location_count = len(world.multiworld.get_unfilled_locations(world.player))
-
-    world.spoiler_string += f"THE FULL ITEM POOL SIZE IS {total_location_count}\n"
-
-    useful_emblems = world.emblem_pool_size - world.required_emblems
-
-    #Emblems:
-    #create_item(world, "Emblem", ItemClassification.progression, world.emblem_pool_size)
-    create_item(world, "Emblem", ItemClassification.progression, world.required_emblems)
-    create_item(world, "Emblem", ItemClassification.useful, useful_emblems)
-
-    if (world.options.goal_unlock_condition.value != 1):
-        #Emeralds:
-        create_item(world, "Green Chaos Emerald", ItemClassification.progression)
-        create_item(world, "Blue Chaos Emerald", ItemClassification.progression)
-        create_item(world, "Yellow Chaos Emerald", ItemClassification.progression)
-        create_item(world, "White Chaos Emerald", ItemClassification.progression)
-        create_item(world, "Cyan Chaos Emerald", ItemClassification.progression)
-        create_item(world, "Purple Chaos Emerald", ItemClassification.progression)
-        create_item(world, "Red Chaos Emerald", ItemClassification.progression)
-
-    #Fillers:
-    remaining_locations = total_location_count - world.emblem_pool_size
-
-    if world.options.goal_unlock_condition.value != 1:
-        #remove 7 filler items if Emeralds are added
-        remaining_locations -= 7
-
-
-    #limit ring filler if ringsanity options are at 1
-    checkRingFiller(world)
-
-
-    #print(f"Remaining items here: {remaining_locations}")
-    trap_count = round(remaining_locations * world.options.trap_fill.value / 100)
-    junk_count = remaining_locations - trap_count
-
-    trap_weights = {
-    "Stealth Trap": world.options.stealth_trap_weight.value,
-    "Freeze Trap": world.options.freeze_trap_weight.value,
-    "No Swap Trap": world.options.no_swap_trap_weight.value,
-    "Ring Trap": world.options.ring_trap_weight.value,
-    "Charmy Trap": world.options.charmy_trap_weight.value
-    }
-
-
-    junk = get_junk_item_names(world.multiworld.random, junk_count)
-    for name in junk:
+    for name in filler_list:
         create_item(world, name, ItemClassification.filler)
 
-    trap = get_trap_item_names(world.multiworld.random, trap_count, trap_weights)
-    for name in trap:
+def create_trap_items(world: SonicHeroesWorld, amount: int):
+    trap_list = world.multiworld.random.choices(list(trap_items_to_weights.keys()), weights=list(trap_items_to_weights.values()), k=amount)
+
+    for name in trap_list:
         create_item(world, name, ItemClassification.trap)
 
 
-def get_junk_item_names(rand, k: int) -> str:
-    junk = rand.choices(
-        list(junk_weights.keys()),
-        weights=list(junk_weights.values()),
-        k=k)
-    return junk
+def create_items(world: SonicHeroesWorld):
+    total_location_count = len(world.multiworld.get_unfilled_locations(world.player))
+
+    #create_item(world, EMBLEM, ItemClassification.progression)
+    #total_location_count -= 1
+
+    create_item(world, PLAYABLESONIC, ItemClassification.progression)
+    total_location_count -= 1
+
+    create_item(world, PLAYABLETAILS, ItemClassification.progression)
+    total_location_count -= 1
+
+    #create_item(world, PLAYABLEKNUCKLES, ItemClassification.progression)
+    #total_location_count -= 1
+
+    create_item(world, progressive_ability_item_names[SONIC][OCEANREGION][SPEED], ItemClassification.progression, 4)
+    total_location_count -= 4
+
+    create_item(world, progressive_ability_item_names[SONIC][OCEANREGION][FLYING], ItemClassification.progression, 2)
+    total_location_count -= 2
+
+    create_item(world, progressive_ability_item_names[SONIC][OCEANREGION][POWER], ItemClassification.progression, 3)
+    total_location_count -= 3
+
+    create_item(world, progressive_ability_item_names[SONIC][HOTPLANTREGION][SPEED], ItemClassification.progression, 4)
+    total_location_count -= 4
+
+    create_item(world, progressive_ability_item_names[SONIC][HOTPLANTREGION][FLYING], ItemClassification.progression, 2)
+    total_location_count -= 2
+
+    create_item(world, progressive_ability_item_names[SONIC][HOTPLANTREGION][POWER], ItemClassification.progression, 3)
+    total_location_count -= 3
+
+    create_item(world, progressive_ability_item_names[SONIC][CASINOREGION][SPEED], ItemClassification.progression, 4)
+    total_location_count -= 4
+
+    create_item(world, progressive_ability_item_names[SONIC][CASINOREGION][FLYING], ItemClassification.progression, 2)
+    total_location_count -= 2
+
+    create_item(world, progressive_ability_item_names[SONIC][CASINOREGION][POWER], ItemClassification.progression, 3)
+    total_location_count -= 3
+
+    create_item(world, char_levelup_to_item_name[SONIC][SPEED], ItemClassification.progression, 3)
+    total_location_count -= 3
+
+    create_item(world, char_levelup_to_item_name[SONIC][FLYING], ItemClassification.progression, 3)
+    total_location_count -= 3
+
+    create_item(world, char_levelup_to_item_name[SONIC][POWER], ItemClassification.progression, 3)
+    total_location_count -= 3
+
+    world.extra_items = total_location_count
+
+    create_filler_items(world, world.extra_items)
+        #create_item(world, EXTRALIFE, ItemClassification.filler)
 
 
-def get_trap_item_names(rand, k: int, trap_weights) -> str:
-    trap = rand.choices(
-        list(trap_weights.keys()),
-        weights=list(trap_weights.values()),
-        k=k)
-    return trap
+itemList: list[ItemData] = \
+[
+    ItemData(0x93930000, EMBLEM, ItemClassification.progression),
+    ItemData(0x93930001, GREENCHAOSEMERALD, ItemClassification.progression),
+    ItemData(0x93930002, BLUECHAOSEMERALD, ItemClassification.progression),
+    ItemData(0x93930003, YELLOWCHAOSEMERALD, ItemClassification.progression),
+    ItemData(0x93930004, WHITECHAOSEMERALD, ItemClassification.progression),
+    ItemData(0x93930005, CYANCHAOSEMERALD, ItemClassification.progression),
+    ItemData(0x93930006, PURPLECHAOSEMERALD, ItemClassification.progression),
+    ItemData(0x93930007, REDCHAOSEMERALD, ItemClassification.progression),
 
-def checkRingFiller(world):
+    ItemData(0x93930008, PLAYABLESONIC, ItemClassification.progression),
+    ItemData(0x93930009, PLAYABLETAILS, ItemClassification.progression),
+    ItemData(0x9393000A, PLAYABLEKNUCKLES, ItemClassification.progression),
+    ItemData(0x9393000B, PLAYABLESHADOW, ItemClassification.progression),
+    ItemData(0x9393000C, PLAYABLEROUGE, ItemClassification.progression),
+    ItemData(0x9393000D, PLAYABLEOMEGA, ItemClassification.progression),
+    ItemData(0x9393000E, PLAYABLEAMY, ItemClassification.progression),
+    ItemData(0x9393000F, PLAYABLECREAM, ItemClassification.progression),
+    ItemData(0x93930010, PLAYABLEBIG, ItemClassification.progression),
+    ItemData(0x93930011, PLAYABLEESPIO, ItemClassification.progression),
+    ItemData(0x93930012, PLAYABLECHARMY, ItemClassification.progression),
+    ItemData(0x93930013, PLAYABLEVECTOR, ItemClassification.progression),
+    ItemData(0x93930014, PLAYABLESUPERHARDSONIC, ItemClassification.progression),
+    ItemData(0x93930015, PLAYABLESUPERHARDTAILS, ItemClassification.progression),
+    ItemData(0x93930016, PLAYABLESUPERHARDKNUCKLES, ItemClassification.progression),
 
-    #If RingSanity Interval at 1
-    if ("Rose" in world.story_list and world.options.rose_sanity.value == 1 and world.options.rose_sanity.value > 1) or ("Chaotix" in world.story_list and world.options.chaotix_sanity.value == 1):
+    ItemData(0x93930017, progressive_ability_item_names[SONIC][OCEANREGION][SPEED], ItemClassification.progression),
+    ItemData(0x93930018, progressive_ability_item_names[SONIC][OCEANREGION][FLYING], ItemClassification.progression),
+    ItemData(0x93930019, progressive_ability_item_names[SONIC][OCEANREGION][POWER], ItemClassification.progression),
 
-        #out of 800
-        junk_weights["5 Rings"] = 15
-        junk_weights["10 Rings"] = 10
-        junk_weights["20 Rings"] = 5
+    ItemData(0x9393001A, progressive_ability_item_names[SONIC][HOTPLANTREGION][SPEED], ItemClassification.progression),
+    ItemData(0x9393001B, progressive_ability_item_names[SONIC][HOTPLANTREGION][FLYING], ItemClassification.progression),
+    ItemData(0x9393001C, progressive_ability_item_names[SONIC][HOTPLANTREGION][POWER], ItemClassification.progression),
+    
+    ItemData(0x9393001D, progressive_ability_item_names[SONIC][CASINOREGION][SPEED], ItemClassification.progression),
+    ItemData(0x9393001E, progressive_ability_item_names[SONIC][CASINOREGION][FLYING], ItemClassification.progression),
+    ItemData(0x9393001F, progressive_ability_item_names[SONIC][CASINOREGION][POWER], ItemClassification.progression),
+    
+    ItemData(0x93930020, progressive_ability_item_names[SONIC][TRAINREGION][SPEED], ItemClassification.progression),
+    ItemData(0x93930021, progressive_ability_item_names[SONIC][TRAINREGION][FLYING], ItemClassification.progression),
+    ItemData(0x93930022, progressive_ability_item_names[SONIC][TRAINREGION][POWER], ItemClassification.progression),
 
-        junk_weights["Extra Life"] += 35
-        junk_weights["Shield"] += 35
-        junk_weights["Speed Level Up"] += 35
-        junk_weights["Power Level Up"] += 35
-        junk_weights["Flying Level Up"] += 35
-        junk_weights["Team Level Up"] += 35
+    ItemData(0x93930023, progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], ItemClassification.progression),
+    ItemData(0x93930024, progressive_ability_item_names[SONIC][BIGPLANTREGION][FLYING], ItemClassification.progression),
+    ItemData(0x93930025, progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], ItemClassification.progression),
 
+    ItemData(0x93930026, progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], ItemClassification.progression),
+    ItemData(0x93930027, progressive_ability_item_names[SONIC][GHOSTREGION][FLYING], ItemClassification.progression),
+    ItemData(0x93930028, progressive_ability_item_names[SONIC][GHOSTREGION][POWER], ItemClassification.progression),
 
-    #If RingSanity Interval at 5
-    if ("Rose" in world.story_list and world.options.rose_sanity.value == 5 and world.options.rose_sanity.value > 1) or ("Chaotix" in world.story_list and world.options.chaotix_sanity.value == 5):
-        #out of 800
-        junk_weights["5 Rings"] = 30
-        junk_weights["10 Rings"] = 20
-        junk_weights["20 Rings"] = 10
+    ItemData(0x93930029, progressive_ability_item_names[SONIC][SKYREGION][SPEED], ItemClassification.progression),
+    ItemData(0x9393002A, progressive_ability_item_names[SONIC][SKYREGION][FLYING], ItemClassification.progression),
+    ItemData(0x9393002B, progressive_ability_item_names[SONIC][SKYREGION][POWER], ItemClassification.progression),
+    #to A9
 
-        junk_weights["Extra Life"] += 30
-        junk_weights["Shield"] += 30
-        junk_weights["Speed Level Up"] += 30
-        junk_weights["Power Level Up"] += 30
-        junk_weights["Flying Level Up"] += 30
-        junk_weights["Team Level Up"] += 30
-
-        #If RingSanity Interval at 10
-    if ("Rose" in world.story_list and world.options.rose_sanity.value == 10 and world.options.rose_sanity.value > 1) or ("Chaotix" in world.story_list and world.options.chaotix_sanity.value == 10):
-        #out of 800
-        junk_weights["5 Rings"] = 60
-        junk_weights["10 Rings"] = 40
-        junk_weights["20 Rings"] = 20
-
-        junk_weights["Extra Life"] += 20
-        junk_weights["Shield"] += 20
-        junk_weights["Speed Level Up"] += 20
-        junk_weights["Power Level Up"] += 20
-        junk_weights["Flying Level Up"] += 20
-        junk_weights["Team Level Up"] += 20
+    ItemData(0x939300B0, char_levelup_to_item_name[SONIC][SPEED], ItemClassification.progression),
+    ItemData(0x939300B1, char_levelup_to_item_name[SONIC][FLYING], ItemClassification.progression),
+    ItemData(0x939300B2, char_levelup_to_item_name[SONIC][POWER], ItemClassification.progression),
 
 
+    ItemData(0x939300C0, EXTRALIFE, ItemClassification.filler),
+    ItemData(0x939300C1, RINGS5, ItemClassification.filler),
+    ItemData(0x939300C2, RINGS10, ItemClassification.filler),
+    ItemData(0x939300C3, RINGS20, ItemClassification.filler),
+    ItemData(0x939300C4, SHIELD, ItemClassification.filler),
+    #ItemData(0x939300C5, INVINCIBILITY, ItemClassification.filler),
+    #ItemData(0x939300C6, SPEEDLEVELUP, ItemClassification.filler),
+    #ItemData(0x939300C7, FLYINGLEVELUP, ItemClassification.filler),
+    #ItemData(0x939300C8, POWERLEVELUP, ItemClassification.filler),
+    #ItemData(0x939300C9, TEAMLEVELUP, ItemClassification.filler, fillerweight=25),
+    ItemData(0x939300CA, TEAMBLASTGAUGE, ItemClassification.filler),
 
-
-itemList: list[ItemData] = [
-    ItemData(0x93930000, "Emblem", ItemClassification.progression),
-    ItemData(0x93930001, "Green Chaos Emerald", ItemClassification.progression),
-    ItemData(0x93930002, "Blue Chaos Emerald", ItemClassification.progression),
-    ItemData(0x93930003, "Yellow Chaos Emerald", ItemClassification.progression),
-    ItemData(0x93930004, "White Chaos Emerald", ItemClassification.progression),
-    ItemData(0x93930005, "Cyan Chaos Emerald", ItemClassification.progression),
-    ItemData(0x93930006, "Purple Chaos Emerald", ItemClassification.progression),
-    ItemData(0x93930007, "Red Chaos Emerald", ItemClassification.progression),
-    ItemData(0x93930008, "Extra Life", ItemClassification.filler),
-    ItemData(0x93930009, "5 Rings", ItemClassification.filler),
-    ItemData(0x9393000A, "10 Rings", ItemClassification.filler),
-    ItemData(0x9393000B, "20 Rings", ItemClassification.filler),
-    ItemData(0x9393000C, "Shield", ItemClassification.filler),
-    #ItemData(0x9393000D, "Invincibility", ItemClassification.filler),
-    ItemData(0x9393000E, "Speed Level Up", ItemClassification.filler),
-    ItemData(0x9393000F, "Power Level Up", ItemClassification.filler),
-    ItemData(0x93930010, "Flying Level Up", ItemClassification.filler),
-    ItemData(0x93930011, "Team Level Up", ItemClassification.filler),
-
-    ItemData(0x93930100, "Stealth Trap", ItemClassification.trap),
-    ItemData(0x93930101, "Freeze Trap", ItemClassification.trap),
-    ItemData(0x93930102, "No Swap Trap", ItemClassification.trap),
-    ItemData(0x93930103, "Ring Trap", ItemClassification.trap),
-    ItemData(0x93930104, "Charmy Trap", ItemClassification.trap),
+    ItemData(0x93930100, STEALTHTRAP, ItemClassification.trap),
+    ItemData(0x93930101, FREEZETRAP, ItemClassification.trap),
+    ItemData(0x93930102, NOSWAPTRAP, ItemClassification.trap),
+    ItemData(0x93930103, RINGTRAP, ItemClassification.trap),
+    ItemData(0x93930104, CHARMYTRAP, ItemClassification.trap),
 ]
 
-junk_weights = {
-    "Extra Life": 160,
-    "5 Rings": 120,
-    "10 Rings": 80,
-    "20 Rings": 40,
-    "Shield": 160,
-    #"Invincibility": 160,
-    "Speed Level Up": 72,
-    "Power Level Up": 72,
-    "Flying Level Up": 72,
-    "Team Level Up": 24,
-}
 
-#stealth
-#OP 2
-#FF 1 and 2 (Frogs)
-#HC 2
-#EF 1 and 2
+filler_items_to_weights = \
+    {item.name: item.fillerweight for item in itemList if item.classification == ItemClassification.filler}
+
+trap_items_to_weights = \
+    {item.name: item.fillerweight for item in itemList if item.classification == ItemClassification.trap}
