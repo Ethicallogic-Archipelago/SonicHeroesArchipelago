@@ -1,47 +1,8 @@
-from dataclasses import dataclass
-from typing import NamedTuple
 
-from BaseClasses import ItemClassification
-
-class ItemData(NamedTuple):
-    code: int
-    itemName: str
-    classification: ItemClassification
+import csv
+#NEED TO FIX SUPER SECRET HIDDEN and #Metal Overlord
 
 
-sonic_heroes_story_names: dict[int, str] = {
-    0: "Sonic",
-    1: "Dark",
-    2: "Rose",
-    3: "Chaotix"
-}
-
-sonic_heroes_level_names: dict[int, str] = {
-    1: "Seaside Hill",
-    2: "Ocean Palace",
-    3: "Grand Metropolis",
-    4: "Power Plant",
-    5: "Casino Park",
-    6: "Bingo Highway",
-    7: "Rail Canyon",
-    8: "Bullet Station",
-    9: "Frog Forest",
-    10: "Lost Jungle",
-    11: "Hang Castle",
-    12: "Mystic Mansion",
-    13: "Egg Fleet",
-    14: "Final Fortress"
-}
-
-sonic_heroes_extra_names: dict[int, str] = {
-    0: "Egg Hawk",
-    1: "Team Fight 1",
-    2: "Robot Carnival",
-    3: "Egg Albatross",
-    4: "Team Fight 2",
-    5: "Robot Storm",
-    6: "Egg Emperor"
-}
 
 location_id_name_dict: dict[int, str] = {
     0x939300a0: "Seaside Hill Sonic Act 1",
@@ -6738,3 +6699,143 @@ location_id_name_dict: dict[int, str] = {
     0x9393230d: "Final Fortress Sonic Super Hard Mode",
     0x9393230e: "Metal Overlord",
 }
+
+headers = ["Team", "Level", "Name", "Code", "Act", "Region", "Rule", "Location Type", "HintInfo", "Notes"]
+
+
+with open("Locations.csv", "w", newline="") as csvfile:
+    fieldnames = headers
+    writer = csv.DictWriter(csvfile, headers)
+    writer.writeheader()
+    for key, value in location_id_name_dict.items():
+        team = "Sonic"
+        level = "Sea Gate"
+        act = 0
+        region = "Metal Overlord"
+        rule = ""
+        loc_type = "Normal"
+        hint_info = ""
+        notes = ""
+
+        if "Super Hard Mode" in value:
+            team = "Super Hard Mode"
+            act = 2
+        elif "Chaotix" in value:
+            team = "Chaotix"
+        elif "Rose" in value:
+            team = "Rose"
+        elif "Dark" in value:
+            team = "Dark"
+
+        if "Seaside Hill" in value:
+            level = "Seaside Hill"
+        elif "Ocean Palace" in value:
+            level = "Ocean Palace"
+        elif "Grand Metropolis" in value:
+            level = "Grand Metropolis"
+        elif "Power Plant" in value:
+            level = "Power Plant"
+        elif "Casino Park" in value:
+            level = "Casino Park"
+        elif "Bingo Highway" in value:
+            level = "Bingo Highway"
+        elif "Rail Canyon" in value:
+            level = "Rail Canyon"
+        elif "Bullet Station" in value:
+            level = "Bullet Station"
+        elif "Frog Forest" in value:
+            level = "Frog Forest"
+        elif "Lost Jungle" in value:
+            level = "Lost Jungle"
+        elif "Hang Castle" in value:
+            level = "Hang Castle"
+        elif "Mystic Mansion" in value:
+            level = "Mystic Mansion"
+        elif "Egg Fleet" in value:
+            level = "Egg Fleet"
+        elif "Final Fortress" in value:
+            level = "Final Fortress"
+
+        region = f"{level} {team} Goal"
+
+        if "Egg Hawk" in value:
+            level = "Egg Hawk"
+            loc_type = "Boss"
+            region = f"{level} {team}"
+        elif "Team Fight 1" in value:
+            level = "Team Fight 1"
+            loc_type = "Boss"
+            region = f"{level} {team}"
+        elif "Robot Carnival" in value:
+            level = "Robot Carnival"
+            loc_type = "Boss"
+            region = f"{level} {team}"
+        elif "Egg Albatross" in value:
+            level = "Egg Albatross"
+            loc_type = "Boss"
+            region = f"{level} {team}"
+        elif "Team Fight 2" in value:
+            level = "Team Fight 2"
+            loc_type = "Boss"
+            region = f"{level} {team}"
+        elif "Robot Storm" in value:
+            level = "Robot Storm"
+            loc_type = "Boss"
+            region = f"{level} {team}"
+        elif "Egg Emperor" in value:
+            level = "Egg Emperor"
+            loc_type = "Boss"
+            region = f"{level} {team}"
+
+        if "Act 1" in value:
+            act = 1
+        elif "Act 2" in value:
+            act = 2
+
+        #check for emerald
+        if "Emerald Stage" in value:
+            loc_type = "Emerald"
+            region = f"{level} Emerald"
+            team = "Any"
+
+        #checkpoints
+        elif "Checkpoint" in value:
+            loc_type = "CheckpointSanity"
+            region = value.replace("Act 1 ", "").replace("Act 2 ", "")
+
+        #keys
+        elif "Bonus Key" in value:
+            loc_type = "KeySanity"
+            region = value.replace("Act 1 ", "").replace("Act 2 ", "")
+
+        #sanity here
+        elif ":" in value:
+            loc_type = "ObjSanity"
+            region = f"{level} {team} ObjSanity"
+
+        if "Metal Overlord" in value:
+            team = "Any"
+            level = "Metal Overlord"
+            region = "Metal Overlord"
+
+        if "SUPER SECRET HIDDEN" in value:
+            team = "Rose"
+            level = "Casino Park"
+            loc_type = "Secret"
+
+        row_data = \
+            {
+                "Team": team,
+                "Level": level,
+                "Name": value,
+                "Code": hex(key),
+                "Act": act,
+                "Region": region,
+                "Rule": rule,
+                "Location Type": loc_type,
+                "HintInfo": hint_info,
+                "Notes": notes,
+            }
+
+        writer.writerow(row_data)
+
