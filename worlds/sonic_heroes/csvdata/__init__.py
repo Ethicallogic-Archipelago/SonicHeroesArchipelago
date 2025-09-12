@@ -107,7 +107,9 @@ def is_loc_in_world(world: SonicHeroesWorld, team: str, loc: LocationCSVData) ->
         "Grand Metropolis",
         "Power Plant",
         "Casino Park",
-        "Bingo Highway"
+        "Bingo Highway",
+        "Rail Canyon",
+        "Bullet Station",
     ]
 
 

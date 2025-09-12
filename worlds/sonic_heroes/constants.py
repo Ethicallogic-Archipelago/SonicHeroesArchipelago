@@ -211,7 +211,7 @@ SPEEDLEVELUP = "Speed Level Up"
 POWERLEVELUP = "Power Level Up"
 FLYINGLEVELUP = "Flying Level Up"
 TEAMLEVELUP = "Team Level Up"
-TEAMBLASTGAUGE = "Team Blast Gauge"
+TEAMBLASTREFILL = "Team Blast Refill"
 
 STEALTHTRAP = "Stealth Trap"
 FREEZETRAP = "Freeze Trap"
@@ -304,15 +304,24 @@ csv_file_names = \
                     REGION: "CasinoParkSonicRegions",
                     CONNECTION: "CasinoParkSonicConnections",
                 },
+
             BINGOHIGHWAY:
                 {
                     REGION: "BingoHighwaySonicRegions",
                     CONNECTION: "BingoHighwaySonicConnections",
-                }
+                },
+            RAILCANYON:
+                {
+                    REGION: "RailCanyonSonicRegions",
+                    CONNECTION: "RailCanyonSonicConnections",
+                },
+            BULLETSTATION:
+                {
+                    REGION: "BulletStationSonicRegions",
+                    CONNECTION: "BulletStationSonicConnections",
+                },
         }
 }
-
-
 
 
 secret_csv_file_names = \
@@ -598,18 +607,25 @@ ability_to_item_req = \
                     GLIDE: (progressive_ability_item_names[SONIC][CASINOREGION][POWER], 2),
                     COMBOFINISHER: (progressive_ability_item_names[SONIC][CASINOREGION][POWER], 3),
                 },
-        },
-}
+            TRAINREGION:
+                {
+                    HOMINGATTACK: (progressive_ability_item_names[SONIC][TRAINREGION][SPEED], 1),
+                    TORNADO: (progressive_ability_item_names[SONIC][TRAINREGION][SPEED], 2),
+                    ROCKETACCEL: (progressive_ability_item_names[SONIC][TRAINREGION][SPEED], 2),
+                    LIGHTDASH: (progressive_ability_item_names[SONIC][TRAINREGION][SPEED], 3),
+                    TRIANGLEJUMP: (progressive_ability_item_names[SONIC][TRAINREGION][SPEED], 4),
+                    LIGHTATTACK: (progressive_ability_item_names[SONIC][TRAINREGION][SPEED], 4),
 
-all_locations = \
-{
-    SONIC:
-        {
-            SEASIDEHILL:
-                [
-                    #*sonic_key_sanity_locations["Seaside Hill"]
-                ]
-        }
+                    THUNDERSHOOT: (progressive_ability_item_names[SONIC][TRAINREGION][FLYING], 1),
+                    FLIGHT: (progressive_ability_item_names[SONIC][TRAINREGION][FLYING], 2),
+                    FLOWERSTING: (progressive_ability_item_names[SONIC][TRAINREGION][FLYING], 3),
+
+                    BREAK: (progressive_ability_item_names[SONIC][TRAINREGION][POWER], 0),
+                    FIREDUNK: (progressive_ability_item_names[SONIC][TRAINREGION][POWER], 1),
+                    GLIDE: (progressive_ability_item_names[SONIC][TRAINREGION][POWER], 2),
+                    COMBOFINISHER: (progressive_ability_item_names[SONIC][TRAINREGION][POWER], 3),
+                },
+        },
 }
 
 

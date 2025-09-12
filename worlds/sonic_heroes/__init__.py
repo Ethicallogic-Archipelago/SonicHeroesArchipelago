@@ -97,8 +97,14 @@ class SonicHeroesWorld(World):
 
     def create_items(self) -> None:
         create_items(self)
-        self.multiworld.push_precollected(self.create_item(PLAYABLETAILS))
 
+
+        if self.options.sonic_story_starting_character == 0:
+            self.multiworld.push_precollected(self.create_item(PLAYABLESONIC))
+        if self.options.sonic_story_starting_character == 1:
+            self.multiworld.push_precollected(self.create_item(PLAYABLETAILS))
+        if self.options.sonic_story_starting_character == 2:
+            self.multiworld.push_precollected(self.create_item(PLAYABLEKNUCKLES))
         pass
 
 
@@ -164,9 +170,9 @@ class SonicHeroesWorld(World):
 
             "GateEmblemCosts": [1],
             #"ShuffledLevels": [f"S{x}" for x in range(2, 16)],
-            "ShuffledLevels": ["S2", "S3", "S4", "S5", "S6", "S7"],
+            "ShuffledLevels": ["S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9"],
             "ShuffledBosses": ["B23"],
-            "GateLevelCounts": [6],
+            "GateLevelCounts": [8],
         }
 
     def write_spoiler_header(self, spoiler_handle: TextIO) -> None:
@@ -200,7 +206,9 @@ class SonicHeroesWorld(World):
                 GRANDMETROPOLIS: create_logic_mapping_dict_grand_metropolis_sonic(self),
                 POWERPLANT: create_logic_mapping_dict_power_plant_sonic(self),
                 CASINOPARK: create_logic_mapping_dict_casino_park_sonic(self),
-                BINGOHIGHWAY: create_logic_mapping_dict_bingo_highway_sonic(self)
+                BINGOHIGHWAY: create_logic_mapping_dict_bingo_highway_sonic(self),
+                RAILCANYON: create_logic_mapping_dict_rail_canyon_sonic(self),
+                BULLETSTATION: create_logic_mapping_dict_bullet_station_sonic(self),
             }
 
 

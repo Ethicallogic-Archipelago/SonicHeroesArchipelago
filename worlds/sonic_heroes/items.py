@@ -36,14 +36,18 @@ def create_items(world: SonicHeroesWorld):
     #create_item(world, EMBLEM, ItemClassification.progression)
     #total_location_count -= 1
 
-    create_item(world, PLAYABLESONIC, ItemClassification.progression)
-    total_location_count -= 1
+    if world.options.sonic_story_starting_character != 0:
+        create_item(world, PLAYABLESONIC, ItemClassification.progression)
+        total_location_count -= 1
 
-    #create_item(world, PLAYABLETAILS, ItemClassification.progression)
-    #total_location_count -= 1
+    if world.options.sonic_story_starting_character != 1:
+        create_item(world, PLAYABLETAILS, ItemClassification.progression)
+        total_location_count -= 1
 
-    create_item(world, PLAYABLEKNUCKLES, ItemClassification.progression)
-    total_location_count -= 1
+    if world.options.sonic_story_starting_character != 2:
+        create_item(world, PLAYABLEKNUCKLES, ItemClassification.progression)
+        total_location_count -= 1
+
 
     create_item(world, progressive_ability_item_names[SONIC][OCEANREGION][SPEED], ItemClassification.progression, 4)
     total_location_count -= 4
@@ -71,6 +75,18 @@ def create_items(world: SonicHeroesWorld):
 
     create_item(world, progressive_ability_item_names[SONIC][CASINOREGION][POWER], ItemClassification.progression, 3)
     total_location_count -= 3
+
+
+
+    create_item(world, progressive_ability_item_names[SONIC][TRAINREGION][SPEED], ItemClassification.progression, 4)
+    total_location_count -= 4
+
+    create_item(world, progressive_ability_item_names[SONIC][TRAINREGION][FLYING], ItemClassification.progression, 2)
+    total_location_count -= 2
+
+    create_item(world, progressive_ability_item_names[SONIC][TRAINREGION][POWER], ItemClassification.progression, 3)
+    total_location_count -= 3
+
 
     create_item(world, char_levelup_to_item_name[SONIC][SPEED], ItemClassification.progression, 3)
     total_location_count -= 3
@@ -158,7 +174,7 @@ itemList: list[ItemData] = \
     #ItemData(0x939300C7, FLYINGLEVELUP, ItemClassification.filler),
     #ItemData(0x939300C8, POWERLEVELUP, ItemClassification.filler),
     #ItemData(0x939300C9, TEAMLEVELUP, ItemClassification.filler, fillerweight=25),
-    ItemData(0x939300CA, TEAMBLASTGAUGE, ItemClassification.filler),
+    ItemData(0x939300CA, TEAMBLASTREFILL, ItemClassification.filler),
 
     ItemData(0x93930100, STEALTHTRAP, ItemClassification.trap),
     ItemData(0x93930101, FREEZETRAP, ItemClassification.trap),

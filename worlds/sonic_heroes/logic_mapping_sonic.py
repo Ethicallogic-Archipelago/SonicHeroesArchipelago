@@ -133,7 +133,7 @@ def create_logic_mapping_dict_ocean_palace_sonic(world: SonicHeroesWorld):
 
         "KillGroundEnemyConcreteShieldSonicOP": lambda state: can_kill_ground_enemy(world, SONIC, OCEANPALACE, state, concreteshield=True),
 
-        "KillFlyingEnemyNothingSonicOP": lambda state: can_kill_flying_enemy(world, SONIC, OCEANPALACE, state),
+        "KillFlyingEnemyGreenShotNothingSonicOP": lambda state: can_kill_flying_enemy(world, SONIC, OCEANPALACE, state, green_shot=True, nothing=True),
 
         "KillGroundEnemySpearConcreteShieldandKillFlyingEnemyGreenShotNothingSonicOP": lambda state: can_kill_ground_enemy(world, SONIC, OCEANPALACE, state, spear=True, concreteshield=True) and can_kill_flying_enemy(world, SONIC, OCEANPALACE, state, green_shot=True, nothing=True),
 
@@ -403,7 +403,7 @@ def create_logic_mapping_dict_casino_park_sonic(world: SonicHeroesWorld):
 
         "CannonandFlyingCharSonicCP": lambda state: can_cannon(world, SONIC, CASINOPARK, state, flying=True),
 
-        "FlyingCharandPowerCharandSpeedCharSonicCP": lambda state: has_char(world, SONIC, CASINOPARK, state, speed=True, flying=True, power=True),
+        "FlyingCharand(PowerCharorSpeedChar)andPushPullSwitchSonicCP": lambda state: has_char(world, SONIC, CASINOPARK, state, flying=True) and (has_char(world, SONIC, CASINOPARK, state, speed=True, power=True, orcondition=True)) and can_switch(world, SONIC, CASINOPARK, state, push_pull=True),
 
         "KillGroundEnemyGoldCameronKlagenPlainShieldSonicCP": lambda state: can_kill_ground_enemy(world, SONIC, CASINOPARK, state, plainshield=True, klagen=True, goldcameron=True),
 
@@ -491,6 +491,171 @@ def create_logic_mapping_dict_bingo_highway_sonic(world: SonicHeroesWorld):
 
         "DashRingandPinballandSingleSpringSonicBH": lambda state: can_dash_ring(world, SONIC, BINGOHIGHWAY, state) and can_pinball(world, SONIC, BINGOHIGHWAY, state) and can_single_spring(world, SONIC, BINGOHIGHWAY, state),
     }
+
+
+def create_logic_mapping_dict_rail_canyon_sonic(world: SonicHeroesWorld):
+    return \
+    {
+        "": lambda state: True,
+
+        "NOTPOSSIBLE": lambda state: False,
+
+        "BreakKeyCageSonicRC": lambda state: can_break_key_cage(world, SONIC, RAILCANYON, state),
+
+        "RailSonicRC": lambda state: can_rail(world, SONIC, RAILCANYON, state),
+
+        "FlyingAnyorSingleSpringSonicRC": lambda state: can_fly(world, SONIC, RAILCANYON, state) or can_single_spring(world, SONIC, RAILCANYON, state),
+
+        "FlyingAnyorSwitchableRailSonicRC": lambda state: can_fly(world, SONIC, RAILCANYON, state) or can_switchable_rail(world, SONIC, RAILCANYON, state),
+
+        "(BarrelandFlyingAny)orPulleySonicRC": lambda state: (can_barrel(world, SONIC, RAILCANYON, state) and can_fly(world, SONIC, RAILCANYON, state)) or can_pulley(world, SONIC, RAILCANYON, state),
+
+        "3RailPlatformSonicRC": lambda state: can_3_rail_platform(world, SONIC, RAILCANYON, state),
+
+        "FlyingAnyand3RailPlatformSonicRC": lambda state: can_fly(world, SONIC, RAILCANYON, state) and can_3_rail_platform(world, SONIC, RAILCANYON, state),
+
+        "RailSwitchSonicRC": lambda state: can_rail_switch(world, SONIC, RAILCANYON, state),
+
+        "FlyingAnyandRailSwitchSonicRC": lambda state: can_fly(world, SONIC, RAILCANYON, state) and can_rail_switch(world, SONIC, RAILCANYON, state),
+
+        "RailSwitchandSwitchableRailSonicRC": lambda state: can_rail_switch(world, SONIC, RAILCANYON, state) and can_switchable_rail(world, SONIC, RAILCANYON, state),
+
+        "FlyingAnySonicRC": lambda state: can_fly(world, SONIC, RAILCANYON, state),
+
+        "RailandSingleSpringSonicRC": lambda state: can_rail(world, SONIC, RAILCANYON, state) and can_single_spring(world, SONIC, RAILCANYON, state),
+
+        "RailandRailSwitchandSwitchableRailSonicRC": lambda state: can_rail(world, SONIC, RAILCANYON, state) and can_rail_switch(world, SONIC, RAILCANYON, state) and can_switchable_rail(world, SONIC, RAILCANYON, state),
+
+        "TripleSpringSonicRC": lambda state: can_triple_spring(world, SONIC, RAILCANYON, state),
+
+        "FlyingAnyandTripleSpringSonicRC": lambda state: can_fly(world, SONIC, RAILCANYON, state) and can_triple_spring(world, SONIC, RAILCANYON, state),
+
+        "PoleSonicRC": lambda state: can_pole(world, SONIC, RAILCANYON, state),
+
+        "RCStationDoorandSwitchSonicRC": lambda state: can_rc_door(world, SONIC, RAILCANYON, state) and can_switch(world, SONIC, RAILCANYON, state, regular=True),
+
+        "RailandSwitchableRailSonicRC": lambda state: can_rail(world, SONIC, RAILCANYON, state) and can_switchable_rail(world, SONIC, RAILCANYON, state),
+
+        "LightDashand3RailPlatformSonicRC": lambda state: can_light_dash(world, SONIC, RAILCANYON, state) and can_3_rail_platform(world, SONIC, RAILCANYON, state),
+
+        "FlyingAnyor(All3CharsandSwitch)SonicRC": lambda state: can_fly(world, SONIC, RAILCANYON, state) or (has_char(world, SONIC, RAILCANYON, state, speed=True, flying=True, power=True) and can_switch(world, SONIC, RAILCANYON, state, regular=True)),
+
+        "RailandTripleSpringSonicRC": lambda state: can_rail(world, SONIC, RAILCANYON, state) and can_triple_spring(world, SONIC, RAILCANYON, state),
+
+        "KillFlyingEnemyPurpleBombSonicRC": lambda state: can_kill_flying_enemy(world, SONIC, RAILCANYON, state, purple_bombs=True),
+
+        "FlyingAnyorPulleySonicRC": lambda state: can_fly(world, SONIC, RAILCANYON, state) or can_pulley(world, SONIC, RAILCANYON, state),
+
+        "KillGroundEnemyNothingSonicRC": lambda state: can_kill_ground_enemy(world, SONIC, RAILCANYON, state, nothing=True),
+
+        "FlyingAll3CharsandSwitchSonicRC": lambda state: can_fly(world, SONIC, RAILCANYON, state, speedreq=True, powerreq=True) and can_switch(world, SONIC, RAILCANYON, state, regular=True),
+
+        "SingleSpringSonicRC": lambda state: can_single_spring(world, SONIC, RAILCANYON, state),
+
+        "FlyingAnyandSingleSpringSonicRC": lambda state: can_fly(world, SONIC, RAILCANYON, state) and can_single_spring(world, SONIC, RAILCANYON, state),
+
+        "FanandRailandRailSwitchandSwitchableRailand3RailPlatformSonicRC": lambda state: can_fan(world, SONIC, RAILCANYON, state) and can_rail(world, SONIC, RAILCANYON, state) and can_rail_switch(world, SONIC, RAILCANYON, state) and can_switchable_rail(world, SONIC, RAILCANYON, state) and can_3_rail_platform(world, SONIC, RAILCANYON, state),
+
+        "FanandRailandRailSwitchandSingleSpringandSwitchableRailand3RailPlatformSonicRC": lambda state: can_fan(world, SONIC, RAILCANYON, state) and can_rail(world, SONIC, RAILCANYON, state) and can_rail_switch(world, SONIC, RAILCANYON, state) and can_single_spring(world, SONIC, RAILCANYON, state) and can_switchable_rail(world, SONIC, RAILCANYON, state) and can_3_rail_platform(world, SONIC, RAILCANYON, state),
+
+        "RailandRailSwitchandSwitchableRailand3RailPlatformSonicRC": lambda state: can_rail(world, SONIC, RAILCANYON, state) and can_rail_switch(world, SONIC, RAILCANYON, state) and can_switchable_rail(world, SONIC, RAILCANYON, state) and can_3_rail_platform(world, SONIC, RAILCANYON, state),
+
+        "PoleandTargetSwitchSonicRC": lambda state: can_pole(world, SONIC, RAILCANYON, state) and can_target_switch(world, SONIC, RAILCANYON, state),
+    }
+
+
+def create_logic_mapping_dict_bullet_station_sonic(world: SonicHeroesWorld):
+    return \
+    {
+        "": lambda state: True,
+
+        "NOTPOSSIBLE": lambda state: False,
+
+        "BreakKeyCageSonicBS": lambda state: can_break_key_cage(world, SONIC, BULLETSTATION, state),
+
+        "RailSonicBS": lambda state: can_rail(world, SONIC, BULLETSTATION, state),
+
+        "TriangleJumpSonicBS": lambda state: can_triangle_jump(world, SONIC, BULLETSTATION, state),
+
+        "FlyingAnyorWeightSonicBS": lambda state: can_fly(world, SONIC, BULLETSTATION, state) or can_weight(world, SONIC, BULLETSTATION, state),
+
+        "FlyingAnySonicBS": lambda state: can_fly(world, SONIC, BULLETSTATION, state),
+
+        "FireDunkandTPObjSonicBS": lambda state: can_fire_dunk(world, SONIC, BULLETSTATION, state) and can_tp_obj(world, SONIC, BULLETSTATION, state),
+
+        "BreakandEngineCoreSonicBS": lambda state: can_break_things(world, SONIC, BULLETSTATION, state) and can_engine_core(world, SONIC, BULLETSTATION, state),
+
+        "BreakandRailSonicBS": lambda state: can_break_things(world, SONIC, BULLETSTATION, state) and can_rail(world, SONIC, BULLETSTATION, state),
+
+        "SingleSpringandRailSonicBS": lambda state: can_single_spring(world, SONIC, BULLETSTATION, state) and can_rail(world, SONIC, BULLETSTATION, state),
+
+        "CannonSonicBS": lambda state: can_cannon_obj(world, SONIC, BULLETSTATION, state),
+
+        "FlyingAnyandRailSonicBS": lambda state: can_fly(world, SONIC, BULLETSTATION, state) and can_rail(world, SONIC, BULLETSTATION, state),
+
+        "CannonSpeedSonicBS": lambda state: can_cannon(world, SONIC, BULLETSTATION, state, speed=True),
+
+        "CannonFlyingSonicBS": lambda state: can_cannon(world, SONIC, BULLETSTATION, state, flying=True),
+
+        "CannonPowerSonicBS": lambda state: can_cannon(world, SONIC, BULLETSTATION, state, power=True),
+
+        "RailandSingleSpringand3RailPlatformSonicBS": lambda state: can_rail(world, SONIC, BULLETSTATION, state) and can_single_spring(world, SONIC, BULLETSTATION, state) and can_3_rail_platform(world, SONIC, BULLETSTATION, state),
+
+        "KillGroundEnemyPlainShieldSonicBS": lambda state: can_kill_ground_enemy(world, SONIC, BULLETSTATION, state, plainshield=True),
+
+        "RailandRailSwitchandSwitchableRailSonicBS": lambda state: can_rail(world, SONIC, BULLETSTATION, state) and can_rail_switch(world, SONIC, BULLETSTATION, state) and can_switchable_rail(world, SONIC, BULLETSTATION, state),
+
+        "BreakandSwitchSonicBS": lambda state: can_break_things(world, SONIC, BULLETSTATION, state) and can_switch(world, SONIC, BULLETSTATION, state, regular=True),
+
+        "SingleSpringSonicBS": lambda state: can_single_spring(world, SONIC, BULLETSTATION, state),
+
+        "FanorRailSonicBS": lambda state: can_fan(world, SONIC, BULLETSTATION, state) or can_rail(world, SONIC, BULLETSTATION, state),
+
+        "PoleSonicBS": lambda state: can_pole(world, SONIC, BULLETSTATION, state),
+
+        "All3CharsandSwitchSonicBS": lambda state: has_char(world, SONIC, BULLETSTATION, state, speed=True, flying=True, power=True) and can_switch(world, SONIC, BULLETSTATION, state, regular=True),
+
+        "FireDunkSonicBS": lambda state: can_fire_dunk(world, SONIC, BULLETSTATION, state),
+
+        "CannonFlyingandDashRingSonicBS": lambda state: can_cannon_flying(world, SONIC, BULLETSTATION, state) and can_dash_ring(world, SONIC, BULLETSTATION, state),
+
+        "BreakSonicBS": lambda state: can_break_things(world, SONIC, BULLETSTATION, state),
+
+        "All3CharsandBreakandSwitchSonicBS": lambda state: has_char(world, SONIC, BULLETSTATION, state, speed=True, flying=True, power=True) and can_break_things(world, SONIC, BULLETSTATION, state) and can_switch(world, SONIC, BULLETSTATION, state, regular=True),
+
+        "BigCannonGunSonicBS": lambda state: can_big_gun_interior(world, SONIC, BULLETSTATION, state),
+
+        "RailandRailSwitchandSwitchableRailand3RailPlatformSonicBS": lambda state: can_rail(world, SONIC, BULLETSTATION, state) and can_rail_switch(world, SONIC, BULLETSTATION, state) and can_switchable_rail(world, SONIC, BULLETSTATION, state) and can_3_rail_platform(world, SONIC, BULLETSTATION, state),
+
+        "FanSonicBS": lambda state: can_fan(world, SONIC, BULLETSTATION, state),
+
+        "FlyingAnyand3RailPlatformSonicBS": lambda state: can_fly(world, SONIC, BULLETSTATION, state),
+
+        "LightDashSonicBS": lambda state: can_light_dash(world, SONIC, BULLETSTATION, state),
+
+        "FlyingAnyandSwitchSonicBS": lambda state: can_fly(world, SONIC, BULLETSTATION, state) and can_switch(world, SONIC, BULLETSTATION, state, regular=True),
+
+        "FlyingAnyorPulleySonicBS": lambda state: can_fly(world, SONIC, BULLETSTATION, state) or can_pulley(world, SONIC, BULLETSTATION, state),
+
+        "RailandRailSwitchandSingleSpringandSwitchableRailand3RailPlatformSonicBS": lambda state: can_rail(world, SONIC, BULLETSTATION, state) and can_rail_switch(world, SONIC, BULLETSTATION, state) and can_single_spring(world, SONIC, BULLETSTATION, state) and can_switchable_rail(world, SONIC, BULLETSTATION, state) and can_3_rail_platform(world, SONIC, BULLETSTATION, state),
+
+        "KillGroundEnemyKlagenSonicBS": lambda state: can_kill_ground_enemy(world, SONIC, BULLETSTATION, state, klagen=True),
+
+        "FlyingAll3CharsandSwitchSonicBS": lambda state: can_fly(world, SONIC, BULLETSTATION, state, speedreq=True, powerreq=True) and can_switch(world, SONIC, BULLETSTATION, state, regular=True),
+
+        "FlyingAnyorTripleSpringSonicBS": lambda state: can_fly(world, SONIC, BULLETSTATION, state) or can_triple_spring(world, SONIC, BULLETSTATION, state),
+
+        "FlyingAnyorGlideorHomingSonicBS": lambda state: can_fly(world, SONIC, BULLETSTATION, state) or can_glide(world, SONIC, BULLETSTATION, state) or can_homing_attack(world, SONIC, BULLETSTATION, state),
+
+        "BobsledandRailSwitchandSwitchableRailandSingleSpringSonicBS": lambda state: can_bobsled(world, SONIC, BULLETSTATION, state) and can_rail_switch(world, SONIC, BULLETSTATION, state) and can_switchable_rail(world, SONIC, BULLETSTATION, state) and can_single_spring(world, SONIC, BULLETSTATION, state),
+    }
+
+
+
+
+
+
+
 
 
 
