@@ -126,7 +126,6 @@ def can_flower_sting(world, team, level, state: CollectionState):
 
 
 """
-
 def can_fake_ring_toss(world, team, level, state: CollectionState):
     return (team == SONIC or team == DARK) and (has_char(world, team, level, state, flying=True) and not has_char(world, team, level, state, speed=True, power=True, orcondition=True))
 
@@ -135,7 +134,6 @@ def can_cheese_cannon(world, team, level, state: CollectionState):
 
 def can_flower_sting_attack(world, team, level, state: CollectionState):
     return can_flower_sting(world, team, level, state) and not has_char(world, team, level, state, speed=True, power=True, orcondition=True)
-
 """
 
 def can_flying_abilities(world, team, level, state: CollectionState, thundershootair=False, thundershootground=False, thundershootboth=False, flyany=False, flyonechar = False, flyspeed = False, flypower = False, flyfull = False, flowersting=False, orcondition=False):
@@ -609,7 +607,7 @@ def can_gong(world, team, level, state: CollectionState):
     return True
 
 def can_fan(world, team, level, state: CollectionState):
-    return True
+    return True and can_glide(world, team, level, state)
 
 
 def can_ruins(world, team, level, state: CollectionState):
@@ -654,6 +652,37 @@ def can_star_panel(world, team, level, state: CollectionState):
     return True
 
 def can_floating_dice(world, team, level, state: CollectionState):
+    return True
+
+def can_rail(world, team, level, state: CollectionState):
+    return True
+
+def can_rail_switch(world, team, level, state: CollectionState):
+    return True
+
+def can_switchable_rail(world, team, level, state: CollectionState):
+    return True
+
+def can_3_rail_platform(world, team, level, state: CollectionState):
+    return True
+
+def can_rc_door(world, team, level, state: CollectionState):
+    """
+    This is the Door in Rail Canyon (prob not needed imo)
+    """
+    return True
+
+def can_engine_core(world, team, level, state: CollectionState):
+    return True
+
+def can_big_gun_interior(world, team, level, state: CollectionState):
+    return True
+
+
+def can_barrel(world, team, level, state: CollectionState):
+    """
+    This refers to the barrel deco obj in rail canyon / bullet station
+    """
     return True
 
 def can_bobsled(world, team, level, state: CollectionState):

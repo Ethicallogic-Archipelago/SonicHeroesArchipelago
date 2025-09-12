@@ -23,6 +23,17 @@ class SonicStory(Choice):
     option_both_missions_enabled = 3
     default = 0
 
+class SonicStoryStartingCharacter(Choice):
+    """
+    Which Character should be unlocked for Sonic Story from the Start?
+    """
+    internal_name = "sonic_story_starting_character"
+    display_name = "Sonic Story Starting Character"
+    option_sonic = 0
+    option_tails = 1
+    option_knuckles = 2
+    default = "random"
+
 
 class SonicKeySanity(Choice):
     """
@@ -71,6 +82,7 @@ sonic_heroes_option_groups = \
     OptionGroup("Stories",
                 [
                     SonicStory,
+                    SonicStoryStartingCharacter,
                     SecretLocations,
                 ]),
 
@@ -90,6 +102,7 @@ sonic_heroes_option_groups = \
 class SonicHeroesOptions(PerGameCommonOptions):
 
     sonic_story: SonicStory
+    sonic_story_starting_character: SonicStoryStartingCharacter
     sonic_key_sanity: SonicKeySanity
     sonic_checkpoint_sanity: SonicCheckpointSanity
     secret_locations: SecretLocations
