@@ -1,3 +1,5 @@
+
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -125,13 +127,36 @@ class SonicHeroesOptions(PerGameCommonOptions):
 def check_invalid_options(world: SonicHeroesWorld):
 
     if world.options.sonic_story.value == 0:
-        raise OptionError(f"SONIC STORY MUST BE ENABLED")
+        if world.fuzzer:
+            valid_values = [1, 2, 3]
+            world.random.shuffle(valid_values)
+            world.options.sonic_story.value = valid_values[0]
+            print(f"Sonic Story Set to: {world.options.sonic_story.value}")
+
+        else:
+            raise OptionError(f"SONIC STORY MUST BE ENABLED")
 
     if world.options.sonic_key_sanity.value == 0:
-        raise OptionError(f"SONIC KEYSANITY MUST BE ENABLED")
+        if world.fuzzer:
+            valid_values = [1, 2]
+            world.random.shuffle(valid_values)
+            world.options.sonic_key_sanity.value = valid_values[0]
+            print(f"Key Sanity Set to {world.options.sonic_key_sanity.value}")
+        else:
+            raise OptionError(f"SONIC KEYSANITY MUST BE ENABLED")
 
     if world.options.sonic_checkpoint_sanity.value == 0 or world.options.sonic_checkpoint_sanity.value == 2:
-        raise OptionError(f"SONIC CHECKPOINTSANITY OPTION ERROR")
+        if world.fuzzer:
+            valid_values = [1, 3]
+            world.random.shuffle(valid_values)
+            world.options.sonic_checkpoint_sanity.value = valid_values[0]
+            print(f"Checkpoint Sanity Set to {world.options.sonic_checkpoint_sanity.value}")
+        else:
+            raise OptionError(f"SONIC CHECKPOINTSANITY OPTION ERROR")
+
+
+    if world.options.secret_locations.value:
+        raise OptionError(f"SECRET LOCATIONS MUST BE DISABLED")
 
 
 
