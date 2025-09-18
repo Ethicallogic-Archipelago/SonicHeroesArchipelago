@@ -54,6 +54,11 @@ class SonicHeroesWorld(World):
         self.spoiler_string = ""
         self.extra_items = 0
 
+        self.fuzzer = True
+        """
+        Enable this for fuzzer testing protections
+        """
+
         super().__init__(multiworld, player)
 
 
@@ -116,11 +121,13 @@ class SonicHeroesWorld(World):
         connect_entrances(self)
         from Utils import visualize_regions
 
-        state = self.multiworld.get_all_state(False)
-        state.update_reachable_regions(self.player)
-        visualize_regions(self.get_region("Menu"), f"{self.player_name}_world.puml", show_entrance_names=True, regions_to_highlight=state.reachable_regions[self.player])
-        # !pragma layout smetana
-        # put this at top to display PUML (after start UML)
+
+        if "Logic" in self.player_name:
+            state = self.multiworld.get_all_state()
+            state.update_reachable_regions(self.player)
+            visualize_regions(self.get_region("Menu"), f"{self.player_name}_world.puml", show_entrance_names=True, regions_to_highlight=state.reachable_regions[self.player])
+            # !pragma layout smetana
+            # put this at top to display PUML (after start UML)
         pass
 
     def generate_basic(self) -> None:
