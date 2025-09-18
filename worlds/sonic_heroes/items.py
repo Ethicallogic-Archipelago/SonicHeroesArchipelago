@@ -76,8 +76,6 @@ def create_items(world: SonicHeroesWorld):
     create_item(world, progressive_ability_item_names[SONIC][CASINOREGION][POWER], ItemClassification.progression, 3)
     total_location_count -= 3
 
-
-
     create_item(world, progressive_ability_item_names[SONIC][TRAINREGION][SPEED], ItemClassification.progression, 4)
     total_location_count -= 4
 
@@ -85,6 +83,15 @@ def create_items(world: SonicHeroesWorld):
     total_location_count -= 2
 
     create_item(world, progressive_ability_item_names[SONIC][TRAINREGION][POWER], ItemClassification.progression, 3)
+    total_location_count -= 3
+
+    create_item(world, progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], ItemClassification.progression, 4)
+    total_location_count -= 4
+
+    create_item(world, progressive_ability_item_names[SONIC][BIGPLANTREGION][FLYING], ItemClassification.progression, 2)
+    total_location_count -= 2
+
+    create_item(world, progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], ItemClassification.progression, 3)
     total_location_count -= 3
 
 

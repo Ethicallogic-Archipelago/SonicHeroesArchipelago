@@ -3,8 +3,8 @@ from .constants import *
 
 
 def can_team_blast(world, team, level, state: CollectionState):
-    return False
-    #return has_char(world, team, level, state, speed=True, flying=True, power=True)
+    #return False
+    return has_char(world, team, level, state, speed=True, flying=True, power=True) #and can_light_attack(world, team, level, state)
 
 def has_char(world, team, level, state: CollectionState, speed=False, flying=False, power=False, orcondition=False):
     conditions = []
@@ -600,6 +600,9 @@ def can_pulley(world, team, level, state: CollectionState):
 def can_unbreakable_container(world, team, level, state: CollectionState):
     return True
 
+def can_propeller(world, team, level, state: CollectionState):
+    return True and (can_tornado(world, team, level, state) or can_rocket_accel(world, team, level, state)) or (can_homing_attack(world, team, level, state) and has_char_levelup(world, team, level, state, 3, speed=True))
+
 def can_pole(world, team, level, state: CollectionState):
     return True and (can_tornado(world, team, level, state) or can_rocket_accel(world, team, level, state)) or (can_homing_attack(world, team, level, state) and has_char_levelup(world, team, level, state, 3, speed=True))
 
@@ -684,6 +687,35 @@ def can_barrel(world, team, level, state: CollectionState):
     This refers to the barrel deco obj in rail canyon / bullet station
     """
     return True
+
+def can_green_frog(world, team, level, state: CollectionState):
+    return True
+
+def can_black_frog(world, team, level, state: CollectionState):
+    return True
+
+def can_small_green_platform(world, team, level, state: CollectionState):
+    return True
+
+def can_small_bouncy_mushroom(world, team, level, state: CollectionState):
+    return True
+
+def can_tall_tree_platforms(world, team, level, state: CollectionState):
+    return True
+
+def can_large_yellow_platform(world, team, level, state: CollectionState):
+    return True
+
+def can_bouncy_fruit(world, team, level, state: CollectionState):
+    return True
+
+def can_large_bouncy_mushroom(world, team, level, state: CollectionState):
+    return True
+
+def can_swinging_vine(world, team, level, state: CollectionState):
+    return True
+
+
 
 def can_bobsled(world, team, level, state: CollectionState):
     return True

@@ -320,6 +320,16 @@ csv_file_names = \
                     REGION: "BulletStationSonicRegions",
                     CONNECTION: "BulletStationSonicConnections",
                 },
+            FROGFOREST:
+                {
+                    REGION: "FrogForestSonicRegions",
+                    CONNECTION: "FrogForestSonicConnections",
+                },
+            LOSTJUNGLE:
+                {
+                    REGION: "LostJungleSonicRegions",
+                    CONNECTION: "LostJungleSonicConnections",
+                },
         }
 }
 
@@ -624,6 +634,24 @@ ability_to_item_req = \
                     FIREDUNK: (progressive_ability_item_names[SONIC][TRAINREGION][POWER], 1),
                     GLIDE: (progressive_ability_item_names[SONIC][TRAINREGION][POWER], 2),
                     COMBOFINISHER: (progressive_ability_item_names[SONIC][TRAINREGION][POWER], 3),
+                },
+            BIGPLANTREGION:
+                {
+                    HOMINGATTACK: (progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], 1),
+                    TORNADO: (progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], 2),
+                    ROCKETACCEL: (progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], 2),
+                    LIGHTDASH: (progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], 3),
+                    TRIANGLEJUMP: (progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], 4),
+                    LIGHTATTACK: (progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], 4),
+
+                    THUNDERSHOOT: (progressive_ability_item_names[SONIC][BIGPLANTREGION][FLYING], 1),
+                    FLIGHT: (progressive_ability_item_names[SONIC][BIGPLANTREGION][FLYING], 2),
+                    FLOWERSTING: (progressive_ability_item_names[SONIC][BIGPLANTREGION][FLYING], 3),
+
+                    BREAK: (progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], 0),
+                    FIREDUNK: (progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], 1),
+                    GLIDE: (progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], 2),
+                    COMBOFINISHER: (progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], 3),
                 },
         },
 }

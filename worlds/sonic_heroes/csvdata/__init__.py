@@ -94,7 +94,7 @@ def import_connection_csv(world: SonicHeroesWorld, team: str):
         with files(Connections).joinpath(f"{file_name}.csv").open() as csv_file:
             reader = csv.DictReader(csv_file)
             for x in reader:
-                conn = ConnectionCSVData(f"{x[LEVEL]} {x[TEAM]} {x[SOURCE]} -> {x[TARGET]}", x[TEAM], x[LEVEL], f"{x[LEVEL]} {x[TEAM]} {x[SOURCE]}", f"{x[LEVEL]} {x[TEAM]} {x[TARGET]}", x[RULE])
+                conn = ConnectionCSVData(f"{x[LEVEL]} {x[TEAM]} {x[SOURCE]} -> {x[TARGET]} :: with Rule: {x[RULE]}", x[TEAM], x[LEVEL], f"{x[LEVEL]} {x[TEAM]} {x[SOURCE]}", f"{x[LEVEL]} {x[TEAM]} {x[TARGET]}", x[RULE])
                 world.connection_list.append(conn)
 
 
@@ -110,6 +110,9 @@ def is_loc_in_world(world: SonicHeroesWorld, team: str, loc: LocationCSVData) ->
         "Bingo Highway",
         "Rail Canyon",
         "Bullet Station",
+        "Frog Forest",
+        "Lost Jungle",
+
     ]
 
 

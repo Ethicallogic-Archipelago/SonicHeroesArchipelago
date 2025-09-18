@@ -651,6 +651,219 @@ def create_logic_mapping_dict_bullet_station_sonic(world: SonicHeroesWorld):
     }
 
 
+def create_logic_mapping_dict_frog_forest_sonic(world: SonicHeroesWorld):
+    return \
+    {
+        "": lambda state: True,
+
+        "NOTPOSSIBLE": lambda state: False,
+
+        "BreakKeyCageSonicFrog": lambda state: can_break_key_cage(world, SONIC, FROGFOREST, state),
+
+        "BouncyFruitorFlyingAnySonicFrog": lambda state: can_bouncy_fruit(world, SONIC, FROGFOREST, state) or can_fly(world, SONIC, FROGFOREST, state),
+
+        "DashPanelSonicFrog": lambda state: can_dash_panel(world, SONIC, FROGFOREST, state),
+
+        "GreenFrogSonicFrog": lambda state: can_green_frog(world, SONIC, FROGFOREST, state),
+
+        "TallTreePlatformSonicFrog": lambda state: can_tall_tree_platforms(world, SONIC, FROGFOREST, state),
+
+        "YellowPlatformSonicFrog": lambda state: can_large_yellow_platform(world, SONIC, FROGFOREST, state),
+
+        "DashRingandFlyingAnySonicFrog": lambda state: can_dash_ring(world, SONIC, FROGFOREST, state) and can_fly(world, SONIC, FROGFOREST, state),
+
+        "SwingingVineSonicFrog": lambda state: can_swinging_vine(world, SONIC, FROGFOREST, state),
+
+        "SmallBouncyMushroomSonicFrog": lambda state: can_small_bouncy_mushroom(world, SONIC, FROGFOREST, state),
+
+        "(All3CharsandDashRing)orFlyingAnySonicFrog": lambda state: (has_char(world, SONIC, FROGFOREST, state, speed=True, flying=True, power=True)) or can_fly(world, SONIC, FROGFOREST, state),
+
+        "FlyingAnySonicFrog": lambda state: can_fly(world, SONIC, FROGFOREST, state),
+
+        "FlyingAnyorGlideorHomingSonicFrog": lambda state: can_fly(world, SONIC, FROGFOREST, state) or can_glide(world, SONIC, FROGFOREST, state) or can_homing_attack(world, SONIC, FROGFOREST, state),
+
+        "FlyingAnyandSmallGreenPlatformSonicFrog": lambda state: can_fly(world, SONIC, FROGFOREST, state) and can_small_green_platform(world, SONIC, FROGFOREST, state),
+
+        "FlyingAnyorLargeBouncyMushroomSonicFrog": lambda state: can_fly(world, SONIC, FROGFOREST, state) or can_large_bouncy_mushroom(world, SONIC, FROGFOREST, state),
+
+        "LargeBouncyMushroomSonicFrog": lambda state: can_large_bouncy_mushroom(world, SONIC, FROGFOREST, state),
+
+        "FlyingAnyorPowerGongSonicFrog": lambda state: can_fly(world, SONIC, FROGFOREST, state) or can_gong(world, SONIC, FROGFOREST, state),
+
+        "DashPanelandDashRingandFlyingAnySonicFrog": lambda state: can_dash_panel(world, SONIC, FROGFOREST, state) and can_dash_ring(world, SONIC, FROGFOREST, state) and can_fly(world, SONIC, FROGFOREST, state),
+
+        "DashPanelandYellowPlatformSonicFrog": lambda state: can_dash_panel(world, SONIC, FROGFOREST, state) and can_large_yellow_platform(world, SONIC, FROGFOREST, state),
+
+        "(DashRingorFlyingAny)andSmallGreenPlatformandTripleSpringSonicFrog": lambda state: (can_dash_ring(world, SONIC, FROGFOREST, state) or can_fly(world, SONIC, FROGFOREST, state)) and can_small_green_platform(world, SONIC, FROGFOREST, state),
+
+        "FlyingAnyandGreenPlatformSonicFrog": lambda state: can_fly(world, SONIC, FROGFOREST, state) and can_small_green_platform(world, SONIC, FROGFOREST, state),
+
+        "TripleSpringSonicFrog": lambda state: can_triple_spring(world, SONIC, FROGFOREST, state),
+
+        "(FlyingAnyorGlideorHoming)andYellowPlatformSonicFrog": lambda state: (can_fly(world, SONIC, FROGFOREST, state) or can_glide(world, SONIC, FROGFOREST, state) or can_homing_attack(world, SONIC, FROGFOREST, state)) and can_large_yellow_platform(world, SONIC, FROGFOREST, state),
+
+        "FlyingAnyandLargeBouncyMushroomSonicFrog": lambda state: can_fly(world, SONIC, FROGFOREST, state) and can_large_bouncy_mushroom(world, SONIC, FROGFOREST, state),
+
+        "LightDashandTargetSwitchandThundershootSonicFrog": lambda state: can_light_dash(world, SONIC, FROGFOREST, state) and can_target_switch(world, SONIC, FROGFOREST, state) and can_thundershoot_both(world, SONIC, FROGFOREST, state),
+
+        "LightDashSonicFrog": lambda state: can_light_dash(world, SONIC, FROGFOREST, state),
+
+        "BreakSonicFrog": lambda state: can_break_things(world, SONIC, FROGFOREST, state),
+
+        "KillGroundEnemySpearPlainShieldSonicFrog": lambda state: can_kill_ground_enemy(world, SONIC, FROGFOREST, state, spear=True, plainshield=True),
+
+        "LargeBouncyMushroomandPowerGongSonicFrog": lambda state: can_large_bouncy_mushroom(world, SONIC, FROGFOREST, state) and can_gong(world, SONIC, FROGFOREST, state),
+
+        "PropellerSonicFrog": lambda state: can_propeller(world, SONIC, FROGFOREST, state),
+
+        "DashRamporFlyingAnySonicFrog": lambda state: can_dash_ramp(world, SONIC, FROGFOREST, state) or can_fly(world, SONIC, FROGFOREST, state),
+
+        "FlyingAnyandTallTreePlatformSonicFrog": lambda state: can_fly(world, SONIC, FROGFOREST, state) and can_tall_tree_platforms(world, SONIC, FROGFOREST, state),
+
+        "(FlyingAnyorGlideorHoming)andSmallGreenPlatformSonicFrog": lambda state: (can_fly(world, SONIC, FROGFOREST, state) or can_glide(world, SONIC, FROGFOREST, state) or can_homing_attack(world, SONIC, FROGFOREST, state)) and can_small_green_platform(world, SONIC, FROGFOREST, state),
+
+        "BouncyFruitandFlyingAnySonicFrog": lambda state: can_bouncy_fruit(world, SONIC, FROGFOREST, state) and can_fly(world, SONIC, FROGFOREST, state),
+
+        "FlyingAnyandSwingingVineSonicFrog": lambda state: can_fly(world, SONIC, FROGFOREST, state) and can_swinging_vine(world, SONIC, FROGFOREST, state),
+
+        "FireDunkSonicFrog": lambda state: can_fire_dunk(world, SONIC, FROGFOREST, state),
+
+        "SingleSpringandSwingingVineSonicFrog": lambda state: can_single_spring(world, SONIC, FROGFOREST, state) and can_swinging_vine(world, SONIC, FROGFOREST, state),
+
+        "KillGroundEnemyCameronSonicFrog": lambda state: can_kill_ground_enemy(world, SONIC, FROGFOREST, state, nothing=True, cameron=True),
+
+        "BouncyFruitandSwingingVineSonicFrog": lambda state: can_bouncy_fruit(world, SONIC, FROGFOREST, state) and can_swinging_vine(world, SONIC, FROGFOREST, state),
+
+        "FlyingOneCharorLightDashSonicFrog": lambda state: can_fly(world, SONIC, FROGFOREST, state, speedreq=True, powerreq=True, orcondition=True) or can_light_dash(world, SONIC, FROGFOREST, state),
+
+        "FlyingOneCharSonicFrog": lambda state: can_fly(world, SONIC, FROGFOREST, state, speedreq=True, powerreq=True, orcondition=True),
+
+        "BouncyFruitandSingleSpringSonicFrog": lambda state: can_bouncy_fruit(world, SONIC, FROGFOREST, state) and can_single_spring(world, SONIC, FROGFOREST, state),
+
+        "BouncyFruitSonicFrog": lambda state: can_bouncy_fruit(world, SONIC, FROGFOREST, state),
+    }
+
+
+def create_logic_mapping_dict_lost_jungle_sonic(world: SonicHeroesWorld):
+    return \
+    {
+        "": lambda state: True,
+
+        "NOTPOSSIBLE": lambda state: False,
+
+        "BreakKeyCageSonicLJ": lambda state: can_break_key_cage(world, SONIC, LOSTJUNGLE, state),
+
+        #world, SONIC, LOSTJUNGLE, state
+        "KillGroundEnemyEggHammerSonicLJ": lambda state: can_kill_ground_enemy(world, SONIC, LOSTJUNGLE, state, egghammer=True),
+
+        "LargeBouncyMushroomandSwingingVineSonicLJ": lambda state: can_large_bouncy_mushroom(world, SONIC, LOSTJUNGLE, state) and can_swinging_vine(world, SONIC, LOSTJUNGLE, state),
+
+        "FlyingAnyorTornadoorTripleSpringSonicLJ": lambda state: can_fly(world, SONIC, LOSTJUNGLE, state) or can_tornado(world, SONIC, LOSTJUNGLE, state) or can_triple_spring(world, SONIC, LOSTJUNGLE, state),
+
+        "FlyingAnyorTornadoSonicLJ": lambda state: can_fly(world, SONIC, LOSTJUNGLE, state) or can_tornado(world, SONIC, LOSTJUNGLE, state),
+
+        "SingleSpringSonicLJ": lambda state: can_single_spring(world, SONIC, LOSTJUNGLE, state),
+
+        "(FlyingAnyorTornado)andSmallGreenPlatformSonicLJ": lambda state: (can_fly(world, SONIC, LOSTJUNGLE, state) or can_tornado(world, SONIC, LOSTJUNGLE, state)) and can_small_green_platform(world, SONIC, LOSTJUNGLE, state),
+
+        "SmallGreenPlatformSonicLJ": lambda state: can_small_green_platform(world, SONIC, LOSTJUNGLE, state),
+
+        "Flying3CharsorSwingingVineSonicLJ": lambda state: can_fly(world, SONIC, LOSTJUNGLE, state, speedreq=True, powerreq=True) or can_swinging_vine(world, SONIC, LOSTJUNGLE, state),
+
+        "BouncyFruitSonicLJ": lambda state: can_bouncy_fruit(world, SONIC, LOSTJUNGLE, state),
+
+        "FlyingAnySonicLJ": lambda state: can_fly(world, SONIC, LOSTJUNGLE, state),
+
+        "SwingingVineSonicLJ": lambda state: can_swinging_vine(world, SONIC, LOSTJUNGLE, state),
+
+        "SmallGreenPlatformandSwingingVineSonicLJ": lambda state: can_small_green_platform(world, SONIC, LOSTJUNGLE, state) and can_swinging_vine(world, SONIC, LOSTJUNGLE, state),
+
+        "GreenFrogSonicLJ": lambda state: can_green_frog(world, SONIC, LOSTJUNGLE, state),
+
+        "DashRampSonicLJ": lambda state: can_dash_ramp(world, SONIC, LOSTJUNGLE, state),
+
+        "FlyingAnyorSingleSpringSonicLJ": lambda state: can_fly(world, SONIC, LOSTJUNGLE, state) or can_single_spring(world, SONIC, LOSTJUNGLE, state),
+
+        "PropellerSonicLJ": lambda state: can_propeller(world, SONIC, LOSTJUNGLE, state),
+
+        "KillFlyingEnemyPurpleBombSonicLJ": lambda state: can_kill_flying_enemy(world, SONIC, LOSTJUNGLE, state, purple_bombs=True),
+
+        "LargeBouncyMushroomSonicLJ": lambda state: can_large_bouncy_mushroom(world, SONIC, LOSTJUNGLE, state),
+
+        "FlyingOneCharSonicLJ": lambda state: can_fly(world, SONIC, LOSTJUNGLE, state, speedreq=True, powerreq=True, orcondition=True),
+
+        "SmallBouncyMushroomandSwingingVineSonicLJ": lambda state: can_small_bouncy_mushroom(world, SONIC, LOSTJUNGLE, state) and can_swinging_vine(world, SONIC, LOSTJUNGLE, state),
+
+        "TripleSpringSonicLJ": lambda state: can_triple_spring(world, SONIC, LOSTJUNGLE, state),
+
+        "FlyingAnyorLargeBouncyMushroomSonicLJ": lambda state: can_fly(world, SONIC, LOSTJUNGLE, state) or can_large_bouncy_mushroom(world, SONIC, LOSTJUNGLE, state),
+
+        "FlyingAnyandSmallBouncyMushroomSonicLJ": lambda state: can_fly(world, SONIC, LOSTJUNGLE, state) and can_small_bouncy_mushroom(world, SONIC, LOSTJUNGLE, state),
+
+        "BouncyFruitandHoming2SonicLJ": lambda state: can_bouncy_fruit(world, SONIC, LOSTJUNGLE, state) and can_homing_attack(world, SONIC, LOSTJUNGLE, state) and has_char_levelup(world, SONIC, LOSTJUNGLE, state, levelup=2, speed=True),
+
+        "FlyingAnyandSmallGreenPlatformSonicLJ": lambda state: can_fly(world, SONIC, LOSTJUNGLE, state) and can_small_green_platform(world, SONIC, LOSTJUNGLE, state),
+
+        "DashRingandFlyingAnySonicLJ": lambda state: can_dash_ring(world, SONIC, LOSTJUNGLE, state) and can_fly(world, SONIC, LOSTJUNGLE, state),
+
+        "BouncyFruitandSingleSpringSonicLJ": lambda state: can_bouncy_fruit(world, SONIC, LOSTJUNGLE, state) and can_single_spring(world, SONIC, LOSTJUNGLE, state),
+
+        "KillFlyingEnemyGreenShotSonicLJ": lambda state: can_kill_flying_enemy(world, SONIC, LOSTJUNGLE, state, green_shot=True),
+
+        "(FlyingAnyorTornado)andTallTreePlatformSonicLJ": lambda state: (can_fly(world, SONIC, LOSTJUNGLE, state) or can_tornado(world, SONIC, LOSTJUNGLE, state)) and can_tall_tree_platforms(world, SONIC, LOSTJUNGLE, state),
+
+        "BouncyFruitorFlyingAnyorHomingSonicLJ": lambda state: can_bouncy_fruit(world, SONIC, LOSTJUNGLE, state) or can_fly(world, SONIC, LOSTJUNGLE, state) or can_homing_attack(world, SONIC, LOSTJUNGLE, state),
+
+        "KillGroundEnemyKlagenSonicLJ": lambda state: can_kill_ground_enemy(world, SONIC, LOSTJUNGLE, state, nothing=True, klagen=True),
+
+        "LightDashandSwitchSonicLJ": lambda state: can_light_dash(world, SONIC, LOSTJUNGLE, state) and can_switch(world, SONIC, LOSTJUNGLE, state, regular=True),
+
+        "LargeYellowPlatformandSingleSpringandSwingingVineSonicLJ": lambda state: can_large_yellow_platform(world, SONIC, LOSTJUNGLE, state) and can_single_spring(world, SONIC, LOSTJUNGLE, state) and can_swinging_vine(world, SONIC, LOSTJUNGLE, state),
+
+        "SmallBouncyMushroomSonicLJ": lambda state: can_small_bouncy_mushroom(world, SONIC, LOSTJUNGLE, state),
+    }
+
+
+def create_logic_mapping_dict_hang_castle_sonic(world: SonicHeroesWorld):
+    return \
+    {
+        "": lambda state: True,
+        "NOTPOSSIBLE": lambda state: False,
+    }
+
+
+def create_logic_mapping_dict_mystic_mansion_sonic(world: SonicHeroesWorld):
+    return \
+    {
+        "": lambda state: True,
+        "NOTPOSSIBLE": lambda state: False,
+    }
+
+
+def create_logic_mapping_dict_egg_fleet_sonic(world: SonicHeroesWorld):
+    return \
+    {
+        "": lambda state: True,
+        "NOTPOSSIBLE": lambda state: False,
+    }
+
+
+def create_logic_mapping_dict_final_fortress_sonic(world: SonicHeroesWorld):
+    return \
+    {
+        "": lambda state: True,
+        "NOTPOSSIBLE": lambda state: False,
+    }
+
+
+def create_logic_mapping_dict_placeholder_sonic(world: SonicHeroesWorld):
+    return \
+    {
+        "": lambda state: True,
+        "NOTPOSSIBLE": lambda state: False,
+    }
+
+
 
 
 
