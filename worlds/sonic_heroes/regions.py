@@ -56,6 +56,11 @@ def connect_entrances(world: SonicHeroesWorld):
     connect(world, f"{MENU} -> {BINGOHIGHWAY} {SONIC} Start", MENU, f"{BINGOHIGHWAY} {SONIC} Start", None, rule_to_str="None")
     connect(world, f"{MENU} -> {RAILCANYON} {SONIC} Start", MENU, f"{RAILCANYON} {SONIC} Start", None, rule_to_str="None")
     connect(world, f"{MENU} -> {BULLETSTATION} {SONIC} Start", MENU, f"{BULLETSTATION} {SONIC} Start", None, rule_to_str="None")
+    connect(world, f"{MENU} -> {FROGFOREST} {SONIC} Start", MENU, f"{FROGFOREST} {SONIC} Start", None, rule_to_str="None")
+    connect(world, f"{MENU} -> {LOSTJUNGLE} {SONIC} Start", MENU, f"{LOSTJUNGLE} {SONIC} Start", None, rule_to_str="None")
+
+
+
 
 
     connect(world, f"Goal Connection", MENU, METALOVERLORD, goal_rule, rule_to_str=f"Goal Rule")

@@ -170,9 +170,9 @@ class SonicHeroesWorld(World):
 
             "GateEmblemCosts": [1],
             #"ShuffledLevels": [f"S{x}" for x in range(2, 16)],
-            "ShuffledLevels": ["S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9"],
+            "ShuffledLevels": ["S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11"],
             "ShuffledBosses": ["B23"],
-            "GateLevelCounts": [8],
+            "GateLevelCounts": [10],
         }
 
     def write_spoiler_header(self, spoiler_handle: TextIO) -> None:
@@ -209,6 +209,8 @@ class SonicHeroesWorld(World):
                 BINGOHIGHWAY: create_logic_mapping_dict_bingo_highway_sonic(self),
                 RAILCANYON: create_logic_mapping_dict_rail_canyon_sonic(self),
                 BULLETSTATION: create_logic_mapping_dict_bullet_station_sonic(self),
+                FROGFOREST: create_logic_mapping_dict_frog_forest_sonic(self),
+                LOSTJUNGLE: create_logic_mapping_dict_lost_jungle_sonic(self),
             }
 
 

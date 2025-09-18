@@ -62,6 +62,12 @@ class SonicCheckpointSanity(Choice):
     default = 0
 
 
+class RemoveCasinoParkVIPTableLaserGate(DefaultOnToggle):
+    """
+
+    """
+    internal_name = "remove_casino_park_vip_table_laser_gate"
+    display_name = "Remove Casino Park VIP Table Laser Gate"
 
 
 
@@ -91,6 +97,10 @@ sonic_heroes_option_groups = \
                     SonicKeySanity,
                     SonicCheckpointSanity
                 ]),
+    OptionGroup("OOL",
+                [
+                    RemoveCasinoParkVIPTableLaserGate,
+                ]),
     OptionGroup("DeathLink",
                 [
                     DeathLink
@@ -106,6 +116,7 @@ class SonicHeroesOptions(PerGameCommonOptions):
     sonic_key_sanity: SonicKeySanity
     sonic_checkpoint_sanity: SonicCheckpointSanity
     secret_locations: SecretLocations
+    remove_casino_park_vip_table_laser_gate: RemoveCasinoParkVIPTableLaserGate
 
     death_link: DeathLink
 
