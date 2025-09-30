@@ -828,7 +828,60 @@ def create_logic_mapping_dict_hang_castle_sonic(world: SonicHeroesWorld):
     return \
     {
         "": lambda state: True,
+
         "NOTPOSSIBLE": lambda state: False,
+
+        "BreakKeyCageSonicHC": lambda state: can_break_key_cage(world, SONIC, HANGCASTLE, state),
+
+        "KillGroundEnemyNothingSonicHC": lambda state: can_kill_ground_enemy(world, SONIC, HANGCASTLE, state, nothing=True),
+
+        "TPSwitchSonicHC": lambda state: can_tp_switch(world, SONIC, HANGCASTLE, state),
+
+        "FlyingAnyorTornadoSonicHC": lambda state: can_fly(world, SONIC, HANGCASTLE, state) or can_tornado(world, SONIC, HANGCASTLE, state),
+
+        "LightDashSonicHC": lambda state: can_light_dash(world, SONIC, HANGCASTLE, state),
+
+        "FlyingAnySonicHC": lambda state: can_fly(world, SONIC, HANGCASTLE, state),
+
+        "BreakandSwitchSonicHC": lambda state: can_break_things(world, SONIC, HANGCASTLE, state) and can_switch(world, SONIC, HANGCASTLE, state, regular=True),
+
+        "TripleSpringSonicHC": lambda state: can_triple_spring(world, SONIC, HANGCASTLE, state),
+
+        "FireDunkSonicHC": lambda state: can_fire_dunk(world, SONIC, HANGCASTLE, state),
+
+        "FlameTorchSonicHC": lambda state: can_flame_torch(world, SONIC, HANGCASTLE, state),
+
+        "KillFlyingEnemySilverArmorSonicHC": lambda state: can_kill_flying_enemy(world, SONIC, HANGCASTLE, state, silver_armor=True),
+
+        "LightDashandSwitchSonicHC": lambda state: can_light_dash(world, SONIC, HANGCASTLE, state) and can_switch(world, SONIC, HANGCASTLE, state, regular=True),
+
+        "CastleFloatingPlatformSonicHC": lambda state: can_castle_floating_platform(world, SONIC, HANGCASTLE, state),
+
+        "BreakSonicHC": lambda state: can_break_things(world, SONIC, HANGCASTLE, state),
+
+        "GongandSingleSpringSonicHC": lambda state: can_gong(world, SONIC, HANGCASTLE, state) and can_single_spring(world, SONIC, HANGCASTLE, state),
+
+        "DashRampandTPSwitchSonicHC": lambda state: can_dash_ramp(world, SONIC, HANGCASTLE, state) and can_tp_switch(world, SONIC, HANGCASTLE, state),
+
+        "CastleFloatingPlatformorFlyingAnySonicHC": lambda state: can_castle_floating_platform(world, SONIC, HANGCASTLE, state) or can_fly(world, SONIC, HANGCASTLE, state),
+
+        "CastleFloatingPlatformandFlyingAnySonicHC": lambda state: can_castle_floating_platform(world, SONIC, HANGCASTLE, state) and can_fly(world, SONIC, HANGCASTLE, state),
+
+        "KillGroundEnemySpearConcreteShieldBishopSonicHC": lambda state: can_kill_ground_enemy(world, SONIC, HANGCASTLE, state, spear=True, concreteshield=True, eggbishop=True),
+
+        "FlyingOneCharandPushPullSwitchSonicHC": lambda state: can_fly(world, SONIC, HANGCASTLE, state, speedreq=True, powerreq=True, orcondition=True) and can_switch(world, SONIC, HANGCASTLE, state, push_pull=True),
+
+        "KillGroundEnemyBishopSonicHC": lambda state: can_kill_ground_enemy(world, SONIC, HANGCASTLE, state, eggbishop=True),
+
+        "KillGroundEnemySpearSonicHC": lambda state: can_kill_ground_enemy(world, SONIC, HANGCASTLE, state, spear=True),
+
+        "FlyingOneCharandLightDashandPushPullSwitchSonicHC": lambda state: can_fly(world, SONIC, HANGCASTLE, state, speedreq=True, powerreq=True, orcondition=True),
+
+        "TargetSwitchandThundershootSonicHC": lambda state: can_switch(world, SONIC, HANGCASTLE, state, target=True) and can_thundershoot_both(world, SONIC, HANGCASTLE, state),
+
+        "PoleandTargetSwitchandThundershootSonicHC": lambda state: can_pole(world, SONIC, HANGCASTLE, state) and can_switch(world, SONIC, HANGCASTLE, state, target=True) and can_thundershoot_both(world, SONIC, HANGCASTLE, state),
+
+        "DashRampSonicHC": lambda state: can_dash_ramp(world, SONIC, HANGCASTLE, state),
     }
 
 
@@ -836,7 +889,57 @@ def create_logic_mapping_dict_mystic_mansion_sonic(world: SonicHeroesWorld):
     return \
     {
         "": lambda state: True,
+
         "NOTPOSSIBLE": lambda state: False,
+
+        "BreakKeyCageSonicMM": lambda state: can_break_key_cage(world, SONIC, MYSTICMANSION, state),
+
+        #world, SONIC, MYSTICMANSION, state
+        "SwitchSonicMM": lambda state: can_switch(world, SONIC, MYSTICMANSION, state, regular=True),
+
+        "KillGroundEnemySpearSonicMM": lambda state: can_kill_ground_enemy(world, SONIC, MYSTICMANSION, state, spear=True),
+
+        "FireDunkSonicMM": lambda state: can_fire_dunk(world, SONIC, MYSTICMANSION, state),
+
+        "TPSwitchSonicMM": lambda state: can_tp_switch(world, SONIC, MYSTICMANSION, state),
+
+        "FlyingAnyandWeightSonicMM": lambda state: can_fly(world, SONIC, MYSTICMANSION, state) and can_weight(world, SONIC, MYSTICMANSION, state),
+
+        "KillGroundEnemySpearSpikeShieldEggHammerSonicMM": lambda state: can_kill_ground_enemy(world, SONIC, MYSTICMANSION, state, spear=True, spikeshield=True, egghammer=True),
+
+        "FlyingAnyorTornadoSonicMM": lambda state: can_fly(world, SONIC, MYSTICMANSION, state) or can_tornado(world, SONIC, MYSTICMANSION, state),
+
+        "BobsledSonicMM": lambda state: can_bobsled(world, SONIC, MYSTICMANSION, state),
+
+        "KillGroundEnemySpearSpikeShieldSonicMM": lambda state: can_kill_ground_enemy(world, SONIC, MYSTICMANSION, state, spear=True, spikeshield=True),
+
+        "Flying3CharsSonicMM": lambda state: can_fly(world, SONIC, MYSTICMANSION, state, speedreq=True, powerreq=True),
+
+        "FlyingAnySonicMM": lambda state: can_fly(world, SONIC, MYSTICMANSION, state),
+
+        "PulleySonicMM": lambda state: can_pulley(world, SONIC, MYSTICMANSION, state),
+
+        "BreakSonicMM": lambda state: can_break_things(world, SONIC, MYSTICMANSION, state),
+
+        "BreakandFanandSwitchSonicMM": lambda state: can_break_things(world, SONIC, MYSTICMANSION, state) and can_fan(world, SONIC, MYSTICMANSION, state) and can_switch(world, SONIC, MYSTICMANSION, state, regular=True),
+
+        "FlyingAnyorSingleSpringSonicMM": lambda state: can_fly(world, SONIC, MYSTICMANSION, state) or can_single_spring(world, SONIC, MYSTICMANSION, state),
+
+        "FlyingOneCharandPushPullSwitchSonicMM": lambda state: can_fly(world, SONIC, MYSTICMANSION, state, speedreq=True, powerreq=True, orcondition=True),
+
+        "KillGroundEnemyHeavyEggHammerSonicMM": lambda state: can_kill_ground_enemy(world, SONIC, MYSTICMANSION, state, heavyegghammer=True),
+
+        "FlyingAnyandMansionFloatingPlatformSonicMM": lambda state: can_fly(world, SONIC, MYSTICMANSION, state) and can_mansion_floating_platform(world, SONIC, MYSTICMANSION, state),
+
+        "KillGroundEnemySpearBishopSonicMM": lambda state: can_kill_ground_enemy(world, SONIC, MYSTICMANSION, state, spear=True, eggbishop=True),
+
+        "TriangleJumpSonicMM": lambda state: can_triangle_jump(world, SONIC, MYSTICMANSION, state),
+
+        "(FlyingAnyorTornado)andWeightSonicMM": lambda state: (can_fly(world, SONIC, MYSTICMANSION, state) or can_tornado(world, SONIC, MYSTICMANSION, state)) and can_weight(world, SONIC, MYSTICMANSION, state),
+
+        "All3CharsandSwitchandThundershootSonicMM": lambda state: has_char(world, SONIC, MYSTICMANSION, state, speed=True, flying=True, power=True) and can_switch(world, SONIC, MYSTICMANSION, state, regular=True) and can_thundershoot_both(world, SONIC, MYSTICMANSION, state),
+
+        "FanandFlying3CharsandHomingandKillGroundEnemyBishopHeavyEggHammerandTPSwitchSonicMM": lambda state: can_fan(world, SONIC, MYSTICMANSION, state) and can_fly(world, SONIC, MYSTICMANSION, state, speedreq=True, powerreq=True) and can_homing_attack(world, SONIC, MYSTICMANSION, state) and can_kill_ground_enemy(world, SONIC, MYSTICMANSION, state, eggbishop=True, heavyegghammer=True) and can_tp_switch(world, SONIC, MYSTICMANSION, state),
     }
 
 

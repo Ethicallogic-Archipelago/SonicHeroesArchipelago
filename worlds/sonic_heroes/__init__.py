@@ -54,6 +54,26 @@ class SonicHeroesWorld(World):
         self.spoiler_string = ""
         self.extra_items = 0
 
+        self.regular_regions = \
+        [
+            OCEANREGION,
+            HOTPLANTREGION,
+            CASINOREGION,
+            TRAINREGION,
+            BIGPLANTREGION,
+            GHOSTREGION,
+            #SKYREGION,
+        ]
+
+        self.enabled_teams = \
+        [
+            SONIC,
+            #DARK,
+            #ROSE,
+            #CHAOTIX,
+            #SUPERHARD,
+        ]
+
         self.fuzzer = True
         """
         Enable this for fuzzer testing protections
@@ -68,6 +88,19 @@ class SonicHeroesWorld(World):
     def generate_early(self) -> None:
         #Check invalid options here
         check_invalid_options(self)
+
+        reg = RegionCSVData("Any", METALMADNESS, METALMADNESS, 0)
+        self.region_list.append(reg)
+        self.region_to_location[reg.name] = []
+
+        self.logic_mapping_dict["Any"] = \
+        {
+            METALMADNESS:
+                {
+                    "": lambda state: True,
+                },
+        }
+
 
         if self.options.sonic_story > 0:
             # handle rule mapping here
@@ -121,8 +154,7 @@ class SonicHeroesWorld(World):
         connect_entrances(self)
         from Utils import visualize_regions
 
-
-        if "Logic" in self.player_name:
+        if "Logic" in self.player_name and False:
             state = self.multiworld.get_all_state()
             state.update_reachable_regions(self.player)
             visualize_regions(self.get_region("Menu"), f"{self.player_name}_world.puml", show_entrance_names=True, regions_to_highlight=state.reachable_regions[self.player])
@@ -155,7 +187,7 @@ class SonicHeroesWorld(World):
             "RequiredRank": 0,
             "DontLoseBonusKey": 1,
             "SonicStory": self.options.sonic_story.value,
-            "SuperHardModeSonicAct2": 1,
+            "SuperHardModeSonicAct2": 0,
             "SonicKeySanity": self.options.sonic_key_sanity.value,
             "SonicCheckpointSanity": self.options.sonic_checkpoint_sanity.value,
             "DarkStory": 0,
@@ -175,11 +207,13 @@ class SonicHeroesWorld(World):
             "ModernRingLoss": 1,
             "DeathLink": 0,
 
+            "RemoveCasinoParkVIPTableLaserGate": self.options.remove_casino_park_vip_table_laser_gate.value,
+
             "GateEmblemCosts": [1],
-            #"ShuffledLevels": [f"S{x}" for x in range(2, 16)],
-            "ShuffledLevels": ["S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11"],
+            "ShuffledLevels": [f"S{x}" for x in range(2, 16)],
+            #"ShuffledLevels": ["S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11"],
             "ShuffledBosses": ["B23"],
-            "GateLevelCounts": [10],
+            "GateLevelCounts": [14],
         }
 
     def write_spoiler_header(self, spoiler_handle: TextIO) -> None:
@@ -218,6 +252,10 @@ class SonicHeroesWorld(World):
                 BULLETSTATION: create_logic_mapping_dict_bullet_station_sonic(self),
                 FROGFOREST: create_logic_mapping_dict_frog_forest_sonic(self),
                 LOSTJUNGLE: create_logic_mapping_dict_lost_jungle_sonic(self),
+                HANGCASTLE: create_logic_mapping_dict_hang_castle_sonic(self),
+                MYSTICMANSION: create_logic_mapping_dict_mystic_mansion_sonic(self),
+                EGGFLEET: create_logic_mapping_dict_egg_fleet_sonic(self),
+                FINALFORTRESS: create_logic_mapping_dict_final_fortress_sonic(self),
             }
 
 

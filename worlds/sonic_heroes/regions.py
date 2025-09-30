@@ -45,7 +45,7 @@ def create_regions_from_region_list(world: SonicHeroesWorld):
 
 def connect_entrances(world: SonicHeroesWorld):
 
-    goal_rule = lambda state: (state.has(PLAYABLESONIC, world.player, 1) and state.has(PLAYABLETAILS, world.player, 1) and state.has(PLAYABLEKNUCKLES, world.player, 1) and state.has(char_levelup_to_item_name[SONIC][SPEED], world.player, 3) and  state.has(char_levelup_to_item_name[SONIC][FLYING], world.player, 3) and state.has(char_levelup_to_item_name[SONIC][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][OCEANREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][OCEANREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][OCEANREGION][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][HOTPLANTREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][HOTPLANTREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][HOTPLANTREGION][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][CASINOREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][CASINOREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][CASINOREGION][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][TRAINREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][TRAINREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][TRAINREGION][POWER], world.player, 3))
+    goal_rule = lambda state: (state.has(PLAYABLESONIC, world.player, 1) and state.has(PLAYABLETAILS, world.player, 1) and state.has(PLAYABLEKNUCKLES, world.player, 1) and state.has(char_levelup_to_item_name[SONIC][SPEED], world.player, 3) and  state.has(char_levelup_to_item_name[SONIC][FLYING], world.player, 3) and state.has(char_levelup_to_item_name[SONIC][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][OCEANREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][OCEANREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][OCEANREGION][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][HOTPLANTREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][HOTPLANTREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][HOTPLANTREGION][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][CASINOREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][CASINOREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][CASINOREGION][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][TRAINREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][TRAINREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][TRAINREGION][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][BIGPLANTREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][GHOSTREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][GHOSTREGION][POWER], world.player, 3))
 
 
     connect(world, f"{MENU} -> {SEASIDEHILL} {SONIC} Start", MENU, f"{SEASIDEHILL} {SONIC} Start", None, rule_to_str="None")
@@ -58,12 +58,14 @@ def connect_entrances(world: SonicHeroesWorld):
     connect(world, f"{MENU} -> {BULLETSTATION} {SONIC} Start", MENU, f"{BULLETSTATION} {SONIC} Start", None, rule_to_str="None")
     connect(world, f"{MENU} -> {FROGFOREST} {SONIC} Start", MENU, f"{FROGFOREST} {SONIC} Start", None, rule_to_str="None")
     connect(world, f"{MENU} -> {LOSTJUNGLE} {SONIC} Start", MENU, f"{LOSTJUNGLE} {SONIC} Start", None, rule_to_str="None")
+    connect(world, f"{MENU} -> {HANGCASTLE} {SONIC} Start", MENU, f"{HANGCASTLE} {SONIC} Start", None, rule_to_str="None")
+    connect(world, f"{MENU} -> {MYSTICMANSION} {SONIC} Start", MENU, f"{MYSTICMANSION} {SONIC} Start", None, rule_to_str="None")
 
 
 
+    connect(world, f"Goal Connection", MENU, METALMADNESS, goal_rule, rule_to_str=f"Goal Rule")
 
-
-    connect(world, f"Goal Connection", MENU, METALOVERLORD, goal_rule, rule_to_str=f"Goal Rule")
+    connect(world, f"Goal Connection 2", METALMADNESS, METALOVERLORD, goal_rule, rule_to_str=f"Goal Rule")
 
     connect_entrances_from_connection_list(world)
     pass

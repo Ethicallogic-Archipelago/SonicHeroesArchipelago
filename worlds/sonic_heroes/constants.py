@@ -330,6 +330,16 @@ csv_file_names = \
                     REGION: "LostJungleSonicRegions",
                     CONNECTION: "LostJungleSonicConnections",
                 },
+            HANGCASTLE:
+                {
+                    REGION: "HangCastleSonicRegions",
+                    CONNECTION: "HangCastleSonicConnections",
+                },
+            MYSTICMANSION:
+                {
+                    REGION: "MysticMansionSonicRegions",
+                    CONNECTION: "MysticMansionSonicConnections",
+                },
         }
 }
 
@@ -527,8 +537,6 @@ game_region_to_level: dict[str, list[str]] = \
 }
 
 
-
-
 char_to_item_name = \
 {
     SONIC:
@@ -652,6 +660,24 @@ ability_to_item_req = \
                     FIREDUNK: (progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], 1),
                     GLIDE: (progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], 2),
                     COMBOFINISHER: (progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], 3),
+                },
+            GHOSTREGION:
+                {
+                    HOMINGATTACK: (progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], 1),
+                    TORNADO: (progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], 2),
+                    ROCKETACCEL: (progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], 2),
+                    LIGHTDASH: (progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], 3),
+                    TRIANGLEJUMP: (progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], 4),
+                    LIGHTATTACK: (progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], 4),
+
+                    THUNDERSHOOT: (progressive_ability_item_names[SONIC][GHOSTREGION][FLYING], 1),
+                    FLIGHT: (progressive_ability_item_names[SONIC][GHOSTREGION][FLYING], 2),
+                    FLOWERSTING: (progressive_ability_item_names[SONIC][GHOSTREGION][FLYING], 3),
+
+                    BREAK: (progressive_ability_item_names[SONIC][GHOSTREGION][POWER], 0),
+                    FIREDUNK: (progressive_ability_item_names[SONIC][GHOSTREGION][POWER], 1),
+                    GLIDE: (progressive_ability_item_names[SONIC][GHOSTREGION][POWER], 2),
+                    COMBOFINISHER: (progressive_ability_item_names[SONIC][GHOSTREGION][POWER], 3),
                 },
         },
 }

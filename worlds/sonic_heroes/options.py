@@ -99,7 +99,7 @@ sonic_heroes_option_groups = \
                     SonicKeySanity,
                     SonicCheckpointSanity
                 ]),
-    OptionGroup("OOL",
+    OptionGroup("QOL",
                 [
                     RemoveCasinoParkVIPTableLaserGate,
                 ]),
