@@ -4,7 +4,12 @@ from .constants import *
 
 def can_team_blast(world, team, level, state: CollectionState):
     #return False
-    return has_char(world, team, level, state, speed=True, flying=True, power=True) #and can_light_attack(world, team, level, state)
+
+    #light attack
+    #flying/flower sting
+    #combo
+
+    return has_char(world, team, level, state, speed=True, flying=True, power=True) and can_light_attack(world, team, level, state) and can_fly(world, team, level, state) and can_combo_finsh(world, team, level, state) and has_char_levelup(world, team, level, state, 3, speed=True) and has_char_levelup(world, team, level, state, 3, flying=True) and has_char_levelup(world, team, level, state, 3, power=True)
 
 def has_char(world, team, level, state: CollectionState, speed=False, flying=False, power=False, orcondition=False):
     conditions = []
@@ -91,9 +96,9 @@ def can_speed_abilities(world, team, level, state: CollectionState, homing=False
             result = result and can_light_dash(world, team, level, state)
     if triangle:
         if orcondition:
-            result = result or can_light_dash(world, team, level, state)
+            result = result or can_triangle_jump(world, team, level, state)
         else:
-            result = result and can_light_dash(world, team, level, state)
+            result = result and can_triangle_jump(world, team, level, state)
     if lightattack:
         if orcondition:
             result = result or can_light_attack(world, team, level, state)
@@ -240,7 +245,7 @@ def can_power_abilities(world, team, level, state: CollectionState, breaknotcage
 
 
 def can_remove_ground_enemy_shield(world, team, level, state: CollectionState):
-    return (can_homing_attack(world, team, level, state) and has_char_levelup(world, team, level, state, 3, speed=True)) or can_tornado(world, team, level, state) or can_rocket_accel(world, team, level, state) or can_team_blast(world, team, level, state)
+    return (can_homing_attack(world, team, level, state) and has_char_levelup(world, team, level, state, 3, speed=True)) or ((can_tornado(world, team, level, state) or can_rocket_accel(world, team, level, state)) and has_char_levelup(world, team, level, state, 1, speed=True)) or can_team_blast(world, team, level, state)
 
 def can_kill_ground_enemy_nothing(world, team, level, state: CollectionState):
     return True
@@ -249,7 +254,7 @@ def can_kill_ground_enemy_spear(world, team, level, state: CollectionState):
     return (can_homing_attack(world, team, level, state) and has_char_levelup(world, team, level, state, 1, speed=True)) or can_break_things(world, team, level, state) or (can_thundershoot_both(world, team, level, state) and has_char_levelup(world, team, level, state, 1, flying=True)) or can_team_blast(world, team, level, state)
 
 def can_kill_ground_enemy_plain_shield(world, team, level, state: CollectionState):
-    return (can_kill_ground_enemy_nothing(world, team, level, state) and can_remove_ground_enemy_shield(world, team, level, state)) or can_break_things(world, team, level, state) or can_team_blast(world, team, level, state)
+    return (can_kill_ground_enemy_nothing(world, team, level, state) and can_remove_ground_enemy_shield(world, team, level, state)) or (can_break_things(world, team, level, state) and has_char_levelup(world, team, level, state, 1, power=True)) or can_team_blast(world, team, level, state)
 
 def can_kill_ground_enemy_concrete_shield(world, team, level, state: CollectionState):
     return (can_kill_ground_enemy_nothing(world, team, level, state) and can_remove_ground_enemy_shield(world, team, level, state)) or (can_combo_finsh(world, team, level, state) and has_char_levelup(world, team, level, state, 2, power=True)) or can_team_blast(world, team, level, state)
@@ -267,22 +272,22 @@ def can_kill_ground_enemy_goldcameron(world, team, level, state: CollectionState
     return can_remove_ground_enemy_shield(world, team, level, state) or can_team_blast(world, team, level, state)
 
 def can_kill_ground_enemy_rhinoliner(world, team, level, state: CollectionState):
-    return can_kill_ground_enemy_nothing(world, team, level, state)
+    return (can_thundershoot_both(world, team, level, state) and has_char_levelup(world, team, level, state, 2, flying=True)) or can_team_blast(world, team, level, state)
 
 def can_kill_ground_enemy_eggbishop(world, team, level, state: CollectionState):
-    return can_kill_ground_enemy_nothing(world, team, level, state)
+    return (can_homing_attack(world, team, level, state) and has_char_levelup(world, team, level, state, 2, speed=True)) or (can_fire_dunk(world, team, level, state) and has_char_levelup(world, team, level, state, 2, power=True)) or (can_thundershoot_both(world, team, level, state) and has_char_levelup(world, team, level, state, 3, flying=True)) or can_team_blast(world, team, level, state)
 
 def can_kill_ground_enemy_e2000(world, team, level, state: CollectionState):
-    return can_kill_ground_enemy_nothing(world, team, level, state)
+    return ((can_combo_finsh(world, team, level, state) and has_char_levelup(world, team, level, state, 3, power=True)) and (can_remove_ground_enemy_shield(world, team, level, state) or (can_thundershoot_both(world, team, level, state) and has_char_levelup(world, team, level, state, 3, flying=True)))) or can_team_blast(world, team, level, state)
 
 def can_kill_ground_enemy_e2000r(world, team, level, state: CollectionState):
-    return can_kill_ground_enemy_nothing(world, team, level, state)
+    return can_kill_ground_enemy_e2000(world, team, level, state)
 
 def can_kill_ground_enemy_egghammer(world, team, level, state: CollectionState):
-    return can_kill_ground_enemy_nothing(world, team, level, state)
+    return (can_combo_finsh(world, team, level, state) and has_char_levelup(world, team, level, state, 3, power=True)) or can_team_blast(world, team, level, state)
 
 def can_kill_ground_enemy_heavyegghammer(world, team, level, state: CollectionState):
-    return can_kill_ground_enemy_nothing(world, team, level, state)
+    return ((can_homing_attack(world, team, level, state) and has_char_levelup(world, team, level, state, 3, speed=True)) or (can_thundershoot_both(world, team, level, state) and has_char_levelup(world, team, level, state, 3, flying=True))) and can_fire_dunk(world, team, level, state) and (can_combo_finsh(world, team, level, state) and has_char_levelup(world, team, level, state, 3, power=True) and can_team_blast(world, team, level, state))
 
 
 def can_kill_ground_enemy(world, team, level, state: CollectionState, nothing=False, spear = False, plainshield = False, concreteshield = False, spikeshield = False, klagen = False, cameron = False, goldcameron = False, rhinoliner = False, eggbishop = False, e2000 = False, e2000r = False, egghammer = False, heavyegghammer = False, orcondition = False):
@@ -715,7 +720,17 @@ def can_large_bouncy_mushroom(world, team, level, state: CollectionState):
 def can_swinging_vine(world, team, level, state: CollectionState):
     return True
 
+def can_tp_switch(world, team, level, state: CollectionState):
+    return True
 
+def can_castle_floating_platform(world, team, level, state: CollectionState):
+    return True
+
+def can_flame_torch(world, team, level, state: CollectionState):
+    return True
+
+def can_mansion_floating_platform(world, team, level, state: CollectionState):
+    return True
 
 def can_bobsled(world, team, level, state: CollectionState):
     return True

@@ -1,5 +1,5 @@
 
-from BaseClasses import Location
+from BaseClasses import Location, LocationProgressType
 
 from .constants import *
 
@@ -25,9 +25,14 @@ def create_locations(world, region):
 
 
 def create_location(world, region, name, code, rule = None):
+    print(f"Creating location {name}")
     loc = Location(world.player, name, code, region)
     loc.access_rule = rule
 
-    print(f"Creating Location {name} for region {region.name}")
+    if loc.name == METALOVERLORD:
+        #print(f"Setting {loc.name} to Excluded")
+        loc.progress_type = LocationProgressType.EXCLUDED
+
+    #print(f"Creating Location {name} for region {region.name}")
 
     region.locations.append(loc)

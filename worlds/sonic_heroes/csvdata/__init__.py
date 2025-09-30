@@ -41,7 +41,7 @@ def import_location_csv(world: SonicHeroesWorld, team: str):
             loc = LocationCSVData(x[NAME], int(x[CODE], 16), x[TEAM], x[LEVEL], int(x[ACT]), x[REGION], x[RULE], x[LOCATIONTYPE], x[HINTINFO], x[NOTES])
             #world.loc_id_to_loc[loc.code] = loc
             if is_loc_in_world(world, team, loc):
-                print(f"Adding Location {loc.name} to Region to Location[{loc.region}]")
+                #print(f"Adding Location {loc.name} to Region to Location[{loc.region}]")
                 world.region_to_location[loc.region].append(loc)
 
 
@@ -54,7 +54,7 @@ def import_region_csv(world: SonicHeroesWorld, team: str):
 
     for level, v in csv_file_names[team].items():
         file_name = v[REGION]
-        print(f"File Name here: {file_name}")
+        #print(f"File Name here: {file_name}")
         with files(Regions).joinpath(f"{file_name}.csv").open() as csv_file:
             reader = csv.DictReader(csv_file)
             for x in reader:
@@ -77,7 +77,7 @@ def import_region_csv(world: SonicHeroesWorld, team: str):
                         world.region_list.append(reg)
                         world.region_to_location[reg.name] = []
 
-        print(f"Finished with File Name: {file_name}")
+        #print(f"Finished with File Name: {file_name}")
 
 
 
@@ -88,13 +88,28 @@ def import_connection_csv(world: SonicHeroesWorld, team: str):
     except ImportError:
         from importlib_resources import files  # noqa
 
+    id = 0
+
     for level, v in csv_file_names[team].items():
         file_name = v[CONNECTION]
-        print(f"File Name here: {file_name}")
+        #print(f"File Name here: {file_name}")
         with files(Connections).joinpath(f"{file_name}.csv").open() as csv_file:
             reader = csv.DictReader(csv_file)
             for x in reader:
-                conn = ConnectionCSVData(f"{x[LEVEL]} {x[TEAM]} {x[SOURCE]} -> {x[TARGET]} :: with Rule: {x[RULE]}", x[TEAM], x[LEVEL], f"{x[LEVEL]} {x[TEAM]} {x[SOURCE]}", f"{x[LEVEL]} {x[TEAM]} {x[TARGET]}", x[RULE])
+                rule = x[RULE]
+                if "" == x[RULE]:
+                    rule = "Nothing"
+
+                source = find_index_of_region(world,f"{x[LEVEL]} {x[TEAM]} {x[SOURCE]}")
+                target = find_index_of_region(world,f"{x[LEVEL]} {x[TEAM]} {x[TARGET]}")
+
+                if source < 0:
+                    raise ValueError("Source Out of Bounds")
+                if target < 0:
+                    raise ValueError("Target Out of Bounds")
+
+                conn = ConnectionCSVData(f"{source} > {target} with Rule: {rule}", x[TEAM], x[LEVEL], f"{x[LEVEL]} {x[TEAM]} {x[SOURCE]}", f"{x[LEVEL]} {x[TEAM]} {x[TARGET]}", x[RULE])
+                id += 1
                 world.connection_list.append(conn)
 
 
@@ -112,27 +127,40 @@ def is_loc_in_world(world: SonicHeroesWorld, team: str, loc: LocationCSVData) ->
         "Bullet Station",
         "Frog Forest",
         "Lost Jungle",
-
+        "Hang Castle",
+        "Mystic Mansion",
+        #"Egg Fleet",
+        #"Final Fortress",
+        "Metal Madness"
     ]
 
 
     codes: list[int] = \
         [
-            0x939300a4,
-            0x939300a6,
-            0x93931706,
-            0x93931708,
-            0x93931806,
-            0x93931808,
-            0x93931906,
-            0x93931908,
-            0x93932009,
-            0x9393200D,
-            0x93932109,
-            0x9393210D,
-            0x93932209,
-            0x9393220D,
+            0x9393230E,
+            #0x939300a4,
+            #0x939300a6,
+            #0x93931706,
+            #0x93931708,
+            #0x93931806,
+            #0x93931808,
+            #0x93931906,
+            #0x93931908,
+            #0x93932009,
+            #0x9393200D,
+            #0x93932109,
+            #0x9393210D,
+            #0x93932209,
+            #0x9393220D,
         ]
+
+    if loc.name == METALOVERLORD:
+        for locCsvData in world.region_to_location[loc.region]:
+            if locCsvData.name == METALOVERLORD:
+                return False
+        print(f"Adding {loc.name} to {loc.region}")
+        return True
+
 
     if loc.code in codes:
         print(f"Loc {loc.name} ID {hex(loc.code)} has a region {loc.region}")
@@ -240,3 +268,12 @@ def is_loc_in_world(world: SonicHeroesWorld, team: str, loc: LocationCSVData) ->
                     return False
 
     return True
+
+
+def find_index_of_region(world, name):
+    index = 0
+    for reg in world.region_list:
+        if reg.name == name:
+            return index
+        index += 1
+    return -1

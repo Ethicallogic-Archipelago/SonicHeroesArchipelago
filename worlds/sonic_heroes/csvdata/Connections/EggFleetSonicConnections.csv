@@ -1,0 +1,12 @@
+Team,Level,Source,Target,Rule,Notes
+Sonic,Egg Fleet,Start,Start Cutscene Ship,,
+,,Start Cutscene Ship,Start Rail,DashRampSonicEF,
+,,Start Rail,Platforms At Start Rail,,
+,,Start Rail,First Ship,,
+,,First Ship,First Ship After Door,KillGroundEnemyNothingSonicEF,
+,,First Ship After Door,First Ship,NOTPOSSIBLE,Maybe as door seems to not spawn?
+,,First Ship After Door,First Ship After Door Pole,PoleSonicEF,
+,,First Ship After Door Pole,Path After First Ship Lower,PoleSonicEF,
+,,Path After First Ship Lower,First Ship After Door,,
+,,Path After First Ship Lower,Path After First Ship Upper,TripleSpringSonicEF,
+,,Path After First Ship Upper,Path After First Ship Lower,,
