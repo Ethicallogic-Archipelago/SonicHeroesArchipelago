@@ -1,6 +1,12 @@
+from __future__ import annotations
 import typing
 from dataclasses import dataclass
 from BaseClasses import CollectionState, ItemClassification
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from worlds.sonic_heroes import SonicHeroesWorld
+
 
 #from .sanity import *
 #from .sanitykey import *
@@ -179,6 +185,19 @@ WHITECHAOSEMERALD = f"{WHITE} {CHAOSEMERALD}"
 CYANCHAOSEMERALD = f"{CYAN} {CHAOSEMERALD}"
 PURPLECHAOSEMERALD = f"{PURPLE} {CHAOSEMERALD}"
 REDCHAOSEMERALD = f"{RED} {CHAOSEMERALD}"
+
+
+emeralds = \
+[
+    GREENCHAOSEMERALD,
+    BLUECHAOSEMERALD,
+    YELLOWCHAOSEMERALD,
+    WHITECHAOSEMERALD,
+    CYANCHAOSEMERALD,
+    PURPLECHAOSEMERALD,
+    REDCHAOSEMERALD,
+]
+
 CHECKPOINT = "Checkpoint"
 BONUSKEY = "Bonus Key"
 
@@ -226,26 +245,37 @@ VICTORY = "Victory"
 VICTORYITEM = f"{VICTORY} Item"
 VICTORYLOCATION = f"{VICTORY} Location"
 
+GOALUNLOCKITEM = "Goal Unlock Item"
+
 
 NOTHING = "Nothing"
+AMYHAMMERHOVER = "Amy Hammer Hover"
 HOMINGATTACK = "Homing Attack"
 TORNADO = "Tornado"
 ROCKETACCEL = "Rocket Accel"
 LIGHTDASH = "Light Dash"
 TRIANGLEJUMP = "Triangle Jump"
 LIGHTATTACK = "Light Attack"
+INVISIBILITY = "Invisibility"
+SHURIKEN = "Shuriken"
 
-THUNDERSHOOT = "ThunderShoot"
+DUMMYRINGS = "Dummy Rings"
+CHEESECANNON = "Cheese Cannon"
+THUNDERSHOOT = "Thunder Shoot"
 FLIGHT = "Flight"
-FLOWERSTING = "FlowerSting"
+FLOWERSTING = "Flower Sting"
 FLYINGCHARACTERSPECIALMOVE = "Flying Character Special Move"
 
 POWERATTACK = "Power Attack"
 BREAK = "Break"
+BELLYFLOP = "Belly Flop"
 BREAKKEYCAGE = "Break Key Cage"
 FIREDUNK = "Fire Dunk"
 SLAM = "Slam"
+ULTIMATEFIREDUNK = "Ultimate Fire Dunk"
+#SLAM = "Slam"
 GLIDE = "Glide"
+TRIANGLEDIVE = "Triangle Dive"
 COMBOFINISHER = "Combo Finisher"
 
 TEAMBLAST = "Team Blast"
@@ -257,7 +287,10 @@ LOCATION = "Location"
 LOCATIONS = "Locations"
 SECRETLOCATIONS = f"{SECRET} {LOCATIONS}"
 REGION = "Region"
+REGIONS = "Regions"
+ALLREGIONS = ""
 CONNECTION = "Connection"
+CONNECTIONS = "Connections"
 SECRETREGION = f"{SECRET} {REGION}"
 SECRETCONNECTION = f"{SECRET} {CONNECTION}"
 
@@ -275,85 +308,23 @@ LOCATIONTYPE = "Location Type"
 HINTINFO = "Hint Info"
 
 
-csv_file_names = \
+
+team_char_names = \
 {
     SONIC:
-        {
-            SEASIDEHILL:
-                {
-                    REGION: "SeasideHillSonicRegions",
-                    CONNECTION: "SeasideHillSonicConnections",
-                },
-            OCEANPALACE:
-                {
-                    REGION: "OceanPalaceSonicRegions",
-                    CONNECTION: "OceanPalaceSonicConnections",
-                },
-            GRANDMETROPOLIS:
-                {
-                    REGION: "GrandMetropolisSonicRegions",
-                    CONNECTION: "GrandMetropolisSonicConnections",
-                },
-            POWERPLANT:
-                {
-                    REGION: "PowerPlantSonicRegions",
-                    CONNECTION: "PowerPlantSonicConnections",
-                },
-            CASINOPARK:
-                {
-                    REGION: "CasinoParkSonicRegions",
-                    CONNECTION: "CasinoParkSonicConnections",
-                },
-
-            BINGOHIGHWAY:
-                {
-                    REGION: "BingoHighwaySonicRegions",
-                    CONNECTION: "BingoHighwaySonicConnections",
-                },
-            RAILCANYON:
-                {
-                    REGION: "RailCanyonSonicRegions",
-                    CONNECTION: "RailCanyonSonicConnections",
-                },
-            BULLETSTATION:
-                {
-                    REGION: "BulletStationSonicRegions",
-                    CONNECTION: "BulletStationSonicConnections",
-                },
-            FROGFOREST:
-                {
-                    REGION: "FrogForestSonicRegions",
-                    CONNECTION: "FrogForestSonicConnections",
-                },
-            LOSTJUNGLE:
-                {
-                    REGION: "LostJungleSonicRegions",
-                    CONNECTION: "LostJungleSonicConnections",
-                },
-            HANGCASTLE:
-                {
-                    REGION: "HangCastleSonicRegions",
-                    CONNECTION: "HangCastleSonicConnections",
-                },
-            MYSTICMANSION:
-                {
-                    REGION: "MysticMansionSonicRegions",
-                    CONNECTION: "MysticMansionSonicConnections",
-                },
-        }
+        [
+            CHARSONIC,
+            CHARTAILS,
+            CHARKNUCKLES,
+        ]
 }
 
 
-secret_csv_file_names = \
+char_name_to_formation = \
 {
-    SONIC:
-        {
-            GRANDMETROPOLIS:
-                {
-                    REGION: "GrandMetropolisSecretSonicRegions",
-                    CONNECTION: "GrandMetropolisSecretSonicConnections",
-                }
-        }
+    CHARSONIC: SPEED,
+    CHARTAILS: FLYING,
+    CHARKNUCKLES: POWER,
 }
 
 
@@ -392,54 +363,6 @@ csv_file_headers = \
 }
 
 
-progressive_ability_item_names = \
-{
-    SONIC:
-        {
-            OCEANREGION:
-                {
-                    SPEED: f"{PROGRESSIVE} {SPEED} {SONIC} {OCEANREGION}",
-                    FLYING: f"{PROGRESSIVE} {FLYING} {SONIC} {OCEANREGION}",
-                    POWER: f"{PROGRESSIVE} {POWER} {SONIC} {OCEANREGION}",
-                },
-            HOTPLANTREGION:
-                {
-                    SPEED: f"{PROGRESSIVE} {SPEED} {SONIC} {HOTPLANTREGION}",
-                    FLYING: f"{PROGRESSIVE} {FLYING} {SONIC} {HOTPLANTREGION}",
-                    POWER: f"{PROGRESSIVE} {POWER} {SONIC} {HOTPLANTREGION}",
-                },
-            CASINOREGION:
-                {
-                    SPEED: f"{PROGRESSIVE} {SPEED} {SONIC} {CASINOREGION}",
-                    FLYING: f"{PROGRESSIVE} {FLYING} {SONIC} {CASINOREGION}",
-                    POWER: f"{PROGRESSIVE} {POWER} {SONIC} {CASINOREGION}",
-                },
-            TRAINREGION:
-                {
-                    SPEED: f"{PROGRESSIVE} {SPEED} {SONIC} {TRAINREGION}",
-                    FLYING: f"{PROGRESSIVE} {FLYING} {SONIC} {TRAINREGION}",
-                    POWER: f"{PROGRESSIVE} {POWER} {SONIC} {TRAINREGION}",
-                },
-            BIGPLANTREGION:
-                {
-                    SPEED: f"{PROGRESSIVE} {SPEED} {SONIC} {BIGPLANTREGION}",
-                    FLYING: f"{PROGRESSIVE} {FLYING} {SONIC} {BIGPLANTREGION}",
-                    POWER: f"{PROGRESSIVE} {POWER} {SONIC} {BIGPLANTREGION}",
-                },
-            GHOSTREGION:
-                {
-                    SPEED: f"{PROGRESSIVE} {SPEED} {SONIC} {GHOSTREGION}",
-                    FLYING: f"{PROGRESSIVE} {FLYING} {SONIC} {GHOSTREGION}",
-                    POWER: f"{PROGRESSIVE} {POWER} {SONIC} {GHOSTREGION}",
-                },
-            SKYREGION:
-                {
-                    SPEED: f"{PROGRESSIVE} {SPEED} {SONIC} {SKYREGION}",
-                    FLYING: f"{PROGRESSIVE} {FLYING} {SONIC} {SKYREGION}",
-                    POWER: f"{PROGRESSIVE} {POWER} {SONIC} {SKYREGION}",
-                },
-        }
-}
 
 sonic_heroes_story_names: dict[int, str] = \
 {
@@ -537,153 +460,134 @@ game_region_to_level: dict[str, list[str]] = \
 }
 
 
-char_to_item_name = \
+ability_item_req_counts = \
 {
-    SONIC:
-        {
-            SPEED: PLAYABLESONIC,
-            FLYING: PLAYABLETAILS,
-            POWER: PLAYABLEKNUCKLES,
-        },
+    AMYHAMMERHOVER: 0,
+    HOMINGATTACK: 1,
+    TORNADO: 2,
+    ROCKETACCEL: 2,
+    LIGHTDASH: 3,
+    TRIANGLEJUMP: 3, #maybe separate tri jump and light dash
+    LIGHTATTACK: 3,
 
-}
+    DUMMYRINGS: 1,
+    CHEESECANNON: 1,
+    FLOWERSTING: 1,
+    THUNDERSHOOT: 2,
+    FLIGHT: 3,
 
-
-char_levelup_to_item_name = \
-{
-    SONIC:
-        {
-            SPEED: f"{PROGRESSIVELEVELUP} {CHARSONIC}",
-            FLYING: f"{PROGRESSIVELEVELUP} {CHARTAILS}",
-            POWER: f"{PROGRESSIVELEVELUP} {CHARKNUCKLES}",
-        },
-    DARK:
-        {
-            SPEED: f"{PROGRESSIVELEVELUP} {CHARSHADOW}",
-            FLYING: f"{PROGRESSIVELEVELUP} {CHARROUGE}",
-            POWER: f"{PROGRESSIVELEVELUP} {CHAROMEGA}",
-        },
+    BREAK: 0,
+    COMBOFINISHER: 1,
+    GLIDE: 2,
+    FIREDUNK: 3,
+    ULTIMATEFIREDUNK: 3,
+    BELLYFLOP: 3,
 }
 
 
 
-ability_to_item_req = \
+character_abilities = \
 {
-    SONIC:
-        {
-            OCEANREGION:
-                {
-                    HOMINGATTACK: (progressive_ability_item_names[SONIC][OCEANREGION][SPEED], 1),
-                    TORNADO: (progressive_ability_item_names[SONIC][OCEANREGION][SPEED], 2),
-                    ROCKETACCEL: (progressive_ability_item_names[SONIC][OCEANREGION][SPEED], 2),
-                    LIGHTDASH: (progressive_ability_item_names[SONIC][OCEANREGION][SPEED], 3),
-                    TRIANGLEJUMP: (progressive_ability_item_names[SONIC][OCEANREGION][SPEED], 4),
-                    LIGHTATTACK: (progressive_ability_item_names[SONIC][OCEANREGION][SPEED], 4),
-
-                    THUNDERSHOOT: (progressive_ability_item_names[SONIC][OCEANREGION][FLYING], 1),
-                    FLIGHT: (progressive_ability_item_names[SONIC][OCEANREGION][FLYING], 2),
-                    FLOWERSTING: (progressive_ability_item_names[SONIC][OCEANREGION][FLYING], 3),
-
-                    BREAK: (progressive_ability_item_names[SONIC][OCEANREGION][POWER], 0),
-                    FIREDUNK: (progressive_ability_item_names[SONIC][OCEANREGION][POWER], 1),
-                    GLIDE: (progressive_ability_item_names[SONIC][OCEANREGION][POWER], 2),
-                    COMBOFINISHER: (progressive_ability_item_names[SONIC][OCEANREGION][POWER], 3),
-                },
-            HOTPLANTREGION:
-                {
-                    HOMINGATTACK: (progressive_ability_item_names[SONIC][HOTPLANTREGION][SPEED], 1),
-                    TORNADO: (progressive_ability_item_names[SONIC][HOTPLANTREGION][SPEED], 2),
-                    ROCKETACCEL: (progressive_ability_item_names[SONIC][HOTPLANTREGION][SPEED], 2),
-                    LIGHTDASH: (progressive_ability_item_names[SONIC][HOTPLANTREGION][SPEED], 3),
-                    TRIANGLEJUMP: (progressive_ability_item_names[SONIC][HOTPLANTREGION][SPEED], 4),
-                    LIGHTATTACK: (progressive_ability_item_names[SONIC][HOTPLANTREGION][SPEED], 4),
-
-                    THUNDERSHOOT: (progressive_ability_item_names[SONIC][HOTPLANTREGION][FLYING], 1),
-                    FLIGHT: (progressive_ability_item_names[SONIC][HOTPLANTREGION][FLYING], 2),
-                    FLOWERSTING: (progressive_ability_item_names[SONIC][HOTPLANTREGION][FLYING], 3),
-
-                    BREAK: (progressive_ability_item_names[SONIC][HOTPLANTREGION][POWER], 0),
-                    FIREDUNK: (progressive_ability_item_names[SONIC][HOTPLANTREGION][POWER], 1),
-                    GLIDE: (progressive_ability_item_names[SONIC][HOTPLANTREGION][POWER], 2),
-                    COMBOFINISHER: (progressive_ability_item_names[SONIC][HOTPLANTREGION][POWER], 3),
-                },
-            CASINOREGION:
-                {
-                    HOMINGATTACK: (progressive_ability_item_names[SONIC][CASINOREGION][SPEED], 1),
-                    TORNADO: (progressive_ability_item_names[SONIC][CASINOREGION][SPEED], 2),
-                    ROCKETACCEL: (progressive_ability_item_names[SONIC][CASINOREGION][SPEED], 2),
-                    LIGHTDASH: (progressive_ability_item_names[SONIC][CASINOREGION][SPEED], 3),
-                    TRIANGLEJUMP: (progressive_ability_item_names[SONIC][CASINOREGION][SPEED], 4),
-                    LIGHTATTACK: (progressive_ability_item_names[SONIC][CASINOREGION][SPEED], 4),
-
-                    THUNDERSHOOT: (progressive_ability_item_names[SONIC][CASINOREGION][FLYING], 1),
-                    FLIGHT: (progressive_ability_item_names[SONIC][CASINOREGION][FLYING], 2),
-                    FLOWERSTING: (progressive_ability_item_names[SONIC][CASINOREGION][FLYING], 3),
-
-                    BREAK: (progressive_ability_item_names[SONIC][CASINOREGION][POWER], 0),
-                    FIREDUNK: (progressive_ability_item_names[SONIC][CASINOREGION][POWER], 1),
-                    GLIDE: (progressive_ability_item_names[SONIC][CASINOREGION][POWER], 2),
-                    COMBOFINISHER: (progressive_ability_item_names[SONIC][CASINOREGION][POWER], 3),
-                },
-            TRAINREGION:
-                {
-                    HOMINGATTACK: (progressive_ability_item_names[SONIC][TRAINREGION][SPEED], 1),
-                    TORNADO: (progressive_ability_item_names[SONIC][TRAINREGION][SPEED], 2),
-                    ROCKETACCEL: (progressive_ability_item_names[SONIC][TRAINREGION][SPEED], 2),
-                    LIGHTDASH: (progressive_ability_item_names[SONIC][TRAINREGION][SPEED], 3),
-                    TRIANGLEJUMP: (progressive_ability_item_names[SONIC][TRAINREGION][SPEED], 4),
-                    LIGHTATTACK: (progressive_ability_item_names[SONIC][TRAINREGION][SPEED], 4),
-
-                    THUNDERSHOOT: (progressive_ability_item_names[SONIC][TRAINREGION][FLYING], 1),
-                    FLIGHT: (progressive_ability_item_names[SONIC][TRAINREGION][FLYING], 2),
-                    FLOWERSTING: (progressive_ability_item_names[SONIC][TRAINREGION][FLYING], 3),
-
-                    BREAK: (progressive_ability_item_names[SONIC][TRAINREGION][POWER], 0),
-                    FIREDUNK: (progressive_ability_item_names[SONIC][TRAINREGION][POWER], 1),
-                    GLIDE: (progressive_ability_item_names[SONIC][TRAINREGION][POWER], 2),
-                    COMBOFINISHER: (progressive_ability_item_names[SONIC][TRAINREGION][POWER], 3),
-                },
-            BIGPLANTREGION:
-                {
-                    HOMINGATTACK: (progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], 1),
-                    TORNADO: (progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], 2),
-                    ROCKETACCEL: (progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], 2),
-                    LIGHTDASH: (progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], 3),
-                    TRIANGLEJUMP: (progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], 4),
-                    LIGHTATTACK: (progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], 4),
-
-                    THUNDERSHOOT: (progressive_ability_item_names[SONIC][BIGPLANTREGION][FLYING], 1),
-                    FLIGHT: (progressive_ability_item_names[SONIC][BIGPLANTREGION][FLYING], 2),
-                    FLOWERSTING: (progressive_ability_item_names[SONIC][BIGPLANTREGION][FLYING], 3),
-
-                    BREAK: (progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], 0),
-                    FIREDUNK: (progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], 1),
-                    GLIDE: (progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], 2),
-                    COMBOFINISHER: (progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], 3),
-                },
-            GHOSTREGION:
-                {
-                    HOMINGATTACK: (progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], 1),
-                    TORNADO: (progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], 2),
-                    ROCKETACCEL: (progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], 2),
-                    LIGHTDASH: (progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], 3),
-                    TRIANGLEJUMP: (progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], 4),
-                    LIGHTATTACK: (progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], 4),
-
-                    THUNDERSHOOT: (progressive_ability_item_names[SONIC][GHOSTREGION][FLYING], 1),
-                    FLIGHT: (progressive_ability_item_names[SONIC][GHOSTREGION][FLYING], 2),
-                    FLOWERSTING: (progressive_ability_item_names[SONIC][GHOSTREGION][FLYING], 3),
-
-                    BREAK: (progressive_ability_item_names[SONIC][GHOSTREGION][POWER], 0),
-                    FIREDUNK: (progressive_ability_item_names[SONIC][GHOSTREGION][POWER], 1),
-                    GLIDE: (progressive_ability_item_names[SONIC][GHOSTREGION][POWER], 2),
-                    COMBOFINISHER: (progressive_ability_item_names[SONIC][GHOSTREGION][POWER], 3),
-                },
-        },
+    SPEED:
+        [
+            HOMINGATTACK,
+            TORNADO,
+            ROCKETACCEL,
+        ],
+    FLYING:
+        [
+            THUNDERSHOOT,
+            FLIGHT,
+        ],
+    POWER:
+        [
+            #POWERATTACK,
+            GLIDE,
+            COMBOFINISHER,
+            FIREDUNK,
+        ],
+    CHARSONIC:
+        [
+            LIGHTDASH,
+            TRIANGLEJUMP,
+            LIGHTATTACK,
+        ],
+    CHARTAILS:
+        [
+            DUMMYRINGS
+        ],
+    CHARKNUCKLES:
+        [],
 }
 
 
 
+def get_csv_file_name(team: str, level: str, file_type: str, secret: bool = False) -> str:
+    if secret:
+        return f"{level} {SECRET} {team} {file_type}".replace(" ", "")
+
+    return f"{level} {team} {file_type}".replace(" ", "")
+
+
+def is_there_a_secret_csv_file(team: str, level: str, file_type: str) -> bool:
+    if team == SONIC and level == GRANDMETROPOLIS:
+        return True
+    return False
+
+
+def get_char_name_from_team(team: str, speed = False, flying = False, power = False):
+    if sum([speed, flying, power]) > 1:
+        print(f"Get Char Name From Team called with multiple chars. team {team} speed {speed} flying {flying} power {power}")
+        return ""
+    if speed:
+        return team_char_names[team][0]
+    if flying:
+        return team_char_names[team][1]
+    if power:
+        return team_char_names[team][2]
+    return ""
+
+
+def get_region_name_from_level(world: SonicHeroesWorld, level: str) -> str:
+    region: str = level_to_game_region[level]
+    if world.options.ability_unlocks == 1:
+        region = ALLREGIONS
+    return region
 
 
 
+def get_playable_char_item_name(char: str) -> str:
+    return f"{PLAYABLE} {char}"
+
+
+def get_all_abilities_for_team(team: str):
+    result = []
+    result += [abilities for char_name in team_char_names[team] for abilities in get_all_abilities_for_character(char_name)]
+    return result
+
+def get_all_abilities_for_character(char_name: str):
+    result = []
+    result += character_abilities[char_name_to_formation[char_name]]
+    result += character_abilities[char_name]
+    return result
+
+
+def get_ability_item_name(world: SonicHeroesWorld, team: str, region: str, ability: str) -> str:
+    if world.options.ability_unlocks == 1:
+        region = ALLREGIONS
+    return f"{team} {ability} {region}"
+
+def get_ability_item_name_without_world(team: str, region: str, ability: str) -> str:
+    return f"{team} {ability} {region}"
+
+
+def get_all_ability_item_names_for_character_and_region(world: SonicHeroesWorld, team: str, char_name: str, region: str) -> list[str]:
+    result = []
+    abilities = get_all_abilities_for_character(char_name)
+
+    if world.options.ability_unlocks == 1:
+        region = ALLREGIONS
+
+    for ability in abilities:
+        result.append(get_ability_item_name(world, team, region, ability))
+    return result

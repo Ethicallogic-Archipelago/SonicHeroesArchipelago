@@ -24,6 +24,20 @@ def create_region(world: SonicHeroesWorld, name: str, hint: str = ""):
         location = SonicHeroesLocation(world.player, VICTORYLOCATION, None, region)
         region.locations.append(location)
 
+    #Seaside Hill (Team) Goal
+    name_split = name.split(" ")
+
+
+    if name_split[-1] == "Goal":
+        for team in world.enabled_teams:
+            last_word_of_team = team.split(" ")[-1]
+            if name_split[-2] == last_word_of_team:
+                level_name = name_split[0] + " " + name_split[1]
+                if level_name in world.allowed_levels:
+                    location = SonicHeroesLocation(world.player, f"{name} Event Location", None, region)
+                    region.locations.append(location)
+                    world.level_goal_event_locations.append(f"{name} Event Location")
+
     world.multiworld.regions.append(region)
 
 
@@ -44,24 +58,26 @@ def create_regions_from_region_list(world: SonicHeroesWorld):
 
 
 def connect_entrances(world: SonicHeroesWorld):
+    goal_rule_dict = {}
 
-    goal_rule = lambda state: (state.has(PLAYABLESONIC, world.player, 1) and state.has(PLAYABLETAILS, world.player, 1) and state.has(PLAYABLEKNUCKLES, world.player, 1) and state.has(char_levelup_to_item_name[SONIC][SPEED], world.player, 3) and  state.has(char_levelup_to_item_name[SONIC][FLYING], world.player, 3) and state.has(char_levelup_to_item_name[SONIC][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][OCEANREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][OCEANREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][OCEANREGION][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][HOTPLANTREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][HOTPLANTREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][HOTPLANTREGION][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][CASINOREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][CASINOREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][CASINOREGION][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][TRAINREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][TRAINREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][TRAINREGION][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][BIGPLANTREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][BIGPLANTREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][BIGPLANTREGION][POWER], world.player, 3) and state.has(progressive_ability_item_names[SONIC][GHOSTREGION][SPEED], world.player, 4) and state.has(progressive_ability_item_names[SONIC][GHOSTREGION][FLYING], world.player, 2) and state.has(progressive_ability_item_names[SONIC][GHOSTREGION][POWER], world.player, 3))
+    for team in world.enabled_teams:
+        for char_name in team_char_names[team]:
+            goal_rule_dict[get_playable_char_item_name(char_name)] = 1
+            if world.options.goal_unlock_condition != 1:
+                goal_rule_dict[GOALUNLOCKITEM] = world.options.goal_level_completions.value
 
+    if world.options.goal_unlock_condition != 0:
+        for emerald in emeralds:
+            goal_rule_dict[emerald] = 1
 
-    connect(world, f"{MENU} -> {SEASIDEHILL} {SONIC} Start", MENU, f"{SEASIDEHILL} {SONIC} Start", None, rule_to_str="None")
-    connect(world, f"{MENU} -> {OCEANPALACE} {SONIC} Start", MENU, f"{OCEANPALACE} {SONIC} Start", None, rule_to_str="None")
-    connect(world, f"{MENU} -> {GRANDMETROPOLIS} {SONIC} Start", MENU, f"{GRANDMETROPOLIS} {SONIC} Start", None, rule_to_str="None")
-    connect(world, f"{MENU} -> {POWERPLANT} {SONIC} Start", MENU, f"{POWERPLANT} {SONIC} Start", None, rule_to_str="None")
-    connect(world, f"{MENU} -> {CASINOPARK} {SONIC} Start", MENU, f"{CASINOPARK} {SONIC} Start", None, rule_to_str="None")
-    connect(world, f"{MENU} -> {BINGOHIGHWAY} {SONIC} Start", MENU, f"{BINGOHIGHWAY} {SONIC} Start", None, rule_to_str="None")
-    connect(world, f"{MENU} -> {RAILCANYON} {SONIC} Start", MENU, f"{RAILCANYON} {SONIC} Start", None, rule_to_str="None")
-    connect(world, f"{MENU} -> {BULLETSTATION} {SONIC} Start", MENU, f"{BULLETSTATION} {SONIC} Start", None, rule_to_str="None")
-    connect(world, f"{MENU} -> {FROGFOREST} {SONIC} Start", MENU, f"{FROGFOREST} {SONIC} Start", None, rule_to_str="None")
-    connect(world, f"{MENU} -> {LOSTJUNGLE} {SONIC} Start", MENU, f"{LOSTJUNGLE} {SONIC} Start", None, rule_to_str="None")
-    connect(world, f"{MENU} -> {HANGCASTLE} {SONIC} Start", MENU, f"{HANGCASTLE} {SONIC} Start", None, rule_to_str="None")
-    connect(world, f"{MENU} -> {MYSTICMANSION} {SONIC} Start", MENU, f"{MYSTICMANSION} {SONIC} Start", None, rule_to_str="None")
+    goal_rule = lambda state: state.has_all_counts(goal_rule_dict, world.player)
 
 
+    for team in world.enabled_teams:
+        for reg in world.allowed_levels:
+            connect(world,f"{MENU} -> {reg} {team} Start", MENU, f"{reg} {team} Start", None, rule_to_str="None")
+
+    #connect(world, f"{MENU} -> {SEASIDEHILL} {SONIC} Start", MENU, f"{SEASIDEHILL} {SONIC} Start", None, rule_to_str="None")
 
     connect(world, f"Goal Connection", MENU, METALMADNESS, goal_rule, rule_to_str=f"Goal Rule")
 
@@ -72,7 +88,6 @@ def connect_entrances(world: SonicHeroesWorld):
 
 
 def connect_entrances_from_connection_list(world: SonicHeroesWorld):
-
     for connection in world.connection_list:
         connect(world, connection.name, connection.source, connection.target, world.logic_mapping_dict[connection.team][connection.level][connection.rulestr], rule_to_str=connection.rulestr)
 
@@ -90,7 +105,7 @@ def connect(world: SonicHeroesWorld, name: str, source: str, target: str, rule=N
     source_region.exits.append(connection)
     connection.connect(target_region)
 
-    world.spoiler_string += f"\nConnecting Region {source} to Region {target} with rule: {rule_to_str}\n"
+    #world.spoiler_string += f"\nConnecting Region {source} to Region {target} with rule: {rule_to_str}\n"
     #print(f"\nConnecting Region {source} to Region {target} with rule: {rule_to_str}\n")
 
     return connection if reach else None

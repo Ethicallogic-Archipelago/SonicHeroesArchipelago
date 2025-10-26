@@ -1,2 +1,13 @@
 Team,Level,Name,ObjChecks
 Sonic,Final Fortress,Start,0
+,,Platform At Start,
+,,Start Rail,
+,,First Platform,
+,,First Falling Platform,
+,,First Platform Top Rail,
+,,First Roof,
+,,First Roof Overhang,
+,,First Roof Case,
+,,First Roof Hole In Floor,
+,,Square Floating Platform Below First Platform,
+,,First Platform Lower Path,

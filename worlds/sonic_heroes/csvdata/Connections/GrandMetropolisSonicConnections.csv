@@ -76,7 +76,7 @@ Sonic,Grand Metropolis,First Hallway Second Door Case,First Hallway After Second
 Sonic,Grand Metropolis,First Hallway After Second Door,First Hallway Second Door Case,NOTPOSSIBLE,
 Sonic,Grand Metropolis,First Hallway After Second Door,Checkpoint 3,DashRamporFlyingAnySonicGM,
 Sonic,Grand Metropolis,Checkpoint 3,First Hallway After Second Door,NOTPOSSIBLE,
-Sonic,Grand Metropolis,Checkpoint 3,Small Road in Hallway,PoleSonicGM,
+Sonic,Grand Metropolis,Checkpoint 3,Small Road in Hallway,(Homing3orTornado)andPoleSonicGM,
 Sonic,Grand Metropolis,Small Road in Hallway,Checkpoint 3,FlyingAnyorHomingorGlideSonicGM,
 Sonic,Grand Metropolis,Small Road in Hallway,Hallway Bottom With Case and Pole,,
 Sonic,Grand Metropolis,Hallway Bottom With Case and Pole,Small Road in Hallway,NOTPOSSIBLE,
