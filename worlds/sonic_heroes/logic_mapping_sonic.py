@@ -236,6 +236,8 @@ def create_logic_mapping_dict_grand_metropolis_sonic(world: SonicHeroesWorld):
         "DashRingSonicGM": lambda state: can_dash_ring(world, SONIC, GRANDMETROPOLIS, state),
 
         "AccelRoadandKillGroundEnemyCameronSonicGM": lambda state: can_accel_road(world, SONIC, GRANDMETROPOLIS, state) and can_kill_ground_enemy(world, SONIC, GRANDMETROPOLIS, state, cameron=True),
+
+        "(Homing3orTornado)andPoleSonicGM": lambda state: ((can_homing_attack(world, SONIC, GRANDMETROPOLIS, state) and has_char_levelup(world, SONIC, GRANDMETROPOLIS, state, 3, speed=True)) or can_tornado(world, SONIC, GRANDMETROPOLIS, state)) and can_pole(world, SONIC, GRANDMETROPOLIS, state),
     }
 
 def create_logic_mapping_dict_power_plant_sonic(world: SonicHeroesWorld):
@@ -947,7 +949,78 @@ def create_logic_mapping_dict_egg_fleet_sonic(world: SonicHeroesWorld):
     return \
     {
         "": lambda state: True,
+
         "NOTPOSSIBLE": lambda state: False,
+
+        "BreakKeyCageSonicEF": lambda state: can_break_key_cage(world, SONIC, EGGFLEET, state),
+
+        "KillGroundEnemyNothingSonicEF": lambda state: can_kill_ground_enemy(world, SONIC, EGGFLEET, state, nothing=True),
+
+        "PoleSonicEF": lambda state: can_pole(world, SONIC, EGGFLEET, state),
+
+        "TripleSpringSonicEF": lambda state: can_triple_spring(world, SONIC, EGGFLEET, state),
+
+        "FlyingAnySonicEF": lambda state: can_fly(world, SONIC, EGGFLEET, state),
+
+        "CannonSonicEF": lambda state: can_cannon_obj(world, SONIC, EGGFLEET, state),
+
+        "CannonSpeedSonicEF": lambda state: can_cannon(world, SONIC, EGGFLEET, state, speed=True),
+
+        "CannonFlyingSonicEF": lambda state: can_cannon(world, SONIC, EGGFLEET, state, flying=True),
+
+        "DashRingSonicEF": lambda state: can_dash_ring(world, SONIC, EGGFLEET, state),
+
+        "CannonPowerSonicEF": lambda state: can_cannon(world, SONIC, EGGFLEET, state, power=True),
+
+        "DashRingandFlyingAnySonicEF": lambda state: can_dash_ring(world, SONIC, EGGFLEET, state) and can_fly(world, SONIC, EGGFLEET, state),
+
+        "FanSonicEF": lambda state: can_fan(world, SONIC, EGGFLEET, state),
+
+        "KillGroundEnemyCannonandSingleSpringSonicEF": lambda state: can_kill_ground_enemy(world, SONIC, EGGFLEET, state, cannon=True) and can_single_spring(world, SONIC, EGGFLEET, state),
+
+        "FlyingAnyorTripleSpringSonicEF": lambda state: can_fly(world, SONIC, EGGFLEET, state) or can_triple_spring(world, SONIC, EGGFLEET, state),
+
+        "SquareFloatingPlatformSonicEF": lambda state: can_square_floating_platform(world, SONIC, EGGFLEET, state),
+
+        "SquareFloatingPlatformandTripleSpringSonicEF": lambda state: can_square_floating_platform(world, SONIC, EGGFLEET, state),
+
+        "FlyingAnyandSquareFloatingPlatformSonicEF": lambda state: can_fly(world, SONIC, EGGFLEET, state) and can_square_floating_platform(world, SONIC, EGGFLEET, state),
+
+        "FlyingAnyorLightDashSonicEF": lambda state: can_fly(world, SONIC, EGGFLEET, state) or can_light_dash(world, SONIC, EGGFLEET, state),
+
+        "KillGroundEnemyE2000SonicEF": lambda state: can_kill_ground_enemy(world, SONIC, EGGFLEET, state, e2000=True),
+
+        "PropellerSonicEF": lambda state: can_propeller(world, SONIC, EGGFLEET, state),
+
+        "FlyingAnyor(KillGroundEnemyCannonandSingleSpring)SonicEF": lambda state: can_fly(world, SONIC, EGGFLEET, state) or (can_kill_ground_enemy(world, SONIC, EGGFLEET, state, cannon=True) and can_single_spring(world, SONIC, EGGFLEET, state)),
+
+        "FanorFlyingAnySonicEF": lambda state: can_fan(world, SONIC, EGGFLEET, state) or can_fly(world, SONIC, EGGFLEET, state),
+
+        "FlyingAnyor(KillGroundEnemyCannonandTripleSpring)SonicEF": lambda state: can_fly(world, SONIC, EGGFLEET, state) or (can_kill_ground_enemy(world, SONIC, EGGFLEET, state, cannon=True) and can_triple_spring(world, SONIC, EGGFLEET, state)),
+
+        "FlyingAnyorPoleSonicEF": lambda state: can_fly(world, SONIC, EGGFLEET, state) or can_pole(world, SONIC, EGGFLEET, state),
+
+        "RocketAccelSonicEF": lambda state: can_rocket_accel(world, SONIC, EGGFLEET, state),
+
+        "FlyingAnyandFloatingSquarePlatformandRainbowRingsSonicEF": lambda state: can_fly(world, SONIC, EGGFLEET, state) and can_square_floating_platform(world, SONIC, EGGFLEET, state) and can_rainbow_hoops(world, SONIC, EGGFLEET, state),
+
+        "LightDashSonicEF": lambda state: can_light_dash(world, SONIC, EGGFLEET, state),
+
+        "FanandTripleSpringSonicEF": lambda state: can_fan(world, SONIC, EGGFLEET, state) and can_triple_spring(world, SONIC, EGGFLEET, state),
+
+        "KillGroundEnemyPlainShieldE2000SonicEF": lambda state: can_kill_ground_enemy(world, SONIC, EGGFLEET, state, plainshield=True, e2000=True),
+
+        "FanandSwitchSonicEF": lambda state: can_fan(world, SONIC, EGGFLEET, state) and can_switch(world, SONIC, EGGFLEET, state, regular=True),
+
+        "DashRampSonicEF": lambda state: can_dash_ramp(world, SONIC, EGGFLEET, state),
+
+        "Flying3CharsSonicEF": lambda state: can_fly(world, SONIC, EGGFLEET, state, speedreq=True, powerreq=True),
+
+        "KillGroundEnemyCannonandPoleandSwitchSonicEF": lambda state: can_kill_ground_enemy(world, SONIC, EGGFLEET, state, cannon=True) and can_pole(world, SONIC, EGGFLEET, state) and can_switch(world, SONIC, EGGFLEET, state, regular=True),
+
+        "KillGroundEnemySpikeShieldSonicEF": lambda state: can_kill_ground_enemy(world, SONIC, EGGFLEET, state, spikeshield=True),
+
+        "SingleSpringSonicEF": lambda state: can_single_spring(world, SONIC, EGGFLEET, state),
     }
 
 
@@ -956,6 +1029,9 @@ def create_logic_mapping_dict_final_fortress_sonic(world: SonicHeroesWorld):
     {
         "": lambda state: True,
         "NOTPOSSIBLE": lambda state: False,
+        "BreakKeyCageSonicFinal": lambda state: can_break_key_cage(world, SONIC, EGGFLEET, state),
+
+
     }
 
 

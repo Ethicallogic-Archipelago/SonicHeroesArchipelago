@@ -1,2 +1,27 @@
 Team,Level,Source,Target,Rule,Notes
-Sonic,Final Fortress,Start,,,
+Sonic,Final Fortress,Start,Platform At Start,,
+,,Platform At Start,Start Rail,FlyingAnySonicFinal,Can be made with rocket accel
+,,Start Rail,Platform At Start,FlyingAnySonicFinal,flyingAny but annoying
+,,Start Rail,First Falling Platform,NOTPOSSIBLE,is possible (harder logic)
+,,Start Rail,First Platform,,
+,,First Platform,Start Rail,FlyingAnySonicFinal,
+,,First Platform,First Falling Platform,FallingPlatformand(FlyingAnyorTripleSpring)SonicFinal,tornado hover possible
+,,First Falling Platform,First Platform,FallingPlatformSonicFinal,
+,,First Falling Platform,First Platform Top Rail,FallingPlatformand(FlyingAnyorLightDash)SonicFinal,might be possible with just speed char
+,,First Platform Top Rail,First Falling Platform,NOTPOSSIBLE,
+,,First Platform,Square Floating Platform Below First Platform,SquareFloatingPlatformSonicFinal,
+,,Square Floating Platform Below First Platform,First Platform Lower Path,FlyingAnySonicFinal,
+,,First Platform Lower Path,Square Floating Platform Below First Platform,SquareFloatingPlatformSonicFinal,
+,,First Platform Lower Path,First Platform,NOTPOSSIBLE,is possible with Flying 3 Chars (annoying)
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,First Platform Top Rail,First Roof,DashRingSonicFinal,
+,,First Roof,First Roof Overhang,,
+,,First Roof,First Roof Case,KillGroundEnemyEggHammerSonicFinal,
+,,First Roof,First Roof Hole In Floor,BreakSonicFinal,

@@ -13,6 +13,46 @@ from Options import *
 from .constants import *
 
 
+
+class GoalUnlockCondition(Choice):
+    """
+
+    """
+    internal_name = "goal_unlock_condition"
+    display_name = "Goal Unlock Condition"
+    option_level_completions = 0
+    option_emerald_hunt = 1
+    option_level_completions_and_emeralds = 2
+    #option_all_abilities = 3
+    default = 0
+
+
+class GoalLevelCompletions(Range):
+    """
+    How Many Level Completions are needed per Story to unlock Metal Madness?
+    This Requires Level Completion Goal Unlock Condition.
+    Each Story will require at least this many completed levels.
+    Required Rank will also affect this.
+    """
+    internal_name = "goal_level_completions"
+    display_name = "Goal Level Completions"
+    range_start = 0
+    range_end = 14
+    default = 7
+
+
+class AbilityUnlocks(Choice):
+    """
+
+    """
+    internal_name = "ability_unlocks"
+    display_name = "Ability Unlocks"
+    option_all_regions_separate = 0
+    option_entire_story = 1
+    default = 0
+
+
+
 class SonicStory(Choice):
     """
     Should Sonic Story Missions be enabled?
@@ -23,7 +63,7 @@ class SonicStory(Choice):
     option_mission_a_only = 1
     option_mission_b_only = 2
     option_both_missions_enabled = 3
-    default = 0
+    default = 1
 
 class SonicStoryStartingCharacter(Choice):
     """
@@ -49,7 +89,7 @@ class SonicKeySanity(Choice):
     option_disabled = 0
     option_Only1Set = 1
     option_SetForEachAct = 2
-    default = 0
+    default = 1
 
 
 class SonicCheckpointSanity(Choice):
@@ -61,7 +101,7 @@ class SonicCheckpointSanity(Choice):
     option_Only1SetNormal = 1
     option_OnlySuperHard = 2
     option_SetForEachAct = 3
-    default = 0
+    default = 1
 
 
 class RemoveCasinoParkVIPTableLaserGate(DefaultOnToggle):
@@ -87,31 +127,43 @@ class SecretLocations(Toggle):
 
 sonic_heroes_option_groups = \
     [
-    OptionGroup("Stories",
-                [
-                    SonicStory,
-                    SonicStoryStartingCharacter,
-                    SecretLocations,
-                ]),
+        OptionGroup("Goal",
+            [
+                GoalUnlockCondition,
+                GoalLevelCompletions,
+                AbilityUnlocks,
+            ]),
 
-    OptionGroup("Sanity",
-                [
-                    SonicKeySanity,
-                    SonicCheckpointSanity
-                ]),
-    OptionGroup("QOL",
-                [
-                    RemoveCasinoParkVIPTableLaserGate,
-                ]),
-    OptionGroup("DeathLink",
-                [
-                    DeathLink
-                ]),
+
+        OptionGroup("Stories",
+            [
+                SonicStory,
+                SonicStoryStartingCharacter,
+                SecretLocations,
+            ]),
+
+        OptionGroup("Sanity",
+            [
+                SonicKeySanity,
+                SonicCheckpointSanity
+            ]),
+        OptionGroup("QOL",
+            [
+                RemoveCasinoParkVIPTableLaserGate,
+            ]),
+        OptionGroup("DeathLink",
+            [
+                DeathLink
+            ]),
 ]
 
 
 @dataclass
 class SonicHeroesOptions(PerGameCommonOptions):
+
+    goal_unlock_condition: GoalUnlockCondition
+    goal_level_completions: GoalLevelCompletions
+    ability_unlocks: AbilityUnlocks
 
     sonic_story: SonicStory
     sonic_story_starting_character: SonicStoryStartingCharacter

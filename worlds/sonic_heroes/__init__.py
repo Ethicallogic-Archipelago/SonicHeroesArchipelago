@@ -1,18 +1,14 @@
 from typing import TextIO
 
-
 from BaseClasses import *
-from worlds.AutoWorld import WebWorld, World
-
-
+from worlds.AutoWorld import World, WebWorld
+from . import csvdata
 from .constants import *
 from .csvdata import *
 from .items import *
 from .logic_mapping_sonic import *
-from .regions import *
 from .options import *
-
-from . import csvdata
+from .regions import *
 
 
 class SonicHeroesWeb(WebWorld):
@@ -42,11 +38,14 @@ class SonicHeroesWorld(World):
 
     topology_present = True
 
+    #ut_can_gen_without_yaml = False
+
 
     def __init__(self, multiworld, player):
         #PUT STUFF HERE
         #self.loc_id_to_loc = {}
 
+        self.level_goal_event_locations = []
         self.region_to_location = {}
         self.region_list = []
         self.connection_list = []
@@ -62,7 +61,7 @@ class SonicHeroesWorld(World):
             TRAINREGION,
             BIGPLANTREGION,
             GHOSTREGION,
-            #SKYREGION,
+            SKYREGION,
         ]
 
         self.enabled_teams = \
@@ -74,10 +73,30 @@ class SonicHeroesWorld(World):
             #SUPERHARD,
         ]
 
-        self.fuzzer = True
+        self.allowed_levels = \
+        [
+            SEASIDEHILL,
+            OCEANPALACE,
+            GRANDMETROPOLIS,
+            POWERPLANT,
+            CASINOPARK,
+            BINGOHIGHWAY,
+            RAILCANYON,
+            BULLETSTATION,
+            FROGFOREST,
+            LOSTJUNGLE,
+            HANGCASTLE,
+            MYSTICMANSION,
+            EGGFLEET,
+            #FINALFORTRESS,
+            #METALMADNESS
+        ]
+
+        self.fuzzer = False
         """
         Enable this for fuzzer testing protections
         """
+        self.should_make_puml = True
 
         super().__init__(multiworld, player)
 
@@ -88,6 +107,17 @@ class SonicHeroesWorld(World):
     def generate_early(self) -> None:
         #Check invalid options here
         check_invalid_options(self)
+
+
+        """
+        #UT Stuff Here
+        if hasattr(self.multiworld, "re_gen_passthrough"):
+            if SONICHEROES not in self.multiworld.re_gen_passthrough:
+                return
+            passthrough = self.multiworld.re_gen_passthrough[SONICHEROES]
+            self.options.goal_unlock_condition = passthrough["goal_unlock_condition"]
+
+        """
 
         reg = RegionCSVData("Any", METALMADNESS, METALMADNESS, 0)
         self.region_list.append(reg)
@@ -116,8 +146,6 @@ class SonicHeroesWorld(World):
             #map connections
             #map_sonic_connections(self)
 
-
-
         pass
 
 
@@ -129,7 +157,11 @@ class SonicHeroesWorld(World):
         victory_item = SonicHeroesItem(VICTORYITEM, ItemClassification.progression, None, self.player)
         self.get_location(VICTORYLOCATION).place_locked_item(victory_item)
 
+        print(self.level_goal_event_locations)
 
+        for loc_name in self.level_goal_event_locations:
+            goal_unlock_item = SonicHeroesItem(GOALUNLOCKITEM, ItemClassification.progression, None, self.player)
+            self.get_location(loc_name).place_locked_item(goal_unlock_item)
         pass
 
 
@@ -152,14 +184,6 @@ class SonicHeroesWorld(World):
 
     def connect_entrances(self) -> None:
         connect_entrances(self)
-        from Utils import visualize_regions
-
-        if "Logic" in self.player_name and False:
-            state = self.multiworld.get_all_state()
-            state.update_reachable_regions(self.player)
-            visualize_regions(self.get_region("Menu"), f"{self.player_name}_world.puml", show_entrance_names=True, regions_to_highlight=state.reachable_regions[self.player])
-            # !pragma layout smetana
-            # put this at top to display PUML (after start UML)
         pass
 
     def generate_basic(self) -> None:
@@ -174,15 +198,24 @@ class SonicHeroesWorld(World):
     def generate_output(self, output_directory: str) -> None:
         pass
 
-    def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]):
+    def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]) -> None:
         pass
 
     def fill_slot_data(self) -> Mapping[str, Any]:
+        from Utils import visualize_regions
+        if self.should_make_puml and not self.fuzzer:
+            state = self.multiworld.get_all_state(False)
+            state.update_reachable_regions(self.player)
+            visualize_regions(self.get_region("Menu"), f"{self.player_name}_world.puml", show_entrance_names=True, regions_to_highlight=state.reachable_regions[self.player])
+            # !pragma layout smetana
+            # put this at top to display PUML (after start UML)
         return \
         {
             "ModVersion": "1.5.0",
             "Goal": 0,
-            "GoalUnlockCondition": 1,
+            "GoalUnlockCondition": self.options.goal_unlock_condition.value,
+            "GoalLevelCompletions": self.options.goal_level_completions.value,
+            "AbilityUnlocks": self.options.ability_unlocks.value,
             "SkipMetalMadness": 1,
             "RequiredRank": 0,
             "DontLoseBonusKey": 1,
