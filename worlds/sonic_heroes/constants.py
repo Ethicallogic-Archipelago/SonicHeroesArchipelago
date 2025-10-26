@@ -554,8 +554,6 @@ def get_region_name_from_level(world: SonicHeroesWorld, level: str) -> str:
         region = ALLREGIONS
     return region
 
-
-
 def get_playable_char_item_name(char: str) -> str:
     return f"{PLAYABLE} {char}"
 
@@ -575,9 +573,11 @@ def get_all_abilities_for_character(char_name: str):
 def get_ability_item_name(world: SonicHeroesWorld, team: str, region: str, ability: str) -> str:
     if world.options.ability_unlocks == 1:
         region = ALLREGIONS
-    return f"{team} {ability} {region}"
+    return get_ability_item_name_without_world(team, region, ability)
 
 def get_ability_item_name_without_world(team: str, region: str, ability: str) -> str:
+    if region == ALLREGIONS:
+        return f"{team} {ability}"
     return f"{team} {ability} {region}"
 
 
