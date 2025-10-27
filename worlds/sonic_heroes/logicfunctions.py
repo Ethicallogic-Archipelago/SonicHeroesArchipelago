@@ -148,10 +148,11 @@ def can_thundershoot_both(world: SonicHeroesWorld, team: str, level: str, state:
 
 def can_fly(world: SonicHeroesWorld, team: str, level: str, state: CollectionState, speedreq: bool = False, powerreq: bool = False, orcondition: bool = False):
     name = get_ability_item_name(world, team, get_region_name_from_level(world, level), FLIGHT)
+    name2 = get_ability_item_name(world, team, get_region_name_from_level(world, level), THUNDERSHOOT)
     result = True
     if speedreq or powerreq:
         result = result and has_char(world, team, level, state, speed=speedreq, power=powerreq, orcondition=orcondition)
-    return has_char(world, team, level, state, flying=True) and state.has(name, world.player) and result and (can_thundershoot_air(world, team, level, state) or not has_char(world, team, level, state, speed=True,power=True, orcondition=True))
+    return has_char(world, team, level, state, flying=True) and state.has(name, world.player) and result and state.has(name2, world.player)
 
 def can_flower_sting(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     name = get_ability_item_name(world, team, get_region_name_from_level(world, level), FLOWERSTING)
