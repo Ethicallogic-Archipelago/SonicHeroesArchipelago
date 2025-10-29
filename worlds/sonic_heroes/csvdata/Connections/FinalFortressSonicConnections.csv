@@ -1,27 +1,45 @@
 Team,Level,Source,Target,Rule,Notes
 Sonic,Final Fortress,Start,Platform At Start,,
-,,Platform At Start,Start Rail,FlyingAnySonicFinal,Can be made with rocket accel
-,,Start Rail,Platform At Start,FlyingAnySonicFinal,flyingAny but annoying
-,,Start Rail,First Falling Platform,NOTPOSSIBLE,is possible (harder logic)
-,,Start Rail,First Platform,,
-,,First Platform,Start Rail,FlyingAnySonicFinal,
-,,First Platform,First Falling Platform,FallingPlatformand(FlyingAnyorTripleSpring)SonicFinal,tornado hover possible
-,,First Falling Platform,First Platform,FallingPlatformSonicFinal,
-,,First Falling Platform,First Platform Top Rail,FallingPlatformand(FlyingAnyorLightDash)SonicFinal,might be possible with just speed char
-,,First Platform Top Rail,First Falling Platform,NOTPOSSIBLE,
-,,First Platform,Square Floating Platform Below First Platform,SquareFloatingPlatformSonicFinal,
-,,Square Floating Platform Below First Platform,First Platform Lower Path,FlyingAnySonicFinal,
-,,First Platform Lower Path,Square Floating Platform Below First Platform,SquareFloatingPlatformSonicFinal,
-,,First Platform Lower Path,First Platform,NOTPOSSIBLE,is possible with Flying 3 Chars (annoying)
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
+Sonic,Final Fortress,Platform At Start,Start Rail,FlyingAnySonicFinal,Can be made with rocket accel
+Sonic,Final Fortress,Start Rail,Platform At Start,FlyingAnySonicFinal,flyingAny but annoying
+Sonic,Final Fortress,Start Rail,First Falling Platform,NOTPOSSIBLE,is possible (harder logic)
+Sonic,Final Fortress,Start Rail,First Platform,,
+Sonic,Final Fortress,First Platform,Start Rail,FlyingAnySonicFinal,
+Sonic,Final Fortress,First Platform,First Falling Platform,FallingPlatformand(FlyingAnyorTornadoHoverorTripleSpring)SonicFinal,tornado hover possible
+Sonic,Final Fortress,First Platform,First Platform Top Rail,(FlyingAnyorHomingorTornadoHover)andTripleSpringSonicFinal,
+Sonic,Final Fortress,First Falling Platform,First Platform,FallingPlatformSonicFinal,
+Sonic,Final Fortress,First Falling Platform,First Platform Top Rail,FallingPlatformand(FlyingAnyorLightDash)SonicFinal,might be possible with just speed char
+Sonic,Final Fortress,First Platform Top Rail,First Falling Platform,NOTPOSSIBLE,
+Sonic,Final Fortress,First Platform,Square Floating Platform Below First Platform,SquareFloatingPlatformSonicFinal,
+Sonic,Final Fortress,Square Floating Platform Below First Platform,First Platform Lower Path,FlyingAnySonicFinal,
+,,First Platform,First Platform Lower Path,FlyingAnyorGlideorSpeedCharorTripleSpringSonicFinal,if removing falling from falling platforms check this
+Sonic,Final Fortress,First Platform Lower Path,Square Floating Platform Below First Platform,SquareFloatingPlatformSonicFinal,
+Sonic,Final Fortress,First Platform Lower Path,First Platform,NOTPOSSIBLE,is possible with Flying 3 Chars (annoying)
+,,First Platform Lower Path,First Platform Top Rail,NOTPOSSIBLE,is possible with Flying 3 Chars (annoying)
+,,First Platform Top Rail,First Platform Lower Path,,
+,,First Platform Lower Path,Falling Platform in Small Hallway,(DashRamporFlyingAny)andFallingPlatformSonicFinal,Can be made with rocket accel
+,,Falling Platform in Small Hallway,First Platform Lower Path,NOTPOSSIBLE,camera snap
+,,Falling Platform in Small Hallway,Square Floating Platforms Before Checkpoint 1,FallingPlatformandSqaureFloatingPlatformSonicFinal,
+,,Square Floating Platforms Before Checkpoint 1,Falling Platform in Small Hallway,FallingPlatformandSqaureFloatingPlatformSonicFinal,
+,,Square Floating Platforms Before Checkpoint 1,Platform With Checkpoint 1 Lower,(FlyingAnyorTornadoHover)andSquareFloatingPlatformSonicFinal,platforms not in sync (care here)
+,,Platform With Checkpoint 1 Lower,Square Floating Platforms Before Checkpoint 1,SquareFloatingPlatformSonicFinal,
 ,,First Platform Top Rail,First Roof,DashRingSonicFinal,
 ,,First Roof,First Roof Overhang,,
 ,,First Roof,First Roof Case,KillGroundEnemyEggHammerSonicFinal,
 ,,First Roof,First Roof Hole In Floor,BreakSonicFinal,
+,,First Roof Hole In Floor,Falling Platform in Small Hallway,FallingPlatformSonicFinal,
+,,First Roof Overhang,First Platform Lower Path,,
+,,First Roof Overhang,First Roof,FlyingAnyorTornadoHoverSonicFinal,
+,,First Roof,First Platform Lower Path,,
+,,First Roof,Platform With Checkpoint 1 Lower,FlyingAnySonicFinal,is possible with nothing but somewhat tight
+,,First Roof Case,Falling Platform Above Checkpoint 1,FallingPlatformandLightDashSonicFinal,maybe possible with full flying stack
+,,Falling Platform Above Checkpoint 1,Platform With Checkpoint 1 Upper,FallingPlatformSonicFinal,
+,,Platform With Checkpoint 1 Lower,Falling Platform Above Checkpoint 1,FlyingAnyandFallingPlatformandKillGroundEnemyCannonandSingleSpringSonicFinal,
+,,Platform With Checkpoint 1 Lower,Platform With Checkpoint 1 Upper,KillGroundEnemyCannonandSingleSpringSonicFinal,
+,,Platform With Checkpoint 1 Upper,Platform With Checkpoint 1 Lower,,
+,,Platform With Checkpoint 1 Upper,Checkpoint 1,,
+,,Checkpoint 1,Platform With Checkpoint 1 Upper,,
+,,Platform With Checkpoint 1 Upper,First Hallway Top Falling Platform,,
+,,First Hallway Top Falling Platform,Platform With Checkpoint 1 Upper,NOTPOSSIBLE,
+,,Platform With Checkpoint 1 Upper,,,
+,,,Platform With Checkpoint 1 Upper,,
