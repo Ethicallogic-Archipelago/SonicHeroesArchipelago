@@ -50,7 +50,7 @@ def import_location_csv(world: SonicHeroesWorld, team: str):
 
     if world.options.secret_locations:
         for level in world.allowed_levels:
-            if is_there_a_secret_csv_file(team, level, LOCATIONS):
+            if is_there_a_secret_csv_file(team, level):
                 file_name = get_csv_file_name(team, level, LOCATIONS, True)
 
                 with files(Locations).joinpath(f"{file_name}.csv").open() as csv_file:
@@ -92,7 +92,7 @@ def import_region_csv(world: SonicHeroesWorld, team: str):
                 world.region_to_location[reg.name] = []
 
         if world.options.secret_locations:
-            if is_there_a_secret_csv_file(team, level, REGIONS):
+            if is_there_a_secret_csv_file(team, level):
                 file_name = get_csv_file_name(team, level, REGIONS, True)
 
             #if v[SECRETREGION] is not None:
@@ -176,7 +176,7 @@ def is_loc_in_world(world: SonicHeroesWorld, team: str, loc: LocationCSVData) ->
     if loc.code in codes:
         print(f"Loc {loc.name} ID {hex(loc.code)} has a region {loc.region}")
 
-    if loc.team != team and loc.team != "Any":
+    if loc.team != team and loc.team != ANYTEAM:
         if loc.code in codes:
             print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not matching team")
         return False

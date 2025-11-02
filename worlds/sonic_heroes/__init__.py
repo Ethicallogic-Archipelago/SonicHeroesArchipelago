@@ -119,11 +119,11 @@ class SonicHeroesWorld(World):
 
         """
 
-        reg = RegionCSVData("Any", METALMADNESS, METALMADNESS, 0)
+        reg = RegionCSVData(ANYTEAM, METALMADNESS, METALMADNESS, 0)
         self.region_list.append(reg)
         self.region_to_location[reg.name] = []
 
-        self.logic_mapping_dict["Any"] = \
+        self.logic_mapping_dict[ANYTEAM] = \
         {
             METALMADNESS:
                 {
