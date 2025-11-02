@@ -112,6 +112,8 @@ ROSE = "Rose"
 CHAOTIX = "Chaotix"
 SUPERHARD = "SuperHard"
 
+ANYTEAM = "Any Team"
+
 SPEED = "Speed"
 FLYING = "Flying"
 POWER = "Power"
@@ -168,6 +170,9 @@ TRAINREGION = "Train Region"
 BIGPLANTREGION = "BigPlant Region"
 GHOSTREGION = "Ghost Region"
 SKYREGION = "Sky Region"
+SPECIALSTAGEREGION = "Special Stage Region"
+BOSSREGION = "Boss Region"
+FINALBOSSREGION = "Final Boss Region"
 
 EMBLEM = "Emblem"
 GREEN = "Green"
@@ -278,6 +283,9 @@ GLIDE = "Glide"
 TRIANGLEDIVE = "Triangle Dive"
 COMBOFINISHER = "Combo Finisher"
 
+
+ALLABILITIES = "All Abilities"
+
 TEAMBLAST = "Team Blast"
 GROUNDENEMY = "Ground Enemy"
 
@@ -306,6 +314,129 @@ NOTES = "Notes"
 OBJCHECKS = "ObjChecks"
 LOCATIONTYPE = "Location Type"
 HINTINFO = "Hint Info"
+
+
+
+
+ALLSTAGEOBJS = "All Stage Objects"
+SINGLESPRING = "Single Spring"
+TRIPLESPRING = "Triple Spring"
+RINGS = "Rings"
+HINTRING = "Hint Ring"
+REGULARSWITCH = "Regular Switch"
+PUSHANDPULLSWITCH = "Push And Pull Switch"
+TARGETSWITCH = "Target Switch"
+DASHPANEL = "Dash Panel"
+DASHRING = "Dash Ring"
+RAINBOWHOOPS = "Rainbow Hoops"
+CHECKPOINT = "Checkpoint"
+DASHRAMP = "Dash Ramp"
+CANNON = "Cannon"
+REGULARWEIGHT = "Regular Weight"
+BREAKABLEWEIGHT = "Breakable Weight"
+ITEMBOX = "Item Box"
+ITEMBALLOON = "Item Balloon"
+GOALRING = "Goal Ring"
+PULLEY = "Pulley"
+WOODCONTAINER = "Wood Container"
+IRONCONTAINER = "Iron Container"
+UNBREAKABLECONTAINER = "Unbreakable Container"
+CHAO = "Chao"
+PROPELLER = "Propeller"
+POLE = "Pole"
+GONG = "Gong"
+FAN = "Fan"
+WARPFLOWER = "Warpflower"
+BONUSKEY = "Bonus Key"
+TELEPORTTRIGGER = "Teleport Trigger"
+CEMENTBLOCKONRAILS = "Cement Block On Rails"
+CEMENTSLIDINGBLOCK = "Cement Sliding Block"
+CEMENTBLOCK = "Cement Block"
+MOVINGRUINPLATFORM = "Moving Ruin Platform"
+HERMITCRAB = "Hermit Crab"
+SMALLSTONEPLATFORM = "Small Stone Platform"
+CRUMBLINGSTONEPILLAR = "Crumbling Stone Pillar"
+ENERGYROADSECTION = "Energy Road Section"
+FALLINGDRAWBRIDGE = "Falling Drawbridge"
+TILTINGBRIDGE = "Tilting Bridge"
+BLIMPPLATFORM = "Blimp Platform"
+ENERGYROADSPEEDEFFECT = "Energy Road Speed Effect"
+ENERGYROADUPWARDSECTION = "Energy Road Upward Section"
+ENERGYCOLUMN = "Energy Column"
+ELEVATOR = "Elevator"
+LAVAPLATFORM = "Lava Platform"
+LIQUIDLAVA = "Liquid Lava"
+ENERGYROADUPWARDEFFECT = "Energy Road Upward Effect"
+SMALLBUMPER = "Small Bumper"
+GREENFLOATINGBUMPER = "Green Floating Bumper"
+PINBALLFLIPPER = "Pinball Flipper"
+SMALLTRIANGLEBUMPER = "Small Triangle Bumper"
+STARGLASSPANEL = "Star Glass Panel"
+STARGLASSAIRPANEL = "Star Glass Air Panel"
+LARGETRIANGLEBUMPER = "Large Triangle Bumper"
+BREAKABLEGLASSFLOOR = "Breakable Glass Floor"
+FLOATINGDICE = "Floating Dice"
+TRIPLESLOTS = "Triple Slots"
+SINGLESLOTS = "Single Slots"
+BINGOCHART = "Bingo Chart"
+BINGOCHIP = "Bingo Chip"
+DASHARROW = "Dash Arrow"
+POTATOCHIP = "Potato Chip"
+SWITCHABLERAIL = "Switchable Rail"
+RAILSWITCH = "Rail Switch"
+SWITCHABLEARROW = "Switchable Arrow"
+RAILBOOSTER = "Rail Booster"
+RAILCROSSINGROADBLOCK = "Rail Crossing Roadblock"
+CAPSULE = "Capsule"
+RAILPLATFORM = "Rail Platform"
+TRAINTRAIN = "Train Train"
+ENGINECORE = "Engine Core"
+BIGGUNINTERIOR = "Big Gun Interior"
+BARREL = "Barrel"
+CANYONBRIDGE = "Canyon Bridge"
+TRAINTOP = "Train Top"
+GREENFROG = "Green Frog"
+SMALLGREENRAINPLATFORM = "Small Green Rain Platform"
+SMALLBOUNCYMUSHROOM = "Small Bouncy Mushroom"
+TALLVERTICALVINE = "Tall Vertical Vine"
+TALLTREEWITHPLATFORMS = "Tall Tree With Platforms"
+GRINDABLEGROWINGIVY = "Grindable Growing Ivy"
+LARGEYELLOWPLATFORM = "Large Yellow Platform"
+BOUNCYFRUIT = "Bouncy Fruit"
+BIGBOUNCYMUSHROOM = "Big Bouncy Mushroom"
+SWINGINGVINE = "Swinging Vine"
+BLACKFROG = "Black Frog"
+BOUNCYFALLINGFRUIT = "Bouncy Falling Fruit"
+TELEPORTERSWITCH = "Teleporter Switch"
+CASTLEFLOATINGPLATFORM = "Castle Floating Platform"
+FLAMETORCH = "Flame Torch"
+PUMPKINGHOST = "Pumpkin Ghost"
+MANSIONFLOATINGPLATFORM = "Mansion Floating Platform"
+CASTLEKEY = "Castle Key"
+RECTANGULARFLOATINGPLATFORM = "Rectangular Floating Platform"
+SQUAREFLOATINGPLATFORM = "Square Floating Platform"
+FALLINGPLATFORM = "Falling Platform"
+SELFDESTRUCTSWITCH = "Self Destruct Switch"
+EGGMANCELLKEY = "Eggman Cell Key"
+EGGFLAPPER = "Egg Flapper"
+EGGPAWN = "Egg Pawn"
+KLAGEN = "Klagen"
+FALCO = "Falco"
+EGGHAMMER = "Egg Hammer"
+CAMERON = "Cameron"
+RHINOLINER = "Rhino Liner"
+EGGBISHOP = "Egg Bishop"
+E2000 = "E2000"
+SPECIALSTAGEORBS = "Special Stage Orbs"
+APPEARCHAOSEMERALD = "Appear Chaos Emerald"
+SPECIALSTAGESPRING = "Special Stage Spring"
+SPECIALSTAGEDASHPANEL = "Special Stage Dash Panel"
+SPECIALSTAGEDASHRING = "Special Stage Dash Ring"
+
+
+
+
+
 
 
 
@@ -402,6 +533,175 @@ sonic_heroes_extra_names: dict[int, str] = \
     6: EGGEMPEROR,
 }
 
+
+item_teams = \
+[
+    ANYTEAM,
+    SONIC,
+    DARK,
+    ROSE,
+    CHAOTIX,
+    SUPERHARD,
+]
+
+item_regions = \
+[
+    ALLREGIONS,
+    OCEANREGION,
+    HOTPLANTREGION,
+    CASINOREGION,
+    TRAINREGION,
+    BIGPLANTREGION,
+    GHOSTREGION,
+    SKYREGION,
+    SPECIALSTAGEREGION,
+    BOSSREGION,
+    FINALBOSSREGION,
+]
+
+item_abilities = \
+[
+    ALLABILITIES,
+    HOMINGATTACK,
+    TORNADO,
+    ROCKETACCEL,
+    LIGHTDASH,
+    TRIANGLEJUMP,
+    LIGHTATTACK,
+    AMYHAMMERHOVER,
+    INVISIBILITY,
+    SHURIKEN,
+    THUNDERSHOOT,
+    FLIGHT,
+    DUMMYRINGS,
+    CHEESECANNON,
+    FLOWERSTING,
+    POWERATTACK,
+    COMBOFINISHER,
+    GLIDE,
+    FIREDUNK,
+    BELLYFLOP,
+]
+
+stage_objs = \
+[
+ALLSTAGEOBJS,
+SINGLESPRING,
+TRIPLESPRING,
+RINGS,
+HINTRING,
+REGULARSWITCH,
+PUSHANDPULLSWITCH,
+TARGETSWITCH,
+DASHPANEL,
+DASHRING,
+RAINBOWHOOPS,
+CHECKPOINT,
+DASHRAMP,
+CANNON,
+REGULARWEIGHT,
+BREAKABLEWEIGHT,
+ITEMBOX,
+ITEMBALLOON,
+GOALRING,
+PULLEY,
+WOODCONTAINER,
+IRONCONTAINER,
+UNBREAKABLECONTAINER,
+CHAO,
+PROPELLER,
+POLE,
+GONG,
+FAN,
+WARPFLOWER,
+BONUSKEY,
+TELEPORTTRIGGER,
+CEMENTBLOCKONRAILS,
+CEMENTSLIDINGBLOCK,
+CEMENTBLOCK,
+MOVINGRUINPLATFORM,
+HERMITCRAB,
+SMALLSTONEPLATFORM,
+CRUMBLINGSTONEPILLAR,
+ENERGYROADSECTION,
+FALLINGDRAWBRIDGE,
+TILTINGBRIDGE,
+BLIMPPLATFORM,
+ENERGYROADSPEEDEFFECT,
+ENERGYROADUPWARDSECTION,
+ENERGYCOLUMN,
+ELEVATOR,
+LAVAPLATFORM,
+LIQUIDLAVA,
+ENERGYROADUPWARDEFFECT,
+SMALLBUMPER,
+GREENFLOATINGBUMPER,
+PINBALLFLIPPER,
+SMALLTRIANGLEBUMPER,
+STARGLASSPANEL,
+STARGLASSAIRPANEL,
+LARGETRIANGLEBUMPER,
+BREAKABLEGLASSFLOOR,
+FLOATINGDICE,
+TRIPLESLOTS,
+SINGLESLOTS,
+BINGOCHART,
+BINGOCHIP,
+DASHARROW,
+POTATOCHIP,
+SWITCHABLERAIL,
+RAILSWITCH,
+SWITCHABLEARROW,
+RAILBOOSTER,
+RAILCROSSINGROADBLOCK,
+CAPSULE,
+RAILPLATFORM,
+TRAINTRAIN,
+ENGINECORE,
+BIGGUNINTERIOR,
+BARREL,
+CANYONBRIDGE,
+TRAINTOP,
+GREENFROG,
+SMALLGREENRAINPLATFORM,
+SMALLBOUNCYMUSHROOM,
+TALLVERTICALVINE,
+TALLTREEWITHPLATFORMS,
+GRINDABLEGROWINGIVY,
+LARGEYELLOWPLATFORM,
+BOUNCYFRUIT,
+BIGBOUNCYMUSHROOM,
+SWINGINGVINE,
+BLACKFROG,
+BOUNCYFALLINGFRUIT,
+TELEPORTERSWITCH,
+CASTLEFLOATINGPLATFORM,
+FLAMETORCH,
+PUMPKINGHOST,
+MANSIONFLOATINGPLATFORM,
+CASTLEKEY,
+RECTANGULARFLOATINGPLATFORM,
+SQUAREFLOATINGPLATFORM,
+FALLINGPLATFORM,
+SELFDESTRUCTSWITCH,
+EGGMANCELLKEY,
+EGGFLAPPER,
+EGGPAWN,
+KLAGEN,
+FALCO,
+EGGHAMMER,
+CAMERON,
+RHINOLINER,
+EGGBISHOP,
+E2000,
+SPECIALSTAGEORBS,
+APPEARCHAOSEMERALD,
+SPECIALSTAGESPRING,
+SPECIALSTAGEDASHPANEL,
+SPECIALSTAGEDASHRING,
+]
+
+
 level_to_game_region: dict[str, str] = \
 {
     SEASIDEHILL: OCEANREGION,
@@ -485,7 +785,6 @@ ability_item_req_counts = \
 }
 
 
-
 character_abilities = \
 {
     SPEED:
@@ -529,7 +828,7 @@ def get_csv_file_name(team: str, level: str, file_type: str, secret: bool = Fals
     return f"{level} {team} {file_type}".replace(" ", "")
 
 
-def is_there_a_secret_csv_file(team: str, level: str, file_type: str) -> bool:
+def is_there_a_secret_csv_file(team: str, level: str) -> bool:
     if team == SONIC and level == GRANDMETROPOLIS:
         return True
     return False
@@ -575,10 +874,17 @@ def get_ability_item_name(world: SonicHeroesWorld, team: str, region: str, abili
         region = ALLREGIONS
     return get_ability_item_name_without_world(team, region, ability)
 
+
 def get_ability_item_name_without_world(team: str, region: str, ability: str) -> str:
-    if region == ALLREGIONS:
-        return f"{team} {ability}"
-    return f"{team} {ability} {region}"
+    result = ""
+    if team != ANYTEAM:
+        result += f"{team} "
+
+    result += f"{ability}"
+
+    if region != ALLREGIONS:
+        result += f" {region}"
+    return result
 
 
 def get_all_ability_item_names_for_character_and_region(world: SonicHeroesWorld, team: str, char_name: str, region: str) -> list[str]:
@@ -590,4 +896,22 @@ def get_all_ability_item_names_for_character_and_region(world: SonicHeroesWorld,
 
     for ability in abilities:
         result.append(get_ability_item_name(world, team, region, ability))
+    return result
+
+
+def get_stage_obj_item_name(world: SonicHeroesWorld, team: str, region: str, stage_obj: str) -> str:
+    if world.options.ability_unlocks == 1:
+        region = ALLREGIONS
+    return get_stage_obj_item_name_without_world(team, region, stage_obj)
+
+
+def get_stage_obj_item_name_without_world(team: str, region: str, stage_obj: str) -> str:
+    result = ""
+    if team != ANYTEAM:
+        result += f"{team} "
+
+    result += f"{stage_obj}"
+
+    if region != ALLREGIONS:
+        result += f" {region}"
     return result
