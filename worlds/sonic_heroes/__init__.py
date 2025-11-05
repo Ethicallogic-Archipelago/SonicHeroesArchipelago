@@ -38,13 +38,19 @@ class SonicHeroesWorld(World):
 
     topology_present = True
 
-    #ut_can_gen_without_yaml = False
+    #UT Stuff Here
+    ut_can_gen_without_yaml = True
+
+    @staticmethod
+    def interpret_slot_data(slot_data: Dict[str, Any]) -> Dict[str, Any]:
+        return slot_data
 
 
     def __init__(self, multiworld, player):
         #PUT STUFF HERE
         #self.loc_id_to_loc = {}
 
+        self.secret = False
         self.level_goal_event_locations = []
         self.region_to_location = {}
         self.region_list = []
@@ -92,11 +98,11 @@ class SonicHeroesWorld(World):
             #METALMADNESS
         ]
 
-        self.fuzzer = False
+        self.fuzzer = True
         """
         Enable this for fuzzer testing protections
         """
-        self.should_make_puml = True
+        self.should_make_puml = False
 
         super().__init__(multiworld, player)
 
@@ -105,6 +111,13 @@ class SonicHeroesWorld(World):
         return SonicHeroesItem(name, ItemClassification.progression, self.item_name_to_id[name], self.player)
 
     def generate_early(self) -> None:
+
+
+        #UT Stuff Here
+        self.handle_ut_yamless(None)
+
+
+
         #Check invalid options here
         check_invalid_options(self)
 
@@ -157,7 +170,7 @@ class SonicHeroesWorld(World):
         victory_item = SonicHeroesItem(VICTORYITEM, ItemClassification.progression, None, self.player)
         self.get_location(VICTORYLOCATION).place_locked_item(victory_item)
 
-        print(self.level_goal_event_locations)
+        #print(self.level_goal_event_locations)
 
         for loc_name in self.level_goal_event_locations:
             goal_unlock_item = SonicHeroesItem(GOALUNLOCKITEM, ItemClassification.progression, None, self.player)
@@ -211,7 +224,7 @@ class SonicHeroesWorld(World):
             # put this at top to display PUML (after start UML)
         return \
         {
-            "ModVersion": "1.5.0",
+            "ModVersion": "2.0.0",
             "Goal": 0,
             "GoalUnlockCondition": self.options.goal_unlock_condition.value,
             "GoalLevelCompletions": self.options.goal_level_completions.value,
@@ -220,6 +233,7 @@ class SonicHeroesWorld(World):
             "RequiredRank": 0,
             "DontLoseBonusKey": 1,
             "SonicStory": self.options.sonic_story.value,
+            "SonicStoryStartingCharacter": self.options.sonic_story_starting_character.value,
             "SuperHardModeSonicAct2": 0,
             "SonicKeySanity": self.options.sonic_key_sanity.value,
             "SonicCheckpointSanity": self.options.sonic_checkpoint_sanity.value,
@@ -235,6 +249,7 @@ class SonicHeroesWorld(World):
             "ChaotixSanity": 0,
             "ChaotixKeySanity": 0,
             "ChaotixCheckpointSanity": 0,
+            "SecretLocations": self.options.secret_locations.value,
             "RingLink": 1,
             "RingLinkOverlord": 0,
             "ModernRingLoss": 1,
@@ -292,4 +307,27 @@ class SonicHeroesWorld(World):
             }
 
 
+    def handle_ut_yamless(self, slot_data: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
 
+        if not slot_data \
+                and hasattr(self.multiworld, "re_gen_passthrough") \
+                and isinstance(self.multiworld.re_gen_passthrough, dict) \
+                and "Sonic Heroes" in self.multiworld.re_gen_passthrough:
+            slot_data = self.multiworld.re_gen_passthrough["Sonic Heroes"]
+
+        if not slot_data:
+            return None
+
+        self.options.goal_unlock_condition.value = slot_data["GoalUnlockCondition"]
+        self.options.goal_level_completions.value = slot_data["GoalLevelCompletions"]
+        self.options.ability_unlocks.value = slot_data["AbilityUnlocks"]
+        self.options.sonic_story.value = slot_data["SonicStory"]
+        self.options.sonic_story_starting_character.value = slot_data["SonicStoryStartingCharacter"]
+        self.options.sonic_key_sanity.value = slot_data["SonicKeySanity"]
+        self.options.sonic_checkpoint_sanity.value = slot_data["SonicCheckpointSanity"]
+        self.options.secret_locations.value = slot_data["SecretLocations"]
+        self.options.remove_casino_park_vip_table_laser_gate.value = slot_data["RemoveCasinoParkVIPTableLaserGate"]
+        self.options.death_link.value = slot_data["DeathLink"]
+
+
+        return slot_data

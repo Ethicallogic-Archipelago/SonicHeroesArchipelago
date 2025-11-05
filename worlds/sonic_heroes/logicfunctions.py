@@ -89,7 +89,8 @@ def can_light_dash(world: SonicHeroesWorld, team: str, level: str, state: Collec
 
 def can_triangle_jump(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     name = get_ability_item_name(world, team, get_region_name_from_level(world, level), TRIANGLEJUMP)
-    return has_char(world, team, level, state, speed=True) and state.has(name, world.player)
+    name2 = get_ability_item_name(world, team, get_region_name_from_level(world, level), HOMINGATTACK)
+    return has_char(world, team, level, state, speed=True) and state.has(name, world.player) and state.has(name2, world.player)
 
 def can_light_attack(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     name = get_ability_item_name(world, team, get_region_name_from_level(world, level), LIGHTATTACK)
@@ -591,6 +592,8 @@ def can_dash_ring(world: SonicHeroesWorld, team: str, level: str, state: Collect
 def can_rainbow_hoops(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
+def can_checkpoint_obj(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
 
 def can_dash_ramp(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
@@ -635,16 +638,51 @@ def can_cannon_flying(world: SonicHeroesWorld, team: str, level: str, state: Col
 def can_cannon_power(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return can_cannon_obj(world, team, level, state) and has_char(world, team, level, state, power=True)
 
-def can_weight(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+def can_weight(world: SonicHeroesWorld, team: str, level: str, state: CollectionState, regular = False, breakable = False, orcondition = False):
+    if not regular and not breakable:
+        return False
+    result = not orcondition
+    if regular:
+        if orcondition:
+            result = result or can_regular_weight(world, team, level, state)
+        else:
+            result = result and can_regular_weight(world, team, level, state)
+
+    if breakable:
+        if orcondition:
+            result = result or can_breakable_weight(world, team, level, state)
+        else:
+            result = result and can_breakable_weight(world, team, level, state)
+    return True
+
+def can_regular_weight(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+def can_breakable_weight(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+def can_item_box(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
 def can_item_balloon(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
+def can_goal_ring(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
 def can_pulley(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
+def can_wood_container(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+def can_iron_container(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
 def can_unbreakable_container(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+def can_chao(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
 def can_propeller(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
@@ -659,22 +697,56 @@ def can_gong(world: SonicHeroesWorld, team: str, level: str, state: CollectionSt
 def can_fan(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True and can_glide(world, team, level, state)
 
+def can_warp_flower(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True and can_flower_sting(world, team, level, state)
+
+def can_bonus_key(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_trigger_teleport(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_cement_sliding_block(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_cement_block(world, team: str, level: str, state: CollectionState):
+    return True
+
 def can_ruins(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+def can_hermit_crab(world, team: str, level: str, state: CollectionState):
     return True
 
 def can_small_stone_platform(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
+def can_crumbling_stone_pillar(world, team: str, level: str, state: CollectionState):
+    return True
+
 def can_falling_stone_structure(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    #this obj can not be disabled without editing collision mask (will always be true)
     return True
 
 def can_accel_road(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
-def can_falling_bridge(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+def energy_road_section(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_falling_drawbridge(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
 def can_tilting_bridge(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+def can_blimp_platform(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_energy_road_speed_effect(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_energy_road_upward_section(world, team: str, level: str, state: CollectionState):
     return True
 
 def can_energy_column(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
@@ -683,7 +755,13 @@ def can_energy_column(world: SonicHeroesWorld, team: str, level: str, state: Col
 def can_elevator(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
-def can_pp_upward_path(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+def can_lava_platform(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+def can_liquid_lava(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_energy_road_upward_effect(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
 def can_shutter(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
@@ -692,25 +770,76 @@ def can_shutter(world: SonicHeroesWorld, team: str, level: str, state: Collectio
 def can_pinball(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
-def can_green_bumper_spring(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+def can_small_bumper(world, team: str, level: str, state: CollectionState):
     return True
 
-def can_star_panel(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+def can_green_floating_bumper(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+def can_pinball_flipper(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_small_triangle_bumper(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_star_glass_panel(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_star_glass_air_panel(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+def can_large_triangle_bumper(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_breakable_glass_floor(world, team: str, level: str, state: CollectionState):
     return True
 
 def can_floating_dice(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
-def can_rail(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+def can_triple_slots(world, team: str, level: str, state: CollectionState):
     return True
 
-def can_rail_switch(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+def can_single_slots(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_bingo_chart(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_bingo_chip(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_dash_arrow(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_potato_chip(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_rail(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
 def can_switchable_rail(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
-def can_3_rail_platform(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+def can_rail_switch(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+def can_switchable_arrow(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_rail_booster(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_rail_crossing_roadblock(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_capsule(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_rail_platform(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+def can_train_train(world, team: str, level: str, state: CollectionState):
     return True
 
 def can_rc_door(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
@@ -732,19 +861,28 @@ def can_barrel(world: SonicHeroesWorld, team: str, level: str, state: Collection
     """
     return True
 
+def can_canyon_bridge(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_train_top(world, team: str, level: str, state: CollectionState):
+    return True
+
 def can_green_frog(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
-def can_black_frog(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
-    return True
-
-def can_small_green_platform(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+def can_small_green_rain_platform(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
 def can_small_bouncy_mushroom(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
+def can_tall_vertical_vine(world, team: str, level: str, state: CollectionState):
+    return True
+
 def can_tall_tree_platforms(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+def can_grindable_growing_ivy(world, team: str, level: str, state: CollectionState):
     return True
 
 def can_large_yellow_platform(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
@@ -759,6 +897,12 @@ def can_large_bouncy_mushroom(world: SonicHeroesWorld, team: str, level: str, st
 def can_swinging_vine(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
+def can_black_frog(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+def can_bouncy_falling_fruit(world, team: str, level: str, state: CollectionState):
+    return True
+
 def can_tp_switch(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
@@ -768,7 +912,13 @@ def can_castle_floating_platform(world: SonicHeroesWorld, team: str, level: str,
 def can_flame_torch(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
+def can_pumpkin_ghost(world, team: str, level: str, state: CollectionState):
+    return True
+
 def can_mansion_floating_platform(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+def can_castle_key(world, team: str, level: str, state: CollectionState):
     return True
 
 def can_rectangle_floating_platform(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
@@ -783,7 +933,50 @@ def can_falling_platform(world: SonicHeroesWorld, team: str, level: str, state: 
 def can_self_destruct_tp_switch(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True and has_char(world, team, level, state, speed=True)
 
-def can_final_fortress_chaotix_key(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+def can_eggman_cell_key(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
+
+def can_egg_flapper(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_egg_pawn(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_klagen(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_falco(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_egg_hammer(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_cameron(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_rhino_liner(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_egg_bishop(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_e2000(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_special_stage_orbs(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_appear_chaos_emerald(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_special_stage_spring(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_special_stage_dash_panel(world, team: str, level: str, state: CollectionState):
+    return True
+
+def can_special_stage_dash_ring(world, team: str, level: str, state: CollectionState):
     return True
 
 def can_bobsled(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):

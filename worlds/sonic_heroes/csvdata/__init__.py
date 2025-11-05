@@ -14,7 +14,7 @@ def get_full_location_list() -> list[LocationCSVData]:
     try:
         from importlib.resources import files
     except ImportError:
-        from importlib_resources import files  # noqa
+        from importlib_resources import files  # type: ignore # noqa
 
     full_location_list = []
 
@@ -33,7 +33,7 @@ def import_location_csv(world: SonicHeroesWorld, team: str):
     try:
         from importlib.resources import files
     except ImportError:
-        from importlib_resources import files  # noqa
+        from importlib_resources import files  # type: ignore # noqa
 
     for region in world.region_list:
         #print(region)
@@ -48,7 +48,7 @@ def import_location_csv(world: SonicHeroesWorld, team: str):
                 #print(f"Adding Location {loc.name} to Region to Location[{loc.region}]")
                 world.region_to_location[loc.region].append(loc)
 
-    if world.options.secret_locations:
+    if world.secret:
         for level in world.allowed_levels:
             if is_there_a_secret_csv_file(team, level):
                 file_name = get_csv_file_name(team, level, LOCATIONS, True)
@@ -60,7 +60,7 @@ def import_location_csv(world: SonicHeroesWorld, team: str):
                                               x[RULE], x[LOCATIONTYPE], x[HINTINFO], x[NOTES])
                         # world.loc_id_to_loc[loc.code] = loc
                         if is_loc_in_world(world, team, loc):
-                            # print(f"Adding Location {loc.name} to Region to Location[{loc.region}]")
+                            #print(f"Adding Location {loc.name} to Region to Location[{loc.region}]")
                             world.region_to_location[loc.region].append(loc)
 
 
@@ -69,12 +69,12 @@ def import_region_csv(world: SonicHeroesWorld, team: str):
     try:
         from importlib.resources import files
     except ImportError:
-        from importlib_resources import files  # noqa
+        from importlib_resources import files  # type: ignore # noqa
 
 
     for level in world.allowed_levels:
         file_name = get_csv_file_name(team, level, REGIONS, False)
-        print(f"File Name here: {file_name}")
+        #print(f"File Name here: {file_name}")
 
     #for level, v in csv_file_names[team].items():
         #file_name = v[REGION]
@@ -82,16 +82,15 @@ def import_region_csv(world: SonicHeroesWorld, team: str):
         with files(Regions).joinpath(f"{file_name}.csv").open() as csv_file:
             reader = csv.DictReader(csv_file)
             for x in reader:
-
                 if TEAM not in x:
-                    print(x)
-
+                    #print(x)
+                    pass
 
                 reg = RegionCSVData(x[TEAM], x[LEVEL], f"{x[LEVEL]} {x[TEAM]} {x[NAME]}", x[OBJCHECKS])
                 world.region_list.append(reg)
                 world.region_to_location[reg.name] = []
 
-        if world.options.secret_locations:
+        if world.secret:
             if is_there_a_secret_csv_file(team, level):
                 file_name = get_csv_file_name(team, level, REGIONS, True)
 
@@ -113,14 +112,12 @@ def import_connection_csv(world: SonicHeroesWorld, team: str):
     try:
         from importlib.resources import files
     except ImportError:
-        from importlib_resources import files  # noqa
+        from importlib_resources import files  # type: ignore # noqa
 
     id = 0
-
-
     for level in world.allowed_levels:
         file_name = get_csv_file_name(team, level, CONNECTIONS, False)
-        print(f"File Name here: {file_name}")
+        #print(f"File Name here: {file_name}")
 
     #for level, v in csv_file_names[team].items():
         #file_name = v[CONNECTION]
@@ -136,13 +133,35 @@ def import_connection_csv(world: SonicHeroesWorld, team: str):
                 target = find_index_of_region(world,f"{x[LEVEL]} {x[TEAM]} {x[TARGET]}")
 
                 if source < 0:
+                    #print(f"{x[LEVEL]} {x[TEAM]} {x[SOURCE]} not in region list")
                     raise ValueError("Source Out of Bounds")
                 if target < 0:
+                    #print(f"{x[LEVEL]} {x[TEAM]} {x[TARGET]} not in region list")
                     raise ValueError("Target Out of Bounds")
 
                 conn = ConnectionCSVData(f"{source} > {target} with Rule: {rule}", x[TEAM], x[LEVEL], f"{x[LEVEL]} {x[TEAM]} {x[SOURCE]}", f"{x[LEVEL]} {x[TEAM]} {x[TARGET]}", x[RULE])
                 id += 1
                 world.connection_list.append(conn)
+
+        if world.secret:
+            if is_there_a_secret_csv_file(team, level):
+                file_name = get_csv_file_name(team, level, CONNECTIONS, True)
+
+            #if v[SECRETCONNECTION] is not None:
+                #file_name = v[SECRETCONNECTION]
+                with files(Connections).joinpath(f"{file_name}.csv").open() as csv_file:
+                    reader = csv.DictReader(csv_file)
+                    for x in reader:
+                        rule = x[RULE]
+                        if "" == x[RULE]:
+                            rule = "Nothing"
+                        source = find_index_of_region(world, f"{x[LEVEL]} {x[TEAM]} {x[SOURCE]}")
+                        target = find_index_of_region(world, f"{x[LEVEL]} {x[TEAM]} {x[TARGET]}")
+                        conn = ConnectionCSVData(f"{source} > {target} with Rule: {rule}", x[TEAM], x[LEVEL],
+                                                 f"{x[LEVEL]} {x[TEAM]} {x[SOURCE]}",
+                                                 f"{x[LEVEL]} {x[TEAM]} {x[TARGET]}", x[RULE])
+                        id += 1
+                        world.connection_list.append(conn)
 
 
 def is_loc_in_world(world: SonicHeroesWorld, team: str, loc: LocationCSVData) -> bool:
@@ -169,38 +188,44 @@ def is_loc_in_world(world: SonicHeroesWorld, team: str, loc: LocationCSVData) ->
         for locCsvData in world.region_to_location[loc.region]:
             if locCsvData.name == METALOVERLORD:
                 return False
-        print(f"Adding {loc.name} to {loc.region}")
+        #print(f"Adding {loc.name} to {loc.region}")
         return True
 
 
     if loc.code in codes:
-        print(f"Loc {loc.name} ID {hex(loc.code)} has a region {loc.region}")
+        #print(f"Loc {loc.name} ID {hex(loc.code)} has a region {loc.region}")
+        pass
 
     if loc.team != team and loc.team != ANYTEAM:
         if loc.code in codes:
-            print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not matching team")
+            #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not matching team")
+            pass
         return False
 
-    if loc.loc_type == "Secret" and not world.options.secret_locations:
+    if loc.loc_type == "Secret" and not world.secret:
         if loc.code in codes:
-            print(f"Loc {loc.name} ID {hex(loc.code)} failed because of secret type")
+            #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of secret type")
+            pass
         return False
 
     if loc.loc_type == "Normal":
         if team == "Sonic":
             if loc.level not in world.allowed_levels:
                 if loc.code in codes:
-                    print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not in allowed levels Normal")
+                    #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not in allowed levels Normal")
+                    pass
                 return False
 
             if world.options.sonic_story == 1 and loc.act != 1 and "Metal Overlord" not in loc.name:
                 if loc.code in codes:
-                    print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 1 when Act 1 only")
+                    #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 1 when Act 1 only")
+                    pass
                 return False
 
             elif world.options.sonic_story == 2 and loc.act != 2 and "Metal Overlord" not in loc.name:
                 if loc.code in codes:
-                    print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 2 when Act 2 only")
+                    #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 2 when Act 2 only")
+                    pass
                 return False
 
 
@@ -215,35 +240,42 @@ def is_loc_in_world(world: SonicHeroesWorld, team: str, loc: LocationCSVData) ->
         if team == "Sonic":
             if loc.level not in world.allowed_levels:
                 if loc.code in codes:
-                    print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not in allowed levels Checkpoint Sanity")
+                    #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not in allowed levels Checkpoint Sanity")
+                    pass
                 return False
             if world.options.sonic_checkpoint_sanity == 0:
                 if loc.code in codes:
-                    print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Checkpoint Sanity Disabled")
+                    #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Checkpoint Sanity Disabled")
+                    pass
                 return False
 
             elif world.options.sonic_checkpoint_sanity == 1 and loc.act != 0:
                 if loc.code in codes:
-                    print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 0 with Checkpoint Sanity only 1 Set")
+                    #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 0 with Checkpoint Sanity only 1 Set")
+                    pass
                 return False
 
             elif world.options.sonic_checkpoint_sanity == 2:
                 if loc.code in codes:
-                    print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Checkpoint Sanity Super Hard only")
+                    #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Checkpoint Sanity Super Hard only")
+                    pass
                 return False
 
             elif world.options.sonic_checkpoint_sanity == 3:
                 if loc.act == 0:
                     if loc.code in codes:
-                        print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Act 0 with Checkpoint Sanity set to each Act")
+                        #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Act 0 with Checkpoint Sanity set to each Act")
+                        pass
                     return False
                 if world.options.sonic_story == 1 and loc.act != 1:
                     if loc.code in codes:
-                        print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 1 when Act 1 only")
+                        #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 1 when Act 1 only")
+                        pass
                     return False
                 if world.options.sonic_story == 2 and loc.act != 2:
                     if loc.code in codes:
-                        print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 2 when Act 2 only")
+                        #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 2 when Act 2 only")
+                        pass
                     return False
 
 
@@ -251,31 +283,37 @@ def is_loc_in_world(world: SonicHeroesWorld, team: str, loc: LocationCSVData) ->
         if team == "Sonic":
             if loc.level not in world.allowed_levels:
                 if loc.code in codes:
-                    print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not in allowed levels Key Sanity")
+                    #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not in allowed levels Key Sanity")
+                    pass
                 return False
 
             if world.options.sonic_key_sanity == 0:
                 if loc.code in codes:
-                    print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Key Sanity Disabled")
+                    #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Key Sanity Disabled")
+                    pass
                 return False
 
             elif world.options.sonic_key_sanity == 1 and loc.act != 0:
                 if loc.code in codes:
-                    print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 0 when only 1 Set")
+                    #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 0 when only 1 Set")
+                    pass
                 return False
 
             elif world.options.sonic_key_sanity == 2:
                 if loc.act == 0:
                     if loc.code in codes:
-                        print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Act 0 when each Act")
+                        #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Act 0 when each Act")
+                        pass
                     return False
                 if world.options.sonic_story == 1 and loc.act != 1:
                     if loc.code in codes:
-                        print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 1 when only Act 1")
+                        #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 1 when only Act 1")
+                        pass
                     return False
                 if world.options.sonic_story == 2 and loc.act != 2:
                     if loc.code in codes:
-                        print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 2 when only Act 2")
+                        #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 2 when only Act 2")
+                        pass
                     return False
 
     return True
