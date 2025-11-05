@@ -88,7 +88,7 @@ class SonicHeroesWorld(World):
             HANGCASTLE,
             MYSTICMANSION,
             EGGFLEET,
-            #FINALFORTRESS,
+            FINALFORTRESS,
             #METALMADNESS
         ]
 
