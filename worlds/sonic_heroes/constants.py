@@ -226,9 +226,9 @@ PLAYABLESUPERHARDKNUCKLES = f"{PLAYABLE} {CHARSUPERHARDKNUCKLES}"
 
 
 EXTRALIFE = "Extra Life"
-RINGS5 = "5 Rings"
-RINGS10 = "10 Rings"
-RINGS20 = "20 Rings"
+RINGS5 = "5 Ring Bundle"
+RINGS10 = "10 Ring Bundle"
+RINGS20 = "20 Ring Bundle"
 SHIELD = "Shield"
 INVINCIBILITY = "Invincibility"
 SPEEDLEVELUP = "Speed Level Up"

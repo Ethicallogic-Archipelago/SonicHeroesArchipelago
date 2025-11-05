@@ -78,7 +78,7 @@ def create_items(world: SonicHeroesWorld):
 
     world.extra_items = total_location_count
 
-    print(f"Extra Items count: {total_location_count}")
+    #print(f"Extra Items count: {total_location_count}")
 
     create_filler_items(world, world.extra_items)
         #create_item(world, EXTRALIFE, ItemClassification.filler)

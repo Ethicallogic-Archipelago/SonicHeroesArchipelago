@@ -16,7 +16,9 @@ from .constants import *
 
 class GoalUnlockCondition(Choice):
     """
-
+    How should Metal Madness/Overlord be unlocked?
+    Level Completions will require reaching the goal ring in a certain number of levels
+    Emerald Hunt will only require the 7 chaos emeralds (received as Items)
     """
     internal_name = "goal_unlock_condition"
     display_name = "Goal Unlock Condition"
@@ -29,7 +31,7 @@ class GoalUnlockCondition(Choice):
 
 class GoalLevelCompletions(Range):
     """
-    How Many Level Completions are needed per Story to unlock Metal Madness?
+    How Many Level Completions are needed per Story to unlock Metal Madness/Overlord?
     This Requires Level Completion Goal Unlock Condition.
     Each Story will require at least this many completed levels.
     Required Rank will also affect this.
@@ -43,7 +45,10 @@ class GoalLevelCompletions(Range):
 
 class AbilityUnlocks(Choice):
     """
-
+    How should Ability Unlocks be Handled?
+    Entire Story will make there be a "Homing Attack" item for each Team that unlocks Homing Attack on all levels for that team.
+    All Regions Separate will have 7 sets of ability items (Per Team) that unlock the ability for that respective region. (A Region is a set of levels that follow the same theme)
+    For example, Seaside Hill and Ocean Palace are both in the Ocean Region
     """
     internal_name = "ability_unlocks"
     display_name = "Ability Unlocks"
@@ -74,14 +79,15 @@ class SonicStoryStartingCharacter(Choice):
     option_sonic = 0
     option_tails = 1
     option_knuckles = 2
-    default = "random"
+    # noinspection PyClassVar
+    default = 'random'  # type: ignore
 
 
 class SonicKeySanity(Choice):
     """
     Getting a bonus key sends a check.
     This is separate per team enabled
-    Only 1 Set makes it only 1 set of keys to collect (for the team)
+    Only 1 Set makes it only 1 set of keys to collect (for the team) (this allows getting the key in either Act without being a separate check)
     Set For Each Act has one set of keys for each Act enabled (requires both Acts enabled to have both sets)
     """
     internal_name = "sonic_key_sanity"
@@ -94,6 +100,10 @@ class SonicKeySanity(Choice):
 
 class SonicCheckpointSanity(Choice):
     """
+    Getting a checkpoint sends a check. (This is easier than KeySanity)
+    This is separate per team enabled
+    Only 1 Set makes it only 1 set of checkpoints to collect (for the team) (this allows getting the checkpoint in either Act without being a separate check)
+    Set For Each Act has one set of checkpoints for each Act enabled (requires both Acts enabled to have both sets)
     """
     internal_name = "sonic_checkpoint_sanity"
     display_name = "Sonic Checkpoint Sanity"
@@ -106,21 +116,22 @@ class SonicCheckpointSanity(Choice):
 
 class RemoveCasinoParkVIPTableLaserGate(DefaultOnToggle):
     """
-
+    This Option will Remove the Laser Gate in front of the ramp before the VIP Table in Casino Park.
+    This allows access to the Bonus Key there and the VIP table without having to get the switch on the pinball table before.
     """
     internal_name = "remove_casino_park_vip_table_laser_gate"
     display_name = "Remove Casino Park VIP Table Laser Gate"
+    """"""
 
 
 
 
-
-class SecretLocations(Toggle):
+#class SecretLocations(Toggle):
     """
-
+    This option currently does nothing but is planned for later.
     """
-    internal_name = "secret_locations"
-    display_name = "Secret/OOB Locations"
+    #internal_name = "secret_locations"
+    #display_name = "Secret/OOB Locations"
 
 
 
@@ -139,7 +150,7 @@ sonic_heroes_option_groups = \
             [
                 SonicStory,
                 SonicStoryStartingCharacter,
-                SecretLocations,
+                #SecretLocations,
             ]),
 
         OptionGroup("Sanity",
@@ -169,7 +180,7 @@ class SonicHeroesOptions(PerGameCommonOptions):
     sonic_story_starting_character: SonicStoryStartingCharacter
     sonic_key_sanity: SonicKeySanity
     sonic_checkpoint_sanity: SonicCheckpointSanity
-    secret_locations: SecretLocations
+    #secret_locations: SecretLocations
     remove_casino_park_vip_table_laser_gate: RemoveCasinoParkVIPTableLaserGate
 
     death_link: DeathLink
@@ -183,7 +194,7 @@ def check_invalid_options(world: SonicHeroesWorld):
             valid_values = [1, 2, 3]
             world.random.shuffle(valid_values)
             world.options.sonic_story.value = valid_values[0]
-            print(f"Sonic Story Set to: {world.options.sonic_story.value}")
+            #print(f"Sonic Story Set to: {world.options.sonic_story.value}")
 
         else:
             raise OptionError(f"SONIC STORY MUST BE ENABLED")
@@ -193,7 +204,7 @@ def check_invalid_options(world: SonicHeroesWorld):
             valid_values = [1, 2]
             world.random.shuffle(valid_values)
             world.options.sonic_key_sanity.value = valid_values[0]
-            print(f"Key Sanity Set to {world.options.sonic_key_sanity.value}")
+            #print(f"Key Sanity Set to {world.options.sonic_key_sanity.value}")
         else:
             raise OptionError(f"SONIC KEYSANITY MUST BE ENABLED")
 
@@ -202,13 +213,13 @@ def check_invalid_options(world: SonicHeroesWorld):
             valid_values = [1, 3]
             world.random.shuffle(valid_values)
             world.options.sonic_checkpoint_sanity.value = valid_values[0]
-            print(f"Checkpoint Sanity Set to {world.options.sonic_checkpoint_sanity.value}")
+            #print(f"Checkpoint Sanity Set to {world.options.sonic_checkpoint_sanity.value}")
         else:
             raise OptionError(f"SONIC CHECKPOINTSANITY OPTION ERROR")
 
 
-    if world.options.secret_locations.value:
-        raise OptionError(f"SECRET LOCATIONS MUST BE DISABLED")
+    #if world.options.secret_locations.value:
+        #raise OptionError(f"SECRET LOCATIONS MUST BE DISABLED")
 
 
 
