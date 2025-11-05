@@ -176,12 +176,12 @@ trap_items_to_weights = \
 
 item_id = 0x939301F0
 
-for team in item_teams:
+for item_team in item_teams:
     hex_mod = item_id % 512
     item_id += (512 - hex_mod)
 
-    for region in item_regions:
-        for ability in item_abilities:
+    for item_region in item_regions:
+        for item_ability in item_abilities:
             #team_name = [k for k, v in locals().items() if v == team][0]
             #region_name = [k for k, v in locals().items() if v == region][0]
             #ability_name = [k for k, v in locals().items() if v == ability][0]
@@ -190,7 +190,7 @@ for team in item_teams:
             #        "Entry": f"ItemData({hex(item_id).upper().replace("X", "x")}, get_ability_item_name_without_world({team_name}, {region_name}, {ability_name}), ItemClassification.progression),"
             #    })
 
-            itemList.append(ItemData(item_id, get_ability_item_name_without_world(team, region, ability), ItemClassification.progression))
+            itemList.append(ItemData(item_id, get_ability_item_name_without_world(item_team, item_region, item_ability), ItemClassification.progression))
             item_id += 1
 
         hex_mod = item_id % 16
@@ -199,11 +199,11 @@ for team in item_teams:
 
 item_id = 0x93930FFF
 
-for team in item_teams:
+for item_team in item_teams:
     hex_mod = item_id % 4096
     item_id += (4096 - hex_mod)
 
-    for region in item_regions:
+    for item_region in item_regions:
         for stage_obj in stage_objs:
             #team_name = [k for k, v in locals().items() if v == team][0]
             #region_name = [k for k, v in locals().items() if v == region][0]
@@ -213,7 +213,7 @@ for team in item_teams:
             #        "Entry": f"ItemData({hex(item_id).upper().replace("X", "x")}, get_ability_item_name_without_world({team_name}, {region_name}, {ability_name}), ItemClassification.progression),"
             #    })
 
-            itemList.append(ItemData(item_id, get_stage_obj_item_name_without_world(team, region, stage_obj), ItemClassification.progression))
+            itemList.append(ItemData(item_id, get_stage_obj_item_name_without_world(item_team, item_region, stage_obj), ItemClassification.progression))
             item_id += 1
 
         hex_mod = item_id % 256

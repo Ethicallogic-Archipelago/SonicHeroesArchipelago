@@ -638,6 +638,9 @@ def can_cannon_power(world: SonicHeroesWorld, team: str, level: str, state: Coll
 def can_weight(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
+def can_item_balloon(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+    return True
+
 def can_pulley(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
@@ -647,8 +650,8 @@ def can_unbreakable_container(world: SonicHeroesWorld, team: str, level: str, st
 def can_propeller(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True and (can_tornado(world, team, level, state) or can_rocket_accel(world, team, level, state)) or (can_homing_attack(world, team, level, state) and has_char_levelup(world, team, level, state, 3, speed=True))
 
-def can_pole(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
-    return True and (can_tornado(world, team, level, state) or can_rocket_accel(world, team, level, state)) or (can_homing_attack(world, team, level, state) and has_char_levelup(world, team, level, state, 3, speed=True))
+def can_pole(world: SonicHeroesWorld, team: str, level: str, state: CollectionState, air: bool = False):
+    return True and (can_tornado(world, team, level, state) or (can_rocket_accel(world, team, level, state) and not air)) or (can_homing_attack(world, team, level, state) and has_char_levelup(world, team, level, state, 3, speed=True))
 
 def can_gong(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
@@ -656,14 +659,11 @@ def can_gong(world: SonicHeroesWorld, team: str, level: str, state: CollectionSt
 def can_fan(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True and can_glide(world, team, level, state)
 
-
 def can_ruins(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
 
-
 def can_small_stone_platform(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True
-
 
 def can_falling_stone_structure(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True

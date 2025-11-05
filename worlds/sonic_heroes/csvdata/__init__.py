@@ -287,4 +287,5 @@ def find_index_of_region(world, name):
         if reg.name == name:
             return index
         index += 1
+    #print(f"Region {name} not found")
     return -1

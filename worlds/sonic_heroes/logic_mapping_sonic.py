@@ -1028,10 +1028,105 @@ def create_logic_mapping_dict_final_fortress_sonic(world: SonicHeroesWorld):
     return \
     {
         "": lambda state: True,
+
         "NOTPOSSIBLE": lambda state: False,
-        "BreakKeyCageSonicFinal": lambda state: can_break_key_cage(world, SONIC, EGGFLEET, state),
 
+        "BreakKeyCageSonicFinal": lambda state: can_break_key_cage(world, SONIC, FINALFORTRESS, state),
 
+        "FlyingAnySonicFinal": lambda state: can_fly(world, SONIC, FINALFORTRESS, state),
+
+        "FallingPlatformand(FlyingAnyorTornadoHoverorTripleSpring)SonicFinal": lambda state: can_falling_platform(world, SONIC, FINALFORTRESS, state) and (can_fly(world, SONIC, FINALFORTRESS, state) or can_tornado_hover(world, SONIC, FINALFORTRESS, state) or can_triple_spring(world, SONIC, FINALFORTRESS, state)),
+
+        "(FlyingAnyorHomingorTornadoHover)andTripleSpringSonicFinal": lambda state: (can_fly(world, SONIC, FINALFORTRESS, state) or can_tornado_hover(world, SONIC, FINALFORTRESS, state)) and can_triple_spring(world, SONIC, FINALFORTRESS, state),
+
+        "FallingPlatformSonicFinal": lambda state: can_falling_platform(world, SONIC, FINALFORTRESS, state),
+
+        "FallingPlatformand(FlyingAnyorLightDash)SonicFinal": lambda state: can_falling_platform(world, SONIC, FINALFORTRESS, state) and (can_fly(world, SONIC, FINALFORTRESS, state) or can_light_dash(world, SONIC, FINALFORTRESS, state)),
+
+        "SquareFloatingPlatformSonicFinal": lambda state: can_square_floating_platform(world, SONIC, FINALFORTRESS, state),
+
+        "FlyingAnyorGlideorSpeedCharorTripleSpringSonicFinal": lambda state: can_fly(world, SONIC, FINALFORTRESS, state) or can_glide(world, SONIC, FINALFORTRESS, state) or has_char(world, SONIC, FINALFORTRESS, state, speed=True) or can_triple_spring(world, SONIC, FINALFORTRESS, state),
+
+        "(DashRamporFlyingAny)andFallingPlatformSonicFinal": lambda state: (can_dash_ramp(world, SONIC, FINALFORTRESS, state) or can_fly(world, SONIC, FINALFORTRESS, state)) and can_falling_platform(world, SONIC, FINALFORTRESS, state),
+
+        "FallingPlatformandSqaureFloatingPlatformSonicFinal": lambda state: can_falling_platform(world, SONIC, FINALFORTRESS, state) and can_square_floating_platform(world, SONIC, FINALFORTRESS, state),
+
+        "(FlyingAnyorTornadoHover)andSquareFloatingPlatformSonicFinal": lambda state: (can_fly(world, SONIC, FINALFORTRESS, state) or can_tornado_hover(world, SONIC, FINALFORTRESS, state)) and can_square_floating_platform(world, SONIC, FINALFORTRESS, state),
+
+        "DashRingSonicFinal": lambda state: can_dash_ring(world, SONIC, FINALFORTRESS, state),
+
+        "KillGroundEnemyEggHammerSonicFinal": lambda state: can_kill_ground_enemy(world, SONIC, FINALFORTRESS, state, egghammer=True),
+
+        "BreakSonicFinal": lambda state: can_break_things(world, SONIC, FINALFORTRESS, state),
+
+        "FlyingAnyorTornadoHoverSonicFinal": lambda state: can_fly(world, SONIC, FINALFORTRESS, state) or can_tornado_hover(world, SONIC, FINALFORTRESS, state),
+
+        "FallingPlatformandLightDashSonicFinal": lambda state: can_falling_platform(world, SONIC, FINALFORTRESS, state) and can_light_dash(world, SONIC, FINALFORTRESS, state),
+
+        "FlyingAnyandFallingPlatformandKillGroundEnemyCannonandSingleSpringSonicFinal": lambda state: can_fly(world, SONIC, FINALFORTRESS, state) and can_falling_platform(world, SONIC, FINALFORTRESS, state) and can_kill_ground_enemy(world, SONIC, FINALFORTRESS, state, cannon=True) and can_single_spring(world, SONIC, FINALFORTRESS, state),
+
+        "KillGroundEnemyCannonandSingleSpringSonicFinal": lambda state: can_kill_ground_enemy(world, SONIC, FINALFORTRESS, state, cannon=True) and can_single_spring(world, SONIC, FINALFORTRESS, state),
+
+        "FallingPlatformand((FlyingAnyandItemBalloon)orFlyingOneChar)SonicFinal": lambda state: can_falling_platform(world, SONIC, FINALFORTRESS, state and ((can_fly(world, SONIC, FINALFORTRESS, state) and can_item_balloon(world, SONIC, FINALFORTRESS, state)) or can_fly(world, SONIC, FINALFORTRESS, state, speedreq=True, powerreq=True, orcondition=True))),
+        "FlyingAnyandFallingPlatformSonicFinal": lambda state: can_fly(world, SONIC, FINALFORTRESS, state) and can_falling_platform(world, SONIC, FINALFORTRESS, state),
+
+        "FallingPlatformandTriangleJumpSonicFinal": lambda state: can_falling_platform(world, SONIC, FINALFORTRESS, state) and can_triangle_jump(world, SONIC, FINALFORTRESS, state),
+
+        "(BreakandSingleSpring)orFlying3CharsSonicFinal": lambda state: (can_break_things(world, SONIC, FINALFORTRESS, state) and can_single_spring(world, SONIC, FINALFORTRESS, state)) or can_fly(world, SONIC, FINALFORTRESS, state, speedreq=True, powerreq=True),
+
+        "TriangleJumpSonicFinal": lambda state: can_triangle_jump(world, SONIC, FINALFORTRESS, state),
+
+        "BreakandDashPanelSonicFinal": lambda state: can_break_things(world, SONIC, FINALFORTRESS, state) and can_dash_panel(world, SONIC, FINALFORTRESS, state),
+
+        "KillGroundEnemyHeavyEggHammerSonicFinal": lambda state: can_kill_ground_enemy(world, SONIC, FINALFORTRESS, state, heavyegghammer=True),
+
+        "PoleandRegularSwitchSonicFinal": lambda state: can_pole(world, SONIC, FINALFORTRESS, state) and can_switch(world, SONIC, FINALFORTRESS, state, regular=True),
+
+        "PoleSonicFinal": lambda state: can_pole(world, SONIC, FINALFORTRESS, state),
+
+        "PoleAirSonicFinal": lambda state: can_pole(world, SONIC, FINALFORTRESS, state, air=True),
+
+        "(FlyingAnyorTornadoHover)andWeightSonicFinal": lambda state: (can_fly(world, SONIC, FINALFORTRESS, state) or can_tornado_hover(world, SONIC, FINALFORTRESS, state)) and can_weight(world, SONIC, FINALFORTRESS, state),
+
+        "FireDunkSonicFinal": lambda state: can_fire_dunk(world, SONIC, FINALFORTRESS, state),
+
+        "(BreakorFlyingAnyorTornadoHover)andSingleSpringSonicFinal": lambda state: (can_break_things(world, SONIC, FINALFORTRESS, state) or can_fly(world, SONIC, FINALFORTRESS, state) or can_tornado_hover(world, SONIC, FINALFORTRESS, state)) and can_single_spring(world, SONIC, FINALFORTRESS, state),
+
+        "KillGroundEnemyPlainShieldSonicFinal": lambda state: can_kill_ground_enemy(world, SONIC, FINALFORTRESS, state, plainshield=True),
+
+        "SingleSpringSonicFinal": lambda state: can_single_spring(world, SONIC, FINALFORTRESS, state),
+
+        "(FlyingAnyorTornadoHover)andPoleAirSonicFinal": lambda state: (can_fly(world, SONIC, FINALFORTRESS, state) or can_tornado(world, SONIC, FINALFORTRESS, state)) and can_pole(world, SONIC, FINALFORTRESS, state, air=True),
+
+        "TriangleJumpandTripleSpringSonicFinal": lambda state: can_triangle_jump(world, SONIC, FINALFORTRESS, state) and can_triple_spring(world, SONIC, FINALFORTRESS, state),
+
+        "KillGroundEnemyE2000RSonicFinal": lambda state: can_kill_ground_enemy(world, SONIC, FINALFORTRESS, state, e2000r=True),
+
+        "SelfDestructSwitchSonicFinal": lambda state: can_self_destruct_tp_switch(world, SONIC, FINALFORTRESS, state),
+
+        "FanandFlyingAnyandTargetSwitchandThunderShootSonicFinal": lambda state: can_fan(world, SONIC, FINALFORTRESS, state) and can_fly(world, SONIC, FINALFORTRESS, state) and can_switch(world, SONIC, FINALFORTRESS, state, target=True) and can_thundershoot_both(world, SONIC, FINALFORTRESS, state),
+
+        "FanSonicFinal": lambda state: can_fan(world, SONIC, FINALFORTRESS, state),
+
+        "FlyingAnyandPulleySonicFinal": lambda state: can_fly(world, SONIC, FINALFORTRESS, state) and can_pulley(world, SONIC, FINALFORTRESS, state),
+
+        "PoleAirandSwitchSonicFinal": lambda state: can_pole(world, SONIC, FINALFORTRESS, state, air=True) and can_switch(world, SONIC, FINALFORTRESS, state, regular=True),
+
+        "LightDashSonicFinal": lambda state: can_light_dash(world, SONIC, FINALFORTRESS, state),
+
+        "All3CharsandFanandKillGroundEnemyCannonSonicFinal": lambda state: can_fly(world, SONIC, FINALFORTRESS, state, speedreq=True, powerreq=True) and can_fan(world, SONIC, FINALFORTRESS, state) and can_kill_ground_enemy(world, SONIC, FINALFORTRESS, state, cannon=True),
+
+        "FanandFlyingAnyandPushPullSwitchSonicFinal": lambda state: can_fan(world, SONIC, FINALFORTRESS, state) and can_fly(world, SONIC, FINALFORTRESS, state) and can_switch(world, SONIC, FINALFORTRESS, state, push_pull=True),
+
+        "GongSonicFinal": lambda state: can_gong(world, SONIC, FINALFORTRESS, state),
+
+        "FlyingAnyorGlideorHomingSonicFinal": lambda state: can_fly(world, SONIC, FINALFORTRESS, state) or can_glide(world, SONIC, FINALFORTRESS, state) or can_homing_attack(world, SONIC, FINALFORTRESS, state),
+
+        "KillGroundEnemyEggHammerandTargetSwitchandThunderShootSonicFinal": lambda state: can_kill_ground_enemy(world, SONIC, FINALFORTRESS, state, egghammer=True) and can_switch(world, SONIC, FINALFORTRESS, state, target=True) and can_thundershoot_both(world, SONIC, FINALFORTRESS, state),
+
+        "KillGroundEnemyEggHammerHeavyEggHammerSonicFinal": lambda state: can_kill_ground_enemy(world, SONIC, FINALFORTRESS, state, egghammer=True, heavyegghammer=True),
+
+        "FlyingAnyorTornadoHoverorTripleSpringSonicFinal": lambda state: can_fly(world, SONIC, FINALFORTRESS, state) or can_tornado_hover(world, SONIC, FINALFORTRESS, state) or can_triple_spring(world, SONIC, FINALFORTRESS, state),
     }
 
 
