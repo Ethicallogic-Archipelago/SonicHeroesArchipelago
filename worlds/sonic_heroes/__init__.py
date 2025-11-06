@@ -249,7 +249,7 @@ class SonicHeroesWorld(World):
             "ChaotixSanity": 0,
             "ChaotixKeySanity": 0,
             "ChaotixCheckpointSanity": 0,
-            "SecretLocations": self.options.secret_locations.value,
+            "SecretLocations": self.secret,
             "RingLink": 1,
             "RingLinkOverlord": 0,
             "ModernRingLoss": 1,
@@ -325,7 +325,7 @@ class SonicHeroesWorld(World):
         self.options.sonic_story_starting_character.value = slot_data["SonicStoryStartingCharacter"]
         self.options.sonic_key_sanity.value = slot_data["SonicKeySanity"]
         self.options.sonic_checkpoint_sanity.value = slot_data["SonicCheckpointSanity"]
-        self.options.secret_locations.value = slot_data["SecretLocations"]
+        self.secret = slot_data["SecretLocations"]
         self.options.remove_casino_park_vip_table_laser_gate.value = slot_data["RemoveCasinoParkVIPTableLaserGate"]
         self.options.death_link.value = slot_data["DeathLink"]
 
