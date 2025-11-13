@@ -1,8 +1,11 @@
 from __future__ import annotations
+
+from BaseClasses import CollectionState
 from .constants import *
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from worlds.sonic_heroes import SonicHeroesWorld
+
 
 def can_homing_hover(world: SonicHeroesWorld, team: str, level: str, state: CollectionState) -> bool:
     return False

@@ -1,5 +1,4 @@
 
-
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -11,7 +10,6 @@ if TYPE_CHECKING:
 from dataclasses import dataclass
 from Options import *
 from .constants import *
-
 
 
 class GoalUnlockCondition(Choice):
@@ -54,7 +52,7 @@ class AbilityUnlocks(Choice):
     display_name = "Ability Unlocks"
     option_all_regions_separate = 0
     option_entire_story = 1
-    default = 0
+    default = 1
 
 
 
@@ -215,7 +213,7 @@ def check_invalid_options(world: SonicHeroesWorld):
             world.options.sonic_checkpoint_sanity.value = valid_values[0]
             #print(f"Checkpoint Sanity Set to {world.options.sonic_checkpoint_sanity.value}")
         else:
-            raise OptionError(f"SONIC CHECKPOINTSANITY OPTION ERROR")
+            raise OptionError("SONIC CHECKPOINTSANITY OPTION ERROR")
 
 
     #if world.options.secret_locations.value:

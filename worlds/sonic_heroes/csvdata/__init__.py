@@ -49,7 +49,7 @@ def import_location_csv(world: SonicHeroesWorld, team: str):
                 world.region_to_location[loc.region].append(loc)
 
     if world.secret:
-        for level in world.allowed_levels:
+        for level in world.allowed_levels_per_team[team]:
             if is_there_a_secret_csv_file(team, level):
                 file_name = get_csv_file_name(team, level, LOCATIONS, True)
 
@@ -72,7 +72,7 @@ def import_region_csv(world: SonicHeroesWorld, team: str):
         from importlib_resources import files  # type: ignore # noqa
 
 
-    for level in world.allowed_levels:
+    for level in world.allowed_levels_per_team[team]:
         file_name = get_csv_file_name(team, level, REGIONS, False)
         #print(f"File Name here: {file_name}")
 
@@ -86,7 +86,7 @@ def import_region_csv(world: SonicHeroesWorld, team: str):
                     #print(x)
                     pass
 
-                reg = RegionCSVData(x[TEAM], x[LEVEL], f"{x[LEVEL]} {x[TEAM]} {x[NAME]}", x[OBJCHECKS])
+                reg = RegionCSVData(x[TEAM], x[LEVEL], f"{x[LEVEL]} {x[TEAM]} {x[NAME]}", int(x[OBJCHECKS]))
                 world.region_list.append(reg)
                 world.region_to_location[reg.name] = []
 
@@ -99,7 +99,7 @@ def import_region_csv(world: SonicHeroesWorld, team: str):
                 with files(Regions).joinpath(f"{file_name}.csv").open() as csv_file:
                     reader = csv.DictReader(csv_file)
                     for x in reader:
-                        reg = RegionCSVData(x[TEAM], x[LEVEL], f"{x[LEVEL]} {x[TEAM]} {x[NAME]}", x[OBJCHECKS])
+                        reg = RegionCSVData(x[TEAM], x[LEVEL], f"{x[LEVEL]} {x[TEAM]} {x[NAME]}", int(x[OBJCHECKS]))
                         world.region_list.append(reg)
                         world.region_to_location[reg.name] = []
 
@@ -115,7 +115,7 @@ def import_connection_csv(world: SonicHeroesWorld, team: str):
         from importlib_resources import files  # type: ignore # noqa
 
     id = 0
-    for level in world.allowed_levels:
+    for level in world.allowed_levels_per_team[team]:
         file_name = get_csv_file_name(team, level, CONNECTIONS, False)
         #print(f"File Name here: {file_name}")
 
@@ -202,43 +202,47 @@ def is_loc_in_world(world: SonicHeroesWorld, team: str, loc: LocationCSVData) ->
             pass
         return False
 
-    if loc.loc_type == "Secret" and not world.secret:
+    if loc.loc_type == SECRET and not world.secret:
         if loc.code in codes:
             #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of secret type")
             pass
         return False
 
-    if loc.loc_type == "Normal":
-        if team == "Sonic":
-            if loc.level not in world.allowed_levels:
+    if loc.loc_type == NORMAL:
+        if team == SONIC:
+            if loc.level not in world.allowed_levels_per_team[team]:
                 if loc.code in codes:
                     #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not in allowed levels Normal")
                     pass
                 return False
 
-            if world.options.sonic_story == 1 and loc.act != 1 and "Metal Overlord" not in loc.name:
+            if world.options.sonic_story == 1 and loc.act != 1 and METALOVERLORD not in loc.name:
                 if loc.code in codes:
                     #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 1 when Act 1 only")
                     pass
                 return False
 
-            elif world.options.sonic_story == 2 and loc.act != 2 and "Metal Overlord" not in loc.name:
+            elif world.options.sonic_story == 2 and loc.act != 2 and METALOVERLORD not in loc.name:
                 if loc.code in codes:
                     #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 2 when Act 2 only")
                     pass
                 return False
 
 
-    if loc.loc_type == "Boss":
+    if loc.loc_type == BOSS:
         return False
-    if loc.loc_type == "Emerald":
-        return False
-    if loc.loc_type == "ObjSanity":
+    if loc.loc_type == EMERALD:
+        if " ".join(loc.level.split(" ")[:-2]) in world.allowed_levels_per_team[team]:
+            return True
         return False
 
-    if loc.loc_type == "CheckpointSanity":
-        if team == "Sonic":
-            if loc.level not in world.allowed_levels:
+
+    if loc.loc_type == OBJSANITY:
+        return False
+
+    if loc.loc_type == CHECKPOINTSANITY:
+        if team == SONIC:
+            if loc.level not in world.allowed_levels_per_team[team]:
                 if loc.code in codes:
                     #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not in allowed levels Checkpoint Sanity")
                     pass
@@ -279,9 +283,9 @@ def is_loc_in_world(world: SonicHeroesWorld, team: str, loc: LocationCSVData) ->
                     return False
 
 
-    if loc.loc_type == "KeySanity":
-        if team == "Sonic":
-            if loc.level not in world.allowed_levels:
+    if loc.loc_type == KEYSANITY:
+        if team == SONIC:
+            if loc.level not in world.allowed_levels_per_team[team]:
                 if loc.code in codes:
                     #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not in allowed levels Key Sanity")
                     pass
