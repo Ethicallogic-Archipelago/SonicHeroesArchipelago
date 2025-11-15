@@ -197,7 +197,7 @@ for item_team in item_teams:
         item_id += (16 - hex_mod)
 
 
-
+"""
 item_id = 0x93930FFF
 
 for item_team in item_teams:
@@ -219,4 +219,4 @@ for item_team in item_teams:
 
         hex_mod = item_id % 256
         item_id += (256 - hex_mod)
-
+"""

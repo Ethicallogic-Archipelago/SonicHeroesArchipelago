@@ -1,6 +1,13 @@
 """
 Location Handling Here
 """
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from worlds.sonic_heroes import SonicHeroesWorld
+
 from BaseClasses import Location, LocationProgressType
 from worlds.sonic_heroes import constants
 
@@ -38,7 +45,7 @@ def create_locations(world, region):
             create_location(world, region, loc.name, loc.code, rule)
 
 
-def create_location(world, region, name, code, rule=None):
+def create_location(world: SonicHeroesWorld, region, name, code, rule=None):
     """
     Creates a location for Sonic Heroes.
     """
@@ -52,7 +59,11 @@ def create_location(world, region, name, code, rule=None):
 
     for level in constants.emerald_levels:
         if f"{level} {constants.EMERALD}" == loc.name:
-            loc.progress_type = LocationProgressType.PRIORITY
+            if world.options.goal_unlock_condition.value != 0 and world.options.ability_unlocks.value != 1:
+                loc.progress_type = LocationProgressType.PRIORITY
+            else:
+                #print("Unable to Set Emerald Location as Priority Due to Options")
+                pass
 
     #print(f"Creating Location {name} for region {region.name}")
 

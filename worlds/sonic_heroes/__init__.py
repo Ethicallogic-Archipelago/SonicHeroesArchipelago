@@ -7,7 +7,7 @@ from .constants import *
 from .csvdata import *
 from .items import *
 from .logic_mapping_sonic import *
-from .options import *
+from .options import *  # type: ignore
 from .regions import *
 
 
@@ -248,7 +248,7 @@ class SonicHeroesWorld(World):
             # put this at top to display PUML (after start UML)
         return \
         {
-            "ModVersion": "2.0.0",
+            "APWorldVersion": "2.0.0",
             "Goal": 0,
             "GoalUnlockCondition": self.options.goal_unlock_condition.value,
             "GoalLevelCompletions": self.options.goal_level_completions.value,
