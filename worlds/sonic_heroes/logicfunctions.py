@@ -316,10 +316,12 @@ def can_kill_ground_enemy_eggbishop(world: SonicHeroesWorld, team: str, level: s
     return (can_homing_attack(world, team, level, state) and has_char_levelup(world, team, level, state, 2, speed=True)) or (can_fire_dunk(world, team, level, state) and has_char_levelup(world, team, level, state, 2, power=True)) or (can_thundershoot_both(world, team, level, state) and has_char_levelup(world, team, level, state, 3, flying=True)) or can_team_blast(world, team, level, state)
 
 def can_kill_ground_enemy_e2000(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
-    return ((can_combo_finsh(world, team, level, state) and has_char_levelup(world, team, level, state, 3, power=True)) and (can_remove_ground_enemy_shield(world, team, level, state) or (can_thundershoot_both(world, team, level, state) and has_char_levelup(world, team, level, state, 3, flying=True)))) or can_team_blast(world, team, level, state)
+    return can_combo_finsh(world, team, level, state, 3) or (can_thundershoot_both(world, team, level, state) and has_char_levelup(world, team, level, state, 3, flying=True)) or can_team_blast(world, team, level, state)
+
 
 def can_kill_ground_enemy_e2000r(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
-    return can_kill_ground_enemy_e2000(world, team, level, state)
+    return (can_kill_ground_enemy_e2000(world, team, level, state)
+            and (can_remove_ground_enemy_shield(world, team, level, state) or can_team_blast(world, team, level, state)))
 
 def can_kill_ground_enemy_egghammer(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return (can_combo_finsh(world, team, level, state) and has_char_levelup(world, team, level, state, 3, power=True)) or can_team_blast(world, team, level, state)
