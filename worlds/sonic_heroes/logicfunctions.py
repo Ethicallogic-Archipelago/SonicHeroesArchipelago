@@ -38,6 +38,7 @@ def has_char(world: SonicHeroesWorld, team: str, level: str, state: CollectionSt
     if power:
         conditions.append(get_playable_char_item_name(get_char_name_from_team(team, power=True)))
 
+
     if orcondition:
         return state.has_any(conditions, world.player)
 
