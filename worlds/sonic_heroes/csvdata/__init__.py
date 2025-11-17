@@ -4,7 +4,10 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from worlds.sonic_heroes import SonicHeroesWorld
 
+
 import csv
+
+from worlds.sonic_heroes.options import SonicStory, SonicCheckpointSanity, SonicKeySanity
 
 from . import Connections, Locations, Regions
 from ..constants import *
@@ -216,13 +219,13 @@ def is_loc_in_world(world: SonicHeroesWorld, team: str, loc: LocationCSVData) ->
                     pass
                 return False
 
-            if world.options.sonic_story == 1 and loc.act != 1 and METALOVERLORD not in loc.name:
+            if world.options.sonic_story == SonicStory.option_mission_a_only and loc.act != 1 and METALOVERLORD not in loc.name:
                 if loc.code in codes:
                     #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 1 when Act 1 only")
                     pass
                 return False
 
-            elif world.options.sonic_story == 2 and loc.act != 2 and METALOVERLORD not in loc.name:
+            elif world.options.sonic_story == SonicStory.option_mission_b_only and loc.act != 2 and METALOVERLORD not in loc.name:
                 if loc.code in codes:
                     #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 2 when Act 2 only")
                     pass
@@ -247,36 +250,31 @@ def is_loc_in_world(world: SonicHeroesWorld, team: str, loc: LocationCSVData) ->
                     #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not in allowed levels Checkpoint Sanity")
                     pass
                 return False
-            if world.options.sonic_checkpoint_sanity == 0:
+            if world.options.sonic_checkpoint_sanity == SonicCheckpointSanity.option_disabled:
                 if loc.code in codes:
                     #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Checkpoint Sanity Disabled")
                     pass
                 return False
 
-            elif world.options.sonic_checkpoint_sanity == 1 and loc.act != 0:
+            elif world.options.sonic_checkpoint_sanity == SonicCheckpointSanity.option_Only1SetNormal and loc.act != 0:
                 if loc.code in codes:
                     #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 0 with Checkpoint Sanity only 1 Set")
                     pass
                 return False
 
-            elif world.options.sonic_checkpoint_sanity == 2:
-                if loc.code in codes:
-                    #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Checkpoint Sanity Super Hard only")
-                    pass
-                return False
 
-            elif world.options.sonic_checkpoint_sanity == 3:
+            elif world.options.sonic_checkpoint_sanity == SonicCheckpointSanity.option_SetForEachAct:
                 if loc.act == 0:
                     if loc.code in codes:
                         #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Act 0 with Checkpoint Sanity set to each Act")
                         pass
                     return False
-                if world.options.sonic_story == 1 and loc.act != 1:
+                if world.options.sonic_story == SonicStory.option_mission_a_only and loc.act != 1:
                     if loc.code in codes:
                         #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 1 when Act 1 only")
                         pass
                     return False
-                if world.options.sonic_story == 2 and loc.act != 2:
+                if world.options.sonic_story == SonicStory.option_mission_b_only and loc.act != 2:
                     if loc.code in codes:
                         #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 2 when Act 2 only")
                         pass
@@ -291,30 +289,30 @@ def is_loc_in_world(world: SonicHeroesWorld, team: str, loc: LocationCSVData) ->
                     pass
                 return False
 
-            if world.options.sonic_key_sanity == 0:
+            if world.options.sonic_key_sanity == SonicKeySanity.option_disabled:
                 if loc.code in codes:
                     #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Key Sanity Disabled")
                     pass
                 return False
 
-            elif world.options.sonic_key_sanity == 1 and loc.act != 0:
+            elif world.options.sonic_key_sanity == SonicKeySanity.option_Only1Set and loc.act != 0:
                 if loc.code in codes:
                     #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 0 when only 1 Set")
                     pass
                 return False
 
-            elif world.options.sonic_key_sanity == 2:
+            elif world.options.sonic_key_sanity == SonicKeySanity.option_SetForEachAct:
                 if loc.act == 0:
                     if loc.code in codes:
                         #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of Act 0 when each Act")
                         pass
                     return False
-                if world.options.sonic_story == 1 and loc.act != 1:
+                if world.options.sonic_story == SonicStory.option_mission_a_only and loc.act != 1:
                     if loc.code in codes:
                         #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 1 when only Act 1")
                         pass
                     return False
-                if world.options.sonic_story == 2 and loc.act != 2:
+                if world.options.sonic_story == SonicStory.option_mission_b_only and loc.act != 2:
                     if loc.code in codes:
                         #print(f"Loc {loc.name} ID {hex(loc.code)} failed because of not Act 2 when only Act 2")
                         pass

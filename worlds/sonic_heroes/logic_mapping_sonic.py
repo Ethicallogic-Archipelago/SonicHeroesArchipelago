@@ -385,7 +385,7 @@ def create_logic_mapping_dict_casino_park_sonic(world: SonicHeroesWorld):
 
         "PushPullSwitchSonicCP": lambda state: can_switch(world, SONIC, CASINOPARK, state, push_pull=True),
 
-        "FireDunkSonicCP": lambda state: can_fire_dunk(world, SONIC, CASINOPARK, state),
+        "BreakGlassFloorSonicCP": lambda state: can_break_glass_floor(world, SONIC, CASINOPARK, state),
 
         "PinballSonicCP": lambda state: can_pinball(world, SONIC, CASINOPARK, state),
 
@@ -443,7 +443,7 @@ def create_logic_mapping_dict_bingo_highway_sonic(world: SonicHeroesWorld):
 
         "FlyingAnySonicBH": lambda state: can_fly(world, SONIC, BINGOHIGHWAY, state),
 
-        "FireDunkSonicBH": lambda state: can_fire_dunk(world, SONIC, BINGOHIGHWAY, state),
+        "BreakGlassFloorSonicBH": lambda state: can_break_glass_floor(world, SONIC, BINGOHIGHWAY, state),
 
         "SingleSpringSonicBH": lambda state: can_single_spring(world, SONIC, BINGOHIGHWAY, state),
 
@@ -473,7 +473,7 @@ def create_logic_mapping_dict_bingo_highway_sonic(world: SonicHeroesWorld):
 
         "KillGroundEnemyPlainShieldKlagenandSwitchSonicBH": lambda state: can_kill_ground_enemy(world, SONIC, BINGOHIGHWAY, state, plainshield=True, klagen=True) and can_switch(world, SONIC, BINGOHIGHWAY, state, regular=True),
 
-        "FireDunkandPinballSonicBH": lambda state: can_fire_dunk(world, SONIC, BINGOHIGHWAY, state) and can_pinball(world, SONIC, BINGOHIGHWAY, state),
+        "BreakGlassFloorandPinballSonicBH": lambda state: can_break_glass_floor(world, SONIC, BINGOHIGHWAY, state) and can_pinball(world, SONIC, BINGOHIGHWAY, state),
 
         "FlyingAnyorStarPanelSonicBH": lambda state: can_fly(world, SONIC, BINGOHIGHWAY, state) or can_star_glass_air_panel(world, SONIC, BINGOHIGHWAY, state),
 
@@ -487,7 +487,7 @@ def create_logic_mapping_dict_bingo_highway_sonic(world: SonicHeroesWorld):
 
         "FlyingFullorTripleSpringSonicBH": lambda state: can_fly(world, SONIC, BINGOHIGHWAY, state, speedreq=True, powerreq=True) or can_triple_spring(world, SONIC, BINGOHIGHWAY, state),
 
-        "FireDunkandFloatingDiceand(FlyingAnyor(GreenBumperSpringandSingleSpring))andSwitchSonicBH": lambda state: can_fire_dunk(world, SONIC, BINGOHIGHWAY, state) and can_floating_dice(world, SONIC, BINGOHIGHWAY, state) and (can_fly(world, SONIC, BINGOHIGHWAY, state) or (can_green_floating_bumper(world, SONIC, BINGOHIGHWAY, state) and can_single_spring(world, SONIC, BINGOHIGHWAY, state))) and can_switch(world, SONIC, BINGOHIGHWAY, state, regular=True),
+        "BreakGlassFloorandFloatingDiceand(FlyingAnyor(GreenBumperSpringandSingleSpring))andSwitchSonicBH": lambda state: can_break_glass_floor(world, SONIC, BINGOHIGHWAY, state) and can_floating_dice(world, SONIC, BINGOHIGHWAY, state) and (can_fly(world, SONIC, BINGOHIGHWAY, state) or (can_green_floating_bumper(world, SONIC, BINGOHIGHWAY, state) and can_single_spring(world, SONIC, BINGOHIGHWAY, state))) and can_switch(world, SONIC, BINGOHIGHWAY, state, regular=True),
 
         "DashRingandSingleSpringSonicBH": lambda state: can_dash_ring(world, SONIC, BINGOHIGHWAY, state) and can_single_spring(world, SONIC, BINGOHIGHWAY, state),
 
@@ -578,6 +578,8 @@ def create_logic_mapping_dict_bullet_station_sonic(world: SonicHeroesWorld):
         "RailSonicBS": lambda state: can_rail(world, SONIC, BULLETSTATION, state),
 
         "TriangleJumpSonicBS": lambda state: can_triangle_jump(world, SONIC, BULLETSTATION, state),
+
+        "FlyingAnyorTriangleJumpSonicBS": lambda state: can_fly(world, SONIC, BULLETSTATION, state) or can_triangle_jump(world, SONIC, BULLETSTATION, state),
 
         "FlyingAnyorWeightSonicBS": lambda state: can_fly(world, SONIC, BULLETSTATION, state) or can_weight(world, SONIC, BULLETSTATION, state, regular=True),
 
