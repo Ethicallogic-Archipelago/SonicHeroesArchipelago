@@ -47,6 +47,9 @@ class AbilityUnlocks(Choice):
     Entire Story will make there be a "Homing Attack" item for each Team that unlocks Homing Attack on all levels for that team.
     All Regions Separate will have 7 sets of ability items (Per Team) that unlock the ability for that respective region. (A Region is a set of levels that follow the same theme)
     For example, Seaside Hill and Ocean Palace are both in the Ocean Region
+
+    Dev Note: All Regions Separate can cause significant BK in syncs (depending on speed of other games)
+    Recommended for asyncs only (or with proper consideration)
     """
     internal_name = "ability_unlocks"
     display_name = "Ability Unlocks"
@@ -62,7 +65,7 @@ class SonicStory(Choice):
     """
     internal_name = "sonic_story"
     display_name = "Sonic Story"
-    option_disabled = 0
+    #option_disabled = 0
     option_mission_a_only = 1
     option_mission_b_only = 2
     option_both_missions_enabled = 3
@@ -71,6 +74,8 @@ class SonicStory(Choice):
 class SonicStoryStartingCharacter(Choice):
     """
     Which Character should be unlocked for Sonic Story from the Start?
+    Knuckles has the largest sphere 1
+    Sonic and Tails are even though Tails is slightly more restrictive logically
     """
     internal_name = "sonic_story_starting_character"
     display_name = "Sonic Story Starting Character"
@@ -107,7 +112,7 @@ class SonicCheckpointSanity(Choice):
     display_name = "Sonic Checkpoint Sanity"
     option_disabled = 0
     option_Only1SetNormal = 1
-    option_OnlySuperHard = 2
+    #option_OnlySuperHard = 2
     option_SetForEachAct = 3
     default = 1
 
@@ -187,37 +192,29 @@ class SonicHeroesOptions(PerGameCommonOptions):
 
 def check_invalid_options(world: SonicHeroesWorld):
 
-    if world.options.sonic_story.value == 0:
-        if world.fuzzer:
-            valid_values = [1, 2, 3]
-            world.random.shuffle(valid_values)
-            world.options.sonic_story.value = valid_values[0]
-            #print(f"Sonic Story Set to: {world.options.sonic_story.value}")
+    #if world.options.sonic_story == "disabled":
+        #raise OptionError(f"SONIC STORY MUST BE ENABLED")
 
+    if world.options.ability_unlocks == AbilityUnlocks.option_all_regions_separate:
+        if world.options.sonic_story != SonicStory.option_both_missions_enabled: #Not Both Acts
+            if (world.options.sonic_key_sanity == SonicKeySanity.option_disabled or
+                    world.options.sonic_checkpoint_sanity == SonicCheckpointSanity.option_disabled):
+                raise OptionError(f"Region Based Ability Unlocks with only 1 Act Requires "
+                                  f"Both Key Sanity and Checkpoint Sanity")
         else:
-            raise OptionError(f"SONIC STORY MUST BE ENABLED")
+            if (world.options.sonic_key_sanity == SonicKeySanity.option_disabled or
+                    world.options.sonic_checkpoint_sanity == SonicCheckpointSanity.option_disabled):
+                if (world.options.sonic_key_sanity != SonicKeySanity.option_SetForEachAct and
+                        world.options.sonic_checkpoint_sanity != SonicCheckpointSanity.option_SetForEachAct):
+                    raise OptionError(f"Region Based Ability Unlocks with both acts Requires "
+                                      f"either Both Key Sanity and Checkpoint Sanity or one of "
+                                      f"those with both sets (Set For Each Act)")
 
-    if world.options.sonic_key_sanity.value == 0:
-        if world.fuzzer:
-            valid_values = [1, 2]
-            world.random.shuffle(valid_values)
-            world.options.sonic_key_sanity.value = valid_values[0]
-            #print(f"Key Sanity Set to {world.options.sonic_key_sanity.value}")
-        else:
-            raise OptionError(f"SONIC KEYSANITY MUST BE ENABLED")
-
-    if world.options.sonic_checkpoint_sanity.value == 0 or world.options.sonic_checkpoint_sanity.value == 2:
-        if world.fuzzer:
-            valid_values = [1, 3]
-            world.random.shuffle(valid_values)
-            world.options.sonic_checkpoint_sanity.value = valid_values[0]
-            #print(f"Checkpoint Sanity Set to {world.options.sonic_checkpoint_sanity.value}")
-        else:
-            raise OptionError("SONIC CHECKPOINTSANITY OPTION ERROR")
-
-
-    #if world.options.secret_locations.value:
-        #raise OptionError(f"SECRET LOCATIONS MUST BE DISABLED")
+    else:
+        if (world.options.sonic_key_sanity == SonicKeySanity.option_disabled and
+                world.options.sonic_checkpoint_sanity == SonicCheckpointSanity.option_disabled):
+            raise OptionError(f"Entire Story Ability Unlocks Requires Either Key Sanity "
+                              f"or Checkpoint Sanity To Be Enabled")
 
 
 

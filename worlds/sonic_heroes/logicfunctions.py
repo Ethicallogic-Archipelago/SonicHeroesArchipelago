@@ -13,6 +13,9 @@ def can_homing_hover(world: SonicHeroesWorld, team: str, level: str, state: Coll
 def can_tornado_hover(world: SonicHeroesWorld, team: str, level: str, state: CollectionState) -> bool:
     return False
 
+def can_rocket_accel_jump(world: SonicHeroesWorld, team: str, level: str, state: CollectionState) -> bool:
+    return False
+
 
 def can_team_blast(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     #return False
@@ -243,9 +246,9 @@ def can_glide(world: SonicHeroesWorld, team: str, level: str, state: CollectionS
     return has_char(world, team, level, state, power=True) and state.has(name, world.player)
 
 
-def can_combo_finsh(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
+def can_combo_finsh(world: SonicHeroesWorld, team: str, level: str, state: CollectionState, lvl: int = 1):
     name = get_ability_item_name(world, team, get_region_name_from_level(world, level), COMBOFINISHER)
-    return has_char(world, team, level, state, power=True) and state.has(name, world.player) and has_char_levelup(world, team, level, state, 1, power=True)
+    return has_char(world, team, level, state, power=True) and state.has(name, world.player) and has_char_levelup(world, team, level, state, lvl, power=True)
 
 def can_power_abilities(world: SonicHeroesWorld, team: str, level: str, state: CollectionState, breaknotcage=False, breakcage=False, firedunk=False, glide=False, combofinsh=False, orcondition=False):
     if not breaknotcage and not breakcage and not firedunk and not glide and not combofinsh:
@@ -796,6 +799,9 @@ def can_large_triangle_bumper(world, team: str, level: str, state: CollectionSta
 
 def can_breakable_glass_floor(world, team: str, level: str, state: CollectionState):
     return True
+
+def can_break_glass_floor(world, team: str, level: str, state: CollectionState):
+    return not can_breakable_glass_floor(world, team, level, state) or (can_fire_dunk(world, team, level, state) or can_combo_finsh(world, team, level, state))
 
 def can_floating_dice(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     return True

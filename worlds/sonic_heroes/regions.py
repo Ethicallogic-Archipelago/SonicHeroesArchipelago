@@ -175,12 +175,7 @@ def get_goal_rule(world: SonicHeroesWorld, state: CollectionState):
         for emerald in emeralds:
             goal_rule_dict[emerald] = 1
 
-    goal_rule_levels = {}
-    goal_rule_levels[SONIC] = True
-    goal_rule_levels[DARK] = True
-    goal_rule_levels[ROSE] = True
-    goal_rule_levels[CHAOTIX] = True
-    goal_rule_levels[SUPERHARD] = True
+    goal_rule_levels = {SONIC: True, DARK: True, ROSE: True, CHAOTIX: True, SUPERHARD: True}
 
     if world.options.goal_unlock_condition != 1:
         teams_list = level_completion_items_dict.keys()

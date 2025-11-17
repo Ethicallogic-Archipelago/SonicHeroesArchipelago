@@ -104,12 +104,6 @@ class SonicHeroesWorld(World):
 
         self.allowed_levels_per_team: dict[str, list[str]] = {}
 
-
-
-        self.fuzzer: bool = False
-        """
-        Enable this for fuzzer testing protections
-        """
         self.should_make_puml: bool = False
 
         self.is_ut_gen: bool = False
@@ -239,7 +233,7 @@ class SonicHeroesWorld(World):
         pass
 
     def fill_slot_data(self) -> Mapping[str, Any]:
-        if self.should_make_puml and not self.fuzzer:
+        if self.should_make_puml:
             from Utils import visualize_regions
             state = self.multiworld.get_all_state(False)
             state.update_reachable_regions(self.player)

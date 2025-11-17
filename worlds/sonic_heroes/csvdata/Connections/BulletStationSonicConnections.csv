@@ -74,7 +74,7 @@ Sonic,Bullet Station,Second Train Cave Grate,Second Train Cave First Car With Ra
 Sonic,Bullet Station,Second Train Cave First Car With Rail,Second Train Cave Second Car With Pole,FlyingAnyorGlideorHomingSonicBS,is possible with nothing
 Sonic,Bullet Station,Second Train Cave Second Car With Pole,Second Train Cave First Car With Rail,FlyingAnyorGlideorHomingSonicBS,is possible with nothing
 Sonic,Bullet Station,Second Train Cave Second Car With Pole,Second Train Cave Third Car With Triangle Jump,PoleSonicBS,
-Sonic,Bullet Station,Second Train Cave Third Car With Triangle Jump,Second Train Cave Third Car End,TriangleJumpSonicBS,is possible with flying any
+Sonic,Bullet Station,Second Train Cave Third Car With Triangle Jump,Second Train Cave Third Car End,FlyingAnyorTriangleJumpSonicBS,is possible with flying any
 Sonic,Bullet Station,Second Train Cave Third Car End,Second Train Cave Core,BreakandEngineCoreSonicBS,
 Sonic,Bullet Station,Second Train Cave Core,Rail After Second Train Cave,RailSonicBS,
 Sonic,Bullet Station,Rail After Second Train Cave,Bobsled Section,BobsledandRailSwitchandSwitchableRailandSingleSpringSonicBS,need to check when bobsled is deleted
