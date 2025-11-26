@@ -88,7 +88,7 @@ def can_tornado(world: SonicHeroesWorld, team: str, level: str, state: Collectio
 
 def can_rocket_accel(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     name = get_ability_item_name(world, team, get_region_name_from_level(world, level), ROCKETACCEL)
-    return has_char(world, team, level, state, speed=True) and state.has(name, world.player)
+    return has_char(world, team, level, state, speed=True) and state.has(name, world.player) and has_char(world, team, level, state, flying=True, power=True, orcondition=True)
 
 def can_light_dash(world: SonicHeroesWorld, team: str, level: str, state: CollectionState):
     name = get_ability_item_name(world, team, get_region_name_from_level(world, level), LIGHTDASH)
